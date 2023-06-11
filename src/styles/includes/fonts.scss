@@ -1,0 +1,32 @@
+@font-face {
+  font-family: 'Montserrat';
+  src: url(fonts/Montserrat-VariableFont_wght.woff2) format('woff2'),
+       url(fonts/Montserrat-VariableFont_wght.woff) format('woff'),
+       url(fonts/Montserrat-VariableFont_wght.eot) format('eot');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: block;
+  unicode-range: U+0000 to U+007F;
+}
+
+@font-face {
+  font-family: 'OleoScriptSwashCaps';
+  src: url(fonts/OleoScriptSwashCaps-Regular.woff2) format('woff2'),
+       url(fonts/OleoScriptSwashCaps-Regular.woff) format('woff'),
+       url(fonts/OleoScriptSwashCaps-Regular.eot) format('eot');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+  unicode-range: U+0000 to U+007F;
+}
+
+
+
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+.font-headline,
+h1 {
+  font-family: 'OleoScriptSwashCaps', sans-serif;
+}

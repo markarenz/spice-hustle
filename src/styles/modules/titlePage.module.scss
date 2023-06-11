@@ -1,0 +1,128 @@
+.cloud{
+  position:absolute;
+}
+.cloud1{
+  width: 20rem;
+  top:-3rem;
+  animation: 27.0s cloudFloat1 infinite linear;
+}
+.cloud2{
+  width: 20rem;
+  top:0;
+  animation: 25.0s cloudFloat2 infinite linear;
+}
+.cloud3{
+  width: 22rem;
+  top:4rem;
+  animation: 26.0s cloudFloat3 infinite linear;
+}
+.cloud4{
+  width: 16rem;
+  top:8rem;
+  animation: 24.0s cloudFloat4 infinite linear;
+}
+
+@keyframes cloudFloat1 {
+  0% {
+    left: calc(50% - 10rem);
+    opacity: 0.5;
+  }
+  48% {
+    left: calc(0% - 20rem);
+    opacity: 0.5;
+  }
+  49% {
+    left: calc(0% - 20rem);
+    opacity: 0;
+  }
+  51% {
+    left: calc(100% + 10rem);
+    opacity: 0;
+  }
+  52% {
+    left: calc(100% + 10rem);
+    opacity: 0.5;
+  }
+  100% {
+    left: calc(50% - 10rem);
+    opacity: 0.5;
+  }
+}
+
+@keyframes cloudFloat2 {
+  0% {
+    left: calc(30% - 10rem);
+    opacity: 0.5;
+  }
+  38% {
+    left: calc(0% - 20rem);
+    opacity: 0.5;
+  }
+  39% {
+    left: calc(0% - 20rem);
+    opacity: 0;
+  }
+  41% {
+    left: calc(100% + 10rem);
+    opacity: 0;
+  }
+  42% {
+    left: calc(100% + 10rem);
+    opacity: 0.5;
+  }
+  100% {
+    left: calc(30% - 10rem);
+    opacity: 0.5;
+  }
+}
+
+
+@keyframes cloudFloat3 {
+  0% {
+    left: calc(70% - 10rem);
+    opacity: 0.3;
+  }
+  58% {
+    left: calc(0% - 20rem);
+    opacity: 0.3;
+  }
+  59% {
+    left: calc(0% - 20rem);
+    opacity: 0;
+  }
+  61% {
+    left: calc(100% + 10rem);
+    opacity: 0;
+  }
+  62% {
+    left: calc(100% + 10rem);
+    opacity: 0.3;
+  }
+  100% {
+    left: calc(70% - 10rem);
+    opacity: 0.3;
+  }
+}
+
+@keyframes cloudFloat4 {
+  0% {
+    left: 100%;
+    opacity: 0.3;
+  }
+  97% {
+    left: calc(0% - 20rem);
+    opacity: 0.3;
+  }
+  98% {
+    left: calc(0% - 20rem);
+    opacity: 0;
+  }
+  99% {
+    left: calc(100% + 10rem);
+    opacity: 0;
+  }
+  100% {
+    left: 100%;
+    opacity: 0.3;
+  }
+}
