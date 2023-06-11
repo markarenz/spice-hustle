@@ -1,0 +1,25 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Oleo+Script+Swash+Caps&display=swap'); */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@import 'includes/fonts';
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #222;
+  overflow-x:hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.modalOpen{
+  position:fixed;
+  width:100vw;
+  max-height:100vh;
+  overflow: hidden;
+}

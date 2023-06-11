@@ -1,0 +1,26 @@
+{
+  "title_page__title": "Spice Hustle",
+  "title_page__explainer": "Embark upon an entrepreneurial odyssey with a few borrowed coins in your pocket and a head full of dreams. Venture out onto the treacherous trade routes of Aggorah to buy, sell, profit, and invest. Build your one-person trading business into a mercantile juggernaut and save enough to retire before luck and time run out.",
+  "title_page__btn_start_new": "Start New Game",
+  "title_page__btn_load_save": "Load Saved Game",
+
+  "title_page__saved_game_modal__title": "Saved Games",
+  "title_page__saved_game_modal__no_results": "You have no local saves currently. Please start a new game.",
+  "title_page__saved_game_modal__table_field__location": "Location",
+  "title_page__saved_game_modal__table_field__dateModified": "Date",
+  "title_page__saved_game_modal__table_field__netWealth": "Net Wealth",
+  "title_page__saved_game_modal__btn_load": "Load",
+  "title_page__saved_game_modal__btn_delete": "Delete",
+
+  "tables__action_field": "Actions",
+
+  "location__oskah__description": "Having grown up on the mean streets of Oskah, you know just how violent this place can be. It's not uncommon for hapless travelers to become lost in its half-lit maze of alleyways and find a clawed hand reaching out from a darkened corner, dragging them to an unknown fate. Though the people here may be simple and rough, they know a good value when they see one.",
+  "location__tabbith__description": "Far from the hustle and the bustle of the larger cities of Aggorah, Tabbith moves at a slower pace, like wind-blown undulation of the fields of wheat that surround this small rural village. The people here cannot conceive of traveling somewhere else for trade or better prospects. This is their home. Tabbith, quiet and true.",
+  "location__butre__description": "Now that this port city has solved its long-standing bat problem, Butre's economy is bouncing back. The busy sea traffic attracts peddlers from all over the region, so you may be able to find items here not available elsewhere. Be on your guard, though, because Butre's market stalls are chock-a-block with tricksters and scoundrels.",
+  "location__luci__description": "As soon as you arrive here, it becomes clear that something is not quite right with Luci. Dark secrets abound in this place like the purple and green gasses escaping from various doorways. The people here seem kind, but many of them shiver uncontrollably even in the summer. It's best not to linger too long in Luci.",
+  "location__clionne__description": "Known as the jewel of Aggorah, Clionne gleams like a diamond above the lemon-grass pains. Its immaculate brick-lined streets are brimming with shops and customers hungry for your wares. But be careful, Clionne is as deadly as it is beautiful. Your fellow merchants will do their best to fleece you for your fleeces.",
+
+  "test": "This is a test",
+
+  "": ""
+}
