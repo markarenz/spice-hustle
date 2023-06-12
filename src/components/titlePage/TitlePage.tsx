@@ -50,13 +50,6 @@ const TitlePage = () => {
           alt="cloud"
           aria-hidden="true"
           className={`${styles.cloud} ${styles.cloud3}`}
-          // className={`absolute top-0 left-0 w-[20rem] ${styles.cloud1}`}
-        />
-        <img
-          src={Cloud4}
-          alt="cloud"
-          aria-hidden="true"
-          className={`${styles.cloud} ${styles.cloud4}`}
         />
       </div>
       <div className="relative min-h-[calc(100vh_-_2rem)]">
@@ -67,6 +60,18 @@ const TitlePage = () => {
             </span>
           </h1>
         </header>
+        <div
+          data-testid="title-page-bg-2"
+          className="absolute w-full min-w-[100vw] h-full min-h-[100vh] left-0 top-0 overflow-hidden pointer-events-none"
+        >
+          <img
+            src={Cloud4}
+            alt="cloud"
+            aria-hidden="true"
+            className={`${styles.cloud} ${styles.cloud4}`}
+          />
+        </div>
+
         <main className="container mx-auto px-4 text-center">
           <div className="max-w-3xl py-[6rem] mx-auto text-center text-xl italic text-gray-200 drop-shadow-[1px_1px_3px_rgba(0,0,0,0.9)]">
             <FormattedMessage id="title_page__explainer" />
