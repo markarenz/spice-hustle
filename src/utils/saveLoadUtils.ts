@@ -35,8 +35,22 @@ const zpadDateTime = (v: number) => (v > 9 ? `${v}` : `0${v}`);
 
 const getShortRealDate = (timestamp: string) => {
   const d = new Date(parseInt(`${timestamp}`, 10));
+  const months = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+  ];
   const h = d.getHours();
-  return `${zpadDateTime(d.getDay())}/${zpadDateTime(d.getMonth())}/${d.getFullYear()} @${
+  return `${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()} @${
     h > 12 ? zpadDateTime(h - 12) : zpadDateTime(h)
   }:${zpadDateTime(d.getMinutes())}${h > 11 ? 'PM' : 'AM'}`;
 };
@@ -66,6 +80,7 @@ export const loadGameLocal = (gameId: string) => {};
 
 export const deleteSaveItem = async (gameId: string) => {
   try {
+    localStorage.removeItem(`${localStorageKeys.savePrefix}${gameId}`);
     const savesListRaw = await localStorage.getItem(localStorageKeys.savesIndex);
     let savesList = [];
     if (savesListRaw && savesListRaw.length > 1) {

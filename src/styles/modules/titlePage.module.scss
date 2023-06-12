@@ -4,74 +4,74 @@
 .cloud1{
   width: 20rem;
   top:-3rem;
-  animation: 27.0s cloudFloat1 infinite linear;
+  animation: 80.0s cloudFloat1 infinite linear;
 }
 .cloud2{
   width: 20rem;
   top:0;
-  animation: 25.0s cloudFloat2 infinite linear;
+  animation: 77.0s cloudFloat2 infinite linear;
 }
 .cloud3{
   width: 22rem;
   top:4rem;
-  animation: 26.0s cloudFloat3 infinite linear;
+  animation: 75.0s cloudFloat3 infinite linear;
 }
 .cloud4{
   width: 16rem;
   top:8rem;
-  animation: 24.0s cloudFloat4 infinite linear;
+  animation: 70.0s cloudFloat4 infinite linear;
 }
 
 @keyframes cloudFloat1 {
   0% {
-    left: calc(50% - 10rem);
+    left: 10%;
     opacity: 0.5;
   }
-  48% {
+  30% {
     left: calc(0% - 20rem);
     opacity: 0.5;
   }
-  49% {
+  30.01% {
     left: calc(0% - 20rem);
     opacity: 0;
   }
-  51% {
-    left: calc(100% + 10rem);
+  30.02% {
+    left: 100%;
     opacity: 0;
   }
-  52% {
-    left: calc(100% + 10rem);
+  30.03% {
+    left: 100%;
     opacity: 0.5;
   }
   100% {
-    left: calc(50% - 10rem);
+    left: 10%;
     opacity: 0.5;
   }
 }
 
 @keyframes cloudFloat2 {
   0% {
-    left: calc(30% - 10rem);
+    left: 50%;
     opacity: 0.5;
   }
-  38% {
+  50% {
     left: calc(0% - 20rem);
     opacity: 0.5;
   }
-  39% {
+  50.01% {
     left: calc(0% - 20rem);
     opacity: 0;
   }
-  41% {
-    left: calc(100% + 10rem);
+  50.02% {
+    left: 100%;
     opacity: 0;
   }
-  42% {
-    left: calc(100% + 10rem);
+  50.03% {
+    left: 100%;
     opacity: 0.5;
   }
   100% {
-    left: calc(30% - 10rem);
+    left: 50%;
     opacity: 0.5;
   }
 }
@@ -79,27 +79,27 @@
 
 @keyframes cloudFloat3 {
   0% {
-    left: calc(70% - 10rem);
+    left: 75%;
     opacity: 0.3;
   }
-  58% {
+  75% {
     left: calc(0% - 20rem);
     opacity: 0.3;
   }
-  59% {
+  75.01% {
     left: calc(0% - 20rem);
     opacity: 0;
   }
-  61% {
-    left: calc(100% + 10rem);
+  75.02% {
+    left: 100%;
     opacity: 0;
   }
-  62% {
-    left: calc(100% + 10rem);
+  75.03% {
+    left: 100%;
     opacity: 0.3;
   }
   100% {
-    left: calc(70% - 10rem);
+    left: 75%;
     opacity: 0.3;
   }
 }
@@ -109,16 +109,16 @@
     left: 100%;
     opacity: 0.3;
   }
-  97% {
+  99.9% {
     left: calc(0% - 20rem);
     opacity: 0.3;
   }
-  98% {
+  99.91% {
     left: calc(0% - 20rem);
     opacity: 0;
   }
-  99% {
-    left: calc(100% + 10rem);
+  99.92% {
+    left: 100%;
     opacity: 0;
   }
   100% {
