@@ -8,7 +8,18 @@ const initGameState: GameState = {
   savings: 0,
   loans: [],
   netWealth: 100,
-  prices: [],
+  prices: {},
+  inventory: {},
+  capacity: {
+    used: {
+      weight: 0,
+      volume: 0,
+    },
+    max: {
+      weight: 0,
+      volume: 0,
+    },
+  },
   flags: {
     isInitialized: true,
   },

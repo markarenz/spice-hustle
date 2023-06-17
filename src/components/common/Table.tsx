@@ -13,7 +13,7 @@ const Table: React.FC<Props> = ({ data, fieldLabels, actions }) => {
       className="gap-4 w-full max-w-full overflow-x-hidden border-collapse"
       data-testid="table"
     >
-      <thead className="bg-gray-700 text-gray-100 hidden sm:table-header-group">
+      <thead className="bg-gray-600 text-gray-100 hidden sm:table-header-group">
         <tr>
           {fieldLabels.map((fieldLabel) => (
             <th
@@ -32,7 +32,7 @@ const Table: React.FC<Props> = ({ data, fieldLabels, actions }) => {
       </thead>
       <tbody>
         {data.map((item: any) => (
-          <tr key={item.id} className="even:bg-gray-300">
+          <tr key={item.id} id={`lmftft-${item.id}`} className="even:bg-gray-300">
             {fieldLabels.map((field: TableFieldLabel) => (
               <td className="p-4 block sm:table-cell" key={field.slug}>
                 <span className="inline-block sm:hidden font-bold">

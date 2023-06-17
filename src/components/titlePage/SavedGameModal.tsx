@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 import { getLocalSavesList, deleteSaveItem } from 'utils/saveLoadUtils';
 import { FormattedMessage } from 'react-intl';
+import { getLocalGameSave } from 'utils/saveLoadUtils';
+import { useGameSliceDispatch } from 'store/reduxHooks';
+import { loadSavedGame } from 'store/gameSlice';
 import Modal from 'components/common/Modal';
 import Table from 'components/common/Table';
 import Button from 'components/common/Button';
 import { GameSaveListItemDisplay, TableFieldLabel } from 'types';
 
-type Props = {
-  handleToggleModal: Function;
-};
-const SavedGameModal: React.FC<Props> = ({ handleToggleModal }) => {
+const SavedGameModal = () => {
+  const dispatch = useGameSliceDispatch();
   const [savesList, setSavesList] = useState<GameSaveListItemDisplay[]>([]);
   const initLocalSaves = async () => {
     const newSavesList = await getLocalSavesList();
@@ -22,11 +23,16 @@ const SavedGameModal: React.FC<Props> = ({ handleToggleModal }) => {
     setSavesList(savesList.filter((save) => save.id !== id));
     deleteSaveItem(id);
   };
+  const handleLoadSaveItem = async (id: string) => {
+    const loadedGameState = await getLocalGameSave(id);
+    console.log('loadedGameState', loadedGameState);
+    dispatch(loadSavedGame(loadedGameState));
+  };
   const saveListTableActions = (id: string) => (
     <div>
       <span className="mr-4 mb-2 block lg:inline w-full lg:w-auto">
         <Button
-          onClick={() => {}}
+          onClick={() => handleLoadSaveItem(id)}
           labelKey="title_page__saved_game_modal__btn_load"
           variant="secondary"
           testId={`btn-load-${id}`}
@@ -46,13 +52,12 @@ const SavedGameModal: React.FC<Props> = ({ handleToggleModal }) => {
     { slug: 'netWealth', titleKey: 'title_page__saved_game_modal__table_field__netWealth' },
   ];
   return (
-    <Modal handleClose={handleToggleModal} titleKey="title_page__saved_game_modal__title">
+    <Modal titleKey="title_page__saved_game_modal__title">
       <div data-testid="saved-game-modal">
         {savesList.length > 0 ? (
           <Table
             data={savesList}
             fieldLabels={savedGameFieldLabels}
-            // sortKey="modifiedAt"
             actions={saveListTableActions}
           />
         ) : (

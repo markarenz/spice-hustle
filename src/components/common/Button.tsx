@@ -6,8 +6,9 @@ type Props = {
   labelKey: string;
   variant: string; // primary, secondary
   testId?: string;
+  labelValue?: number;
 };
-const Button: React.FC<Props> = ({ onClick, labelKey, testId, variant }) => {
+const Button: React.FC<Props> = ({ onClick, labelKey, testId, variant, labelValue }) => {
   return (
     <button
       data-testid={testId || labelKey}
@@ -16,9 +17,12 @@ const Button: React.FC<Props> = ({ onClick, labelKey, testId, variant }) => {
       relative py-2 px-4 rounded-lg border-2 group block lg:inline w-full lg:w-auto
       ${
         variant === 'primary' &&
-        'border-gray-800 hover:scale-110 transition-all bg-gradient-to-b from-yellow-500 to-red-900 ring-0 ring-gray-100 hover:ring-2'
+        'border-gray-800 hover:scale-110 transition-all text-gray-100 bg-gradient-to-b from-yellow-500 to-red-900 ring-0 ring-gray-100 hover:ring-2'
       }
-      ${variant === 'secondary' && 'border-gray-800 ring-0 bg-transparent hover:text-gray-100'}
+      ${
+        variant === 'secondary' &&
+        'border-gray-800 ring-0 bg-transparent transition-colors hover:text-gray-100'
+      }
       `}
     >
       {variant === 'secondary' && (
@@ -28,7 +32,11 @@ const Button: React.FC<Props> = ({ onClick, labelKey, testId, variant }) => {
         />
       )}
       <span className="text-[1rem] uppercase font-bold drop-shadow-[0px_1px_1px_rgba(255,255,255,0.6)]">
-        <FormattedMessage id={labelKey} />
+        {!!labelValue ? (
+          <FormattedMessage id={labelKey} values={{ labelValue }} />
+        ) : (
+          <FormattedMessage id={labelKey} />
+        )}
       </span>
     </button>
   );

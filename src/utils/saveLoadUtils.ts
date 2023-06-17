@@ -6,7 +6,7 @@ const getSaveListItemFromGameState = (gameState: GameState): GameSaveListItem =>
   location: gameState.location,
   numTurns: gameState.numTurns,
   netWealth: gameState.netWealth,
-  modifiedAt: gameState.modifiedAt,
+  modifiedAt: `${new Date().getTime()}`,
 });
 
 export const saveGameLocal = async (gameState: GameState) => {
@@ -24,7 +24,21 @@ export const saveGameLocal = async (gameState: GameState) => {
     if (savesListRaw && savesListRaw.length > 1) {
       savesList = await JSON.parse(savesListRaw);
     }
-    const newSavesList = [getSaveListItemFromGameState(gameStateNow), ...savesList];
+    const saveListItem = getSaveListItemFromGameState(gameStateNow);
+    const isNew = !savesList.some((item: GameSaveListItem) => item.id === gameState.id);
+    const newSavesList = isNew
+      ? [getSaveListItemFromGameState(gameStateNow), ...savesList]
+      : savesList
+          .map((item: GameSaveListItem) => (item.id === gameState.id ? saveListItem : item))
+          .sort((a: GameSaveListItem, b: GameSaveListItem) => {
+            if (a.modifiedAt > b.modifiedAt) {
+              return 1;
+            }
+            if (a.modifiedAt < b.modifiedAt) {
+              return -1;
+            }
+            return 0;
+          });
     localStorage.setItem(localStorageKeys.savesIndex, JSON.stringify(newSavesList));
   } catch (err) {
     console.error('Save Game Error', err);
@@ -33,7 +47,7 @@ export const saveGameLocal = async (gameState: GameState) => {
 
 const zpadDateTime = (v: number) => (v > 9 ? `${v}` : `0${v}`);
 
-const getShortRealDate = (timestamp: string) => {
+export const getShortRealDate = (timestamp: string) => {
   const d = new Date(parseInt(`${timestamp}`, 10));
   const months = [
     'Jan',
@@ -76,7 +90,16 @@ export const getLocalSavesList = async () => {
   }
 };
 
-export const loadGameLocal = (gameId: string) => {};
+export const getLocalGameSave = async (gameId: string) => {
+  try {
+    const gameSaveRaw = await localStorage.getItem(`${localStorageKeys.savePrefix}${gameId}`);
+    const gameState = await JSON.parse(`${gameSaveRaw}`);
+    return gameState;
+  } catch (err) {
+    console.error('Load Save Error', err);
+    return null;
+  }
+};
 
 export const deleteSaveItem = async (gameId: string) => {
   try {

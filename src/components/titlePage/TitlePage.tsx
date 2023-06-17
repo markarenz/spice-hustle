@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 import Button from 'components/common/Button';
 import Footer from 'components/common/Footer';
 import { useGameSliceSelector, useGameSliceDispatch } from 'store/reduxHooks';
-import { startNewGame, toggleModal } from 'store/gameSlice';
+import { startNewGame, setModalStatus } from 'store/gameSlice';
 import SavedGameModal from './SavedGameModal';
 import BgLayer0 from 'img/titlePage/spice-hustle-title-page-bg.svg';
 import Cloud1 from 'img/titlePage/cloud-1.svg';
@@ -12,13 +12,17 @@ import Cloud4 from 'img/titlePage/cloud-4.svg';
 import styles from 'styles/modules/titlePage.module.scss';
 
 const TitlePage = () => {
-  const { isModalOpen } = useGameSliceSelector((state) => state.game);
+  const { modalStatus } = useGameSliceSelector((state) => state.game);
+  const isModalOpen = modalStatus !== '';
   const dispatch = useGameSliceDispatch();
   const handleStartNewGame = () => {
     dispatch(startNewGame());
   };
-  const handleToggleModal = () => {
-    dispatch(toggleModal());
+  const handleOpenSavedGameModal = () => {
+    dispatch(setModalStatus('opening'));
+    setTimeout(() => {
+      dispatch(setModalStatus('open'));
+    }, 510);
   };
   return (
     <div className="w-full min-h-[100vh] relative" data-testid="title-page">
@@ -89,7 +93,7 @@ const TitlePage = () => {
               <Button
                 labelKey="title_page__btn_load_save"
                 variant="primary"
-                onClick={() => handleToggleModal()}
+                onClick={() => handleOpenSavedGameModal()}
                 testId="btn-load-save"
               />
             </div>
@@ -98,7 +102,7 @@ const TitlePage = () => {
       </div>
 
       <Footer />
-      {isModalOpen && <SavedGameModal handleToggleModal={handleToggleModal} />}
+      {isModalOpen && <SavedGameModal />}
     </div>
   );
 };
