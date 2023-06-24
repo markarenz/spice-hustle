@@ -19,9 +19,9 @@ import ImgLoc4BG from 'img/locations/city4-1.jpg';
 import ImgLoc5 from 'img/locations/city5.jpg';
 import ImgLoc5BG from 'img/locations/city5-1.jpg';
 import ImgLoc6 from 'img/locations/city6.jpg';
-import ImgLoc6BG from 'img/locations/city1-1.jpg';
+import ImgLoc6BG from 'img/locations/city6-1.jpg';
 import ImgLoc7 from 'img/locations/city7.jpg';
-import ImgLoc7BG from 'img/locations/city1-1.jpg';
+import ImgLoc7BG from 'img/locations/city7-1.jpg';
 import IconInfo from 'components/icons/IconInfo';
 
 const GameHeader = () => {
@@ -47,6 +47,10 @@ const GameHeader = () => {
           return [ImgLoc3, ImgLoc3BG];
         case 'tabbith':
           return [ImgLoc2, ImgLoc2BG];
+        case 'winnie':
+          return [ImgLoc6, ImgLoc6BG];
+        case 'tigi':
+          return [ImgLoc7, ImgLoc7BG];
         case 'oskah':
         default:
           return [ImgLoc1, ImgLoc1BG];

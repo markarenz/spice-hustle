@@ -10,4 +10,4 @@
 
 ## Image Credits
 
-- Images for the location backgrounds provided by freepik and the following users: upklyak, macrovector, brgfx
+- Images for the location backgrounds provided by freepik and the following users: upklyak, macrovector, brgfx, rawpixel

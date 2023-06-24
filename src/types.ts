@@ -103,6 +103,8 @@ export enum Locations {
   Butre = 'butre',
   Luci = 'luci',
   Clionne = 'clionne',
+  Winnie = 'winnie',
+  Tigi = 'tigi',
 }
 
 export type location = {

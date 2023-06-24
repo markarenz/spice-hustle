@@ -1,4 +1,5 @@
 import { Locations } from 'types';
+import { FormattedMessage } from 'react-intl';
 import { Slices, relocate } from 'store/gameSlice';
 import { useGameSliceSelector, useGameSliceDispatch } from 'store/reduxHooks';
 
@@ -23,7 +24,7 @@ const TravelPanel = () => {
                     location === locationOption.toLowerCase() ? 'font-bold' : 'font-normal'
                   }`}
                 >
-                  {locationOption}
+                  <FormattedMessage id={`location__${locationOption.toLowerCase()}__title`} />
                 </span>
               </button>
             </div>

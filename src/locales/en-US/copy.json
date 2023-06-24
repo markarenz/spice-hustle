@@ -43,6 +43,10 @@
   "location__luci__description": "As soon as you arrive here, it becomes clear that something is not quite right with Luci. Dark secrets abound in this place like the purple and green gasses escaping from various doorways. The people here seem kind, but many of them shiver uncontrollably even in the summer. It's best not to linger too long in Luci.",
   "location__clionne__title": "Clionne",
   "location__clionne__description": "Known as the jewel of Aggorah, Clionne gleams like a diamond above the lemon-grass pains. Its immaculate brick-lined streets are brimming with shops and customers hungry for your wares. But be careful, Clionne is as deadly as it is beautiful. Your fellow merchants will do their best to fleece you for your fleeces.",
+  "location__winnie__title": "Winnie",
+  "location__winnie__description": "Test",
+  "location__tigi__title": "Tigi",
+  "location__tigi__description": "Test",
 
   "tables__action_field": "Actions",
 
