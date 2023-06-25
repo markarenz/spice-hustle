@@ -13,7 +13,7 @@ const SellSubPanel = () => {
   const [selectedItem, setSelectedItem] = useState<any>({});
   const { formatMessage } = useIntl();
   const { gameState, modalStatus, currentModal } = useGameSliceSelector((state) => state.game);
-  const isModalOpen = modalStatus !== '' && currentModal === 'sellQty';
+  const isModalOpen = modalStatus !== 'closed' && currentModal === 'sellQty';
   const { inventory, prices } = gameState;
   const inventoryItems = Object.keys(gameState.prices)
     .filter(
@@ -35,7 +35,7 @@ const SellSubPanel = () => {
   const closeModal = () => {
     dispatch(setModalStatus('closing'));
     setTimeout(() => {
-      dispatch(setModalStatus(''));
+      dispatch(setModalStatus('closed'));
     }, 510);
   };
   const handleSellClick = (id: string) => {
@@ -90,7 +90,6 @@ const SellSubPanel = () => {
       <div className="text-right py-2">
         <CapacityDisplay />
       </div>
-
       {isModalOpen && (
         <QtyModal
           action="sell"

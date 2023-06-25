@@ -14,7 +14,7 @@ const BuySubPanel = () => {
   const [selectedItem, setSelectedItem] = useState<any>({});
   const { formatMessage } = useIntl();
   const { gameState, modalStatus, currentModal } = useGameSliceSelector((state) => state.game);
-  const isModalOpen = modalStatus !== '';
+  const isModalOpen = modalStatus !== 'closed';
   const prices = gameState.prices;
   const itemsForSale = Object.keys(gameState.prices)
     .filter((key) => prices[key].actions.includes('buy'))
@@ -33,7 +33,7 @@ const BuySubPanel = () => {
   const closeModal = () => {
     dispatch(setModalStatus('closing'));
     setTimeout(() => {
-      dispatch(setModalStatus(''));
+      dispatch(setModalStatus('closed'));
       setCurrentModal('');
     }, 510);
   };

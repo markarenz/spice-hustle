@@ -6,7 +6,7 @@ import MarketActionTabButton from './MarketActionTabButton';
 const MarketPanel = () => {
   const { marketStatus } = useGameSliceSelector((state) => state.game);
   return (
-    <div>
+    <div data-testid="market-panel">
       <div className="bg-orange-500">
         <div className="container mx-auto">
           <div className="flex items-center justify-between">

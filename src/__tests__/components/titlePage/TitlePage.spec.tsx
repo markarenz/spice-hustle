@@ -6,7 +6,7 @@ import messages from 'locales/en-US/copy.json';
 import TitlePage from 'components/titlePage/TitlePage';
 
 describe('TitlePage', () => {
-  it('renders component', () => {
+  it('renders component', async () => {
     act(() => {
       render(
         <Provider store={store}>
@@ -16,7 +16,11 @@ describe('TitlePage', () => {
         </Provider>,
       );
     });
-    const element = screen.getByTestId('title-page');
+    let element = null;
+    await waitFor(async () => {
+      element = screen.getByTestId('title-page');
+    });
+
     expect(element).toBeInTheDocument();
   });
 });

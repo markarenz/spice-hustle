@@ -4,7 +4,7 @@ import { AppStatuses } from 'types';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
 import messages from 'locales/en-US/copy.json';
-import Modal from 'components/common/Modal';
+import GamePanelDisplay from 'components/gamePage/GamePanelDisplay';
 import initGameState from 'data/initGameState';
 import { GameSliceState } from 'store/gameSlice';
 
@@ -22,12 +22,12 @@ const mockProps = {
   titleKey: 'title_page__saved_game_modal__title',
 };
 
-describe('Modal', () => {
-  it('renders component: closed', async () => {
+describe('GamePanelDisplay', () => {
+  it('renders component: default panel', async () => {
     act(() => {
       const mockGameSlice = createSlice({
         name: 'game',
-        initialState,
+        initialState: { ...initialState, gamePanel: 'test' },
         reducers: {},
       });
       const mockStore = configureStore({
@@ -38,9 +38,7 @@ describe('Modal', () => {
       render(
         <Provider store={mockStore}>
           <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <Modal {...mockProps}>
-              <div>Content goes here</div>
-            </Modal>
+            <GamePanelDisplay />
           </IntlProvider>
         </Provider>,
       );
@@ -48,16 +46,15 @@ describe('Modal', () => {
     act(() => {
       jest.advanceTimersByTime(550);
     });
-    const element = screen.getByTestId('modal');
+    const element = screen.getByTestId('default-panel');
     expect(element).toBeInTheDocument();
   });
 
-  it('renders component: open & click close', async () => {
-    // In this test, we are using a mock store to inject our own version of initialState
+  it('renders component: default panel', async () => {
     act(() => {
       const mockGameSlice = createSlice({
         name: 'game',
-        initialState: { ...initialState, modalStatus: 'open' },
+        initialState: { ...initialState, gamePanel: 'market' },
         reducers: {},
       });
       const mockStore = configureStore({
@@ -68,9 +65,7 @@ describe('Modal', () => {
       render(
         <Provider store={mockStore}>
           <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <Modal {...mockProps}>
-              <div>Content goes here</div>
-            </Modal>
+            <GamePanelDisplay />
           </IntlProvider>
         </Provider>,
       );
@@ -78,13 +73,34 @@ describe('Modal', () => {
     act(() => {
       jest.advanceTimersByTime(550);
     });
-    await waitFor(async () => {
-      fireEvent.click(screen.getByTestId('modal-bg-btn'));
+    const element = screen.getByTestId('market-panel');
+    expect(element).toBeInTheDocument();
+  });
+
+  it('renders component: travel panel', async () => {
+    act(() => {
+      const mockGameSlice = createSlice({
+        name: 'game',
+        initialState: { ...initialState, gamePanel: 'travel' },
+        reducers: {},
+      });
+      const mockStore = configureStore({
+        reducer: {
+          game: mockGameSlice.reducer,
+        },
+      });
+      render(
+        <Provider store={mockStore}>
+          <IntlProvider messages={messages} locale="en" defaultLocale="en">
+            <GamePanelDisplay />
+          </IntlProvider>
+        </Provider>,
+      );
     });
     act(() => {
       jest.advanceTimersByTime(550);
     });
-    const element = screen.getByTestId('modal');
+    const element = screen.getByTestId('travel-panel');
     expect(element).toBeInTheDocument();
   });
 });

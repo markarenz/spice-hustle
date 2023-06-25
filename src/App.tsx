@@ -6,7 +6,8 @@ import msg from 'locales/en-US/copy.json'; // Only en-US support for now
 import { useGameSliceSelector } from 'store/reduxHooks';
 
 const App = () => {
-  const { appStatus, isModalOpen } = useGameSliceSelector((state) => state.game);
+  const { appStatus, modalStatus } = useGameSliceSelector((state) => state.game);
+  const isModalOpen = modalStatus !== 'closed';
   return (
     <IntlProvider messages={msg} locale="en-US" defaultLocale="en-US">
       <div id="app" data-testid="app" className={isModalOpen ? 'modalOpen' : ''}>

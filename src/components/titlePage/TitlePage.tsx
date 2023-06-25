@@ -13,7 +13,7 @@ import styles from 'styles/modules/titlePage.module.scss';
 
 const TitlePage = () => {
   const { modalStatus } = useGameSliceSelector((state) => state.game);
-  const isModalOpen = modalStatus !== '';
+  const isModalOpen = modalStatus !== 'closed';
   const dispatch = useGameSliceDispatch();
   const handleStartNewGame = () => {
     dispatch(startNewGame());
@@ -77,6 +77,7 @@ const TitlePage = () => {
         </div>
 
         <main className="container mx-auto px-4 text-center">
+          <div>*{isModalOpen ? 'Y' : 'N'}*</div>
           <div className="max-w-3xl py-[6rem] mx-auto text-center text-xl italic text-gray-200 drop-shadow-[1px_1px_3px_rgba(0,0,0,0.9)]">
             <FormattedMessage id="title_page__explainer" />
           </div>
@@ -100,7 +101,6 @@ const TitlePage = () => {
           </div>
         </main>
       </div>
-
       <Footer />
       {isModalOpen && <SavedGameModal />}
     </div>

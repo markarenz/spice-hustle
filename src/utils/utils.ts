@@ -71,11 +71,9 @@ export const getCapacity = (inventory: Inventory, flags: Flags): Capacity => {
   let usedWeight = 0;
   let usedVolume = 0;
   Object.keys(inventory).forEach((key) => {
-    console.log('GET CAPACITY ??', key);
     usedWeight += itemsData[key].weight * inventory[key].qty;
     usedVolume += itemsData[key].volume * inventory[key].qty;
   });
-  console.log('GET CAPACITY', usedWeight, usedVolume, max);
   return {
     used: {
       weight: sigFigs(usedWeight),

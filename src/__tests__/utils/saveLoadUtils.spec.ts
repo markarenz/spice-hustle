@@ -6,6 +6,9 @@ jest.spyOn(Storage.prototype, 'setItem');
 afterEach(() => {
   jest.clearAllMocks();
 });
+// Mocking console.error to prevent the deliberately thrown errors from appearing in the test telemetry
+const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+
 describe('saveGameLocal', () => {
   it('saves game data to local storage', async () => {
     Storage.prototype.getItem = jest.fn().mockReturnValue(JSON.stringify(mockGameSavesList));
@@ -16,6 +19,7 @@ describe('saveGameLocal', () => {
     Storage.prototype.getItem = jest.fn().mockRejectedValue(null);
     await saveGameLocal(mockGameState);
     expect(localStorage.setItem).toHaveBeenCalledTimes(1);
+    expect(consoleError).toHaveBeenCalled();
   });
 });
 
@@ -34,6 +38,7 @@ describe('deleteSaveItem', () => {
     Storage.prototype.getItem = jest.fn().mockRejectedValue(null);
     await deleteSaveItem('1686433533366');
     expect(localStorage.setItem).not.toHaveBeenCalled();
+    expect(consoleError).toHaveBeenCalled();
   });
 });
 
@@ -52,5 +57,6 @@ describe('getLocalSavesList', () => {
     Storage.prototype.getItem = jest.fn().mockRejectedValue(null);
     const result = await getLocalSavesList();
     expect(result.length).toBe(0);
+    expect(consoleError).toHaveBeenCalled();
   });
 });

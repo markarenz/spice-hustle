@@ -15,7 +15,7 @@ const Modal: React.FC<Props> = ({ children, titleKey }) => {
   const handleTriggerClose = () => {
     dispatch(setModalStatus('closing'));
     setTimeout(() => {
-      dispatch(setModalStatus(''));
+      dispatch(setModalStatus('closed'));
     }, 510);
   };
   const isOpening = ['opening', 'open'].includes(modalStatus) && isInitted;
@@ -37,6 +37,7 @@ const Modal: React.FC<Props> = ({ children, titleKey }) => {
         onClick={() => handleTriggerClose()}
       />
       <div
+        data-testid="modal-card"
         className={`relative max-w-full lg:max-w-[70vw] mx-auto bg-gray-200 rounded-md ring-4 ring-orange-700 drop-shadow-[2px_2px_10px_rgba(0,0,0,.9)] min-w-[20rem] max-h-[calc(100vh_-_2rem)] max-w-[calc(100vw_-_2rem)] overflow-y-scroll transition-all duration-500 overflow-x-hidden ${
           isOpening ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
         }`}
@@ -47,9 +48,10 @@ const Modal: React.FC<Props> = ({ children, titleKey }) => {
           </h2>
           {
             <div
+              data-testid="modal-close"
               className={`transform-all duration-300 ${
                 isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
-              }`}
+              } ${modalStatus}`}
             >
               <CloseButton handleClose={handleTriggerClose} />
             </div>

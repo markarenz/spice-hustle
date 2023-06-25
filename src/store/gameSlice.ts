@@ -11,7 +11,6 @@ export type GameSliceState = {
   appStatus: string;
   gamePanel: string;
   marketStatus: string;
-  isModalOpen: boolean;
   modalStatus: string;
   currentModal: string;
   gameState: GameState;
@@ -19,7 +18,6 @@ export type GameSliceState = {
 
 const initialState: GameSliceState = {
   appStatus: AppStatuses.StartPage,
-  isModalOpen: false,
   modalStatus: 'closed',
   gameState: initGameState,
   marketStatus: 'buy',
@@ -61,22 +59,21 @@ export const gameSlice = createSlice({
     },
     loadSavedGame: (state, action: PayloadAction<GameState>) => {
       state.appStatus = AppStatuses.Game;
-      state.isModalOpen = false;
       state.gameState = action.payload;
       state.gamePanel = GameTabSlugs.Market;
-      state.modalStatus = '';
+      state.modalStatus = 'closed';
     },
     setGamePanel: (state, action: PayloadAction<string>) => {
       state.gamePanel = action.payload;
-      state.modalStatus = '';
+      state.modalStatus = 'closed';
     },
     closeGame: (state) => {
       state.appStatus = AppStatuses.StartPage;
-      state.modalStatus = '';
+      state.modalStatus = 'closed';
     },
     setMarketStatus: (state, action: PayloadAction<string>) => {
       state.marketStatus = action.payload;
-      state.modalStatus = '';
+      state.modalStatus = 'closed';
     },
     buyItem: (state, action: PayloadAction<Transaction>) => {
       const { qty, itemId, price } = action.payload;
@@ -145,7 +142,7 @@ export const gameSlice = createSlice({
         numTurns: state.gameState.numTurns + 1,
         location: action.payload,
       };
-      state.modalStatus = '';
+      state.modalStatus = 'closed';
       state.gamePanel = 'market';
       state.gameState = {
         ...newGameState,

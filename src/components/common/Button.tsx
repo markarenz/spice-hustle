@@ -31,7 +31,10 @@ const Button: React.FC<Props> = ({ onClick, labelKey, testId, variant, labelValu
           className="absolute transition-all opacity-0 duration-150 h-full top-0 bg-orange-700 rounded-none left-[50%] w-0 group-hover:left-0 group-hover:w-full group-hover:rounded-md group-hover:opacity-75 group-active:opacity-100"
         />
       )}
-      <span className="text-[1rem] uppercase font-bold drop-shadow-[0px_1px_1px_rgba(255,255,255,0.6)]">
+      <span
+        data-testid="btn-label"
+        className="text-[1rem] uppercase font-bold drop-shadow-[0px_1px_1px_rgba(255,255,255,0.6)]"
+      >
         {!!labelValue ? (
           <FormattedMessage id={labelKey} values={{ labelValue }} />
         ) : (

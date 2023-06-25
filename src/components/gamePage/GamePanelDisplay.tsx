@@ -12,7 +12,7 @@ const GamePanelDisplay = () => {
     case GameTabSlugs.Market.toLowerCase():
       return <MarketPanel />;
     default:
-      return <div>DEFAULT PANEL</div>;
+      return <div data-testid="default-panel">DEFAULT PANEL</div>;
   }
 };
 

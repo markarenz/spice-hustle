@@ -7,9 +7,6 @@ import SavedGameModal from 'components/titlePage/SavedGameModal';
 import mockGameSavesList from '__tests__/__fixtures__/mockGameSavesList';
 
 jest.useFakeTimers();
-const mockProps = {
-  handleToggleModal: jest.fn(),
-};
 describe('SavedGameModal', () => {
   it('renders component and handles delete click', async () => {
     Storage.prototype.getItem = jest.fn().mockReturnValue(JSON.stringify(mockGameSavesList));
@@ -17,7 +14,7 @@ describe('SavedGameModal', () => {
       render(
         <Provider store={store}>
           <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <SavedGameModal {...mockProps} />
+            <SavedGameModal />
           </IntlProvider>
         </Provider>,
       );

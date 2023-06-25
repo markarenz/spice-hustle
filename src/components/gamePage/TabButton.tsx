@@ -15,7 +15,12 @@ const TabButton: React.FC<Props> = ({ slug, isActive }) => {
     dispatch(setGamePanel(slugLowerCase));
   };
   return (
-    <button className="py-4 w-full relative group" title={title} onClick={handleTabClick}>
+    <button
+      className="py-4 w-full relative group"
+      title={title}
+      onClick={handleTabClick}
+      data-testid={`tab-button-${slug}`}
+    >
       <div
         aria-hidden="true"
         className="absolute top-0 left-[50%] group-hover:left-0 w-0 group-hover:w-full h-full bg-orange-700 transition-all duration-150 shadow-[inset_0_0_20px_5px_rgba(249,115,22,1.0)]"
