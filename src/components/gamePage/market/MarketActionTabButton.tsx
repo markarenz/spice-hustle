@@ -12,12 +12,17 @@ const MarketActionTabButton: React.FC<Props> = ({ slug }) => {
     dispatch(setMarketStatus(slug));
   };
   return (
-    <button className="relative p-4 w-full uppercase font-bold group" onClick={handleClick}>
+    <button
+      data-testid={`market-tab-btn-${slug}`}
+      className="relative p-4 w-full uppercase font-bold group"
+      onClick={handleClick}
+    >
       <div
         className="absolute w-full left-0 transition-all duration-150 bg-gradient-to-b from-orange-500 to-orange-900 opacity-50 h-0 top-[100%] group-hover:top-0 group-hover:h-full"
         aria-hidden="true"
       />
       <div
+        data-testid="market-tab-btn-label-wrap"
         className={`absolute w-full left-0 bottom-0 transition-all duration-150 w-full bg-gray-900 ${
           marketStatus === slug ? 'h-full' : 'h-0'
         }`}

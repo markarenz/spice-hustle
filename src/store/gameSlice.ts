@@ -1,29 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GameState, AppStatuses, GameTabSlugs, Transaction } from 'types';
+import { GameSliceState, GameState, AppStatuses, GameTabSlugs, Transaction } from 'types';
 import { getLocalPrices, getNetWealth, getCapacity } from 'utils/utils';
+import { getInitialState } from './storeUtils';
 import initGameState from 'data/initGameState';
 import { saveGameLocal } from 'utils/saveLoadUtils';
 
 export type Slices = {
   game: GameSliceState;
 };
-export type GameSliceState = {
-  appStatus: string;
-  gamePanel: string;
-  marketStatus: string;
-  modalStatus: string;
-  currentModal: string;
-  gameState: GameState;
-};
 
-const initialState: GameSliceState = {
-  appStatus: AppStatuses.StartPage,
-  modalStatus: 'closed',
-  gameState: initGameState,
-  marketStatus: 'buy',
-  currentModal: '',
-  gamePanel: 'market',
-};
 const getNewGameData = () => ({
   ...initGameState,
   id: `${new Date().getTime()}`,
@@ -32,7 +17,7 @@ const getNewGameData = () => ({
 });
 export const gameSlice = createSlice({
   name: 'game',
-  initialState,
+  initialState: getInitialState(),
   reducers: {
     initState: (state) => {
       state.appStatus = AppStatuses.StartPage;

@@ -23,7 +23,7 @@ const SellSubPanel = () => {
       ...prices[key],
       title: formatMessage({ id: `items__${prices[key].id}__title` }),
       priceValue: prices[key].value,
-      qty: inventory[key]?.qty || 0,
+      qty: inventory[key]?.qty,
     }));
   const openModal = () => {
     dispatch(setCurrentModal('sellQty'));
@@ -40,25 +40,21 @@ const SellSubPanel = () => {
   };
   const handleSellClick = (id: string) => {
     const foundItem = inventoryItems.find((item: any) => item.id === id);
-    if (!!foundItem) {
-      setSelectedItem({ ...foundItem });
-      openModal();
-    }
+    setSelectedItem({ ...foundItem });
+    openModal();
   };
   const handleQtyClose = () => {
     closeModal();
   };
   const handleSellConfirm = (sellQty: number) => {
-    if (sellQty > 0) {
-      dispatch(
-        sellItem({
-          qty: sellQty,
-          itemId: selectedItem.id,
-          price: selectedItem.value,
-          action: 'sell',
-        }),
-      );
-    }
+    dispatch(
+      sellItem({
+        qty: sellQty,
+        itemId: selectedItem.id,
+        price: selectedItem.value,
+        action: 'sell',
+      }),
+    );
     handleQtyClose();
   };
   const sellTableActions = (id: string) => (
@@ -80,7 +76,7 @@ const SellSubPanel = () => {
   ];
 
   return (
-    <div>
+    <div data-testid="sell-subpanel">
       <h2 className="text-xl font-bold uppercase mb-4">
         <FormattedMessage id="market__sell_title" />
       </h2>

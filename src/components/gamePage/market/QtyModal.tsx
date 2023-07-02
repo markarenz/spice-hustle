@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useGameSliceSelector } from 'store/reduxHooks';
 import Modal from 'components/common/Modal';
@@ -15,9 +15,15 @@ type Props = {
 const QtyModal: React.FC<Props> = ({ action, selectedItem, handleConfirm, handleQtyClose }) => {
   const { gameState } = useGameSliceSelector((state) => state.game);
   const [qty, setQty] = useState<number>(0);
-  const [maxQty] = useState<number>(
-    action === 'buy' ? getMaxQty(gameState, selectedItem, itemsData) : selectedItem.qty,
-  );
+  const [maxQty, setMaxQty] = useState<number | null>(null);
+  useEffect(() => {
+    if (maxQty === null && !!selectedItem.id) {
+      setMaxQty(
+        action === 'buy' ? getMaxQty(gameState, selectedItem, itemsData) : selectedItem.qty,
+      );
+    }
+  }, [selectedItem]);
+
   const handleQtyChange = (e: React.ChangeEvent<HTMLInputElement>, max: number) => {
     let val = parseInt(e.target.value);
     if (val < 1) {
@@ -28,11 +34,15 @@ const QtyModal: React.FC<Props> = ({ action, selectedItem, handleConfirm, handle
     }
     setQty(val);
   };
+  if (maxQty === null) {
+    return null;
+  }
   return (
     <Modal titleKey="market__buy__qty_modal__title">
       <div className="text-gray-800">
         <div className="pb-4">
           <input
+            data-testid="qty-input"
             type="number"
             value={qty}
             onChange={(e) => handleQtyChange(e, maxQty)}
@@ -41,7 +51,7 @@ const QtyModal: React.FC<Props> = ({ action, selectedItem, handleConfirm, handle
             className="p-4 text-xl w-full"
           />
         </div>
-        <div className="text-base italic pb-4">
+        <div className="text-base italic pb-4" data-testid={`explainer-${action}`}>
           {action === 'buy' ? (
             <FormattedMessage id="market__buy__qty_modal__explainer" values={{ maxQty }} />
           ) : (
@@ -58,12 +68,18 @@ const QtyModal: React.FC<Props> = ({ action, selectedItem, handleConfirm, handle
                 variant="primary"
                 labelKey="max"
                 labelValue={maxQty}
+                testId="qty-btn-max"
                 onClick={() => handleConfirm(maxQty)}
               />
             </span>
           )}
           {maxQty > 0 && qty > 0 && (
-            <Button variant="primary" labelKey="ok" onClick={() => handleConfirm(qty)} />
+            <Button
+              variant="primary"
+              testId="qty-modal-btn-ok"
+              labelKey="ok"
+              onClick={() => handleConfirm(qty)}
+            />
           )}
         </div>
       </div>

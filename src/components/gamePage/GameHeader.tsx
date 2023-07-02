@@ -18,7 +18,6 @@ const GameHeader = () => {
     (state) => state.game,
   );
   const { location } = gameState;
-
   const handleLocationChange = useCallback(() => {
     setBgImgs(getBgImg(location));
   }, [location]);

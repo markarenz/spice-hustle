@@ -156,3 +156,12 @@ export type Capacity = {
 };
 
 export type CapacityData = { [key: string]: VolWeight };
+
+export type GameSliceState = {
+  appStatus: string;
+  gamePanel: string;
+  marketStatus: string;
+  modalStatus: string;
+  currentModal: string;
+  gameState: GameState;
+};

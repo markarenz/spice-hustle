@@ -25,7 +25,6 @@ const SavedGameModal = () => {
   };
   const handleLoadSaveItem = async (id: string) => {
     const loadedGameState = await getLocalGameSave(id);
-    console.log('loadedGameState', loadedGameState);
     dispatch(loadSavedGame(loadedGameState));
   };
   const saveListTableActions = (id: string) => (

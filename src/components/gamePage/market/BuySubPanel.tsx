@@ -39,25 +39,21 @@ const BuySubPanel = () => {
   };
   const handleItemClick = (id: string, modalSlug: string) => {
     const foundItem = itemsForSale.find((item: any) => item.id === id);
-    if (!!foundItem) {
-      setSelectedItem({ ...foundItem });
-      openModal(modalSlug);
-    }
+    setSelectedItem({ ...foundItem });
+    openModal(modalSlug);
   };
   const handleQtyClose = () => {
     closeModal();
   };
   const handleBuyConfirm = (buyQty: number) => {
-    if (buyQty > 0) {
-      dispatch(
-        buyItem({
-          qty: buyQty,
-          itemId: selectedItem.id,
-          price: selectedItem.value,
-          action: 'buy',
-        }),
-      );
-    }
+    dispatch(
+      buyItem({
+        qty: buyQty,
+        itemId: selectedItem.id,
+        price: selectedItem.value,
+        action: 'buy',
+      }),
+    );
     handleQtyClose();
   };
   const buyTableActions = (id: string) => (
@@ -67,7 +63,7 @@ const BuySubPanel = () => {
           onClick={() => handleItemClick(id, 'info')}
           labelKey="market__buy__table___btn_info"
           variant="secondary"
-          testId={`btn-buy-info-${id}`}
+          testId={`btn-info-${id}`}
         />
       </span>
       <span className="block mb-2 lg:inline w-full lg:w-auto">
@@ -87,8 +83,9 @@ const BuySubPanel = () => {
     { slug: 'priceValue', titleKey: 'market__buy__table_field__price' },
     { slug: 'qty', titleKey: 'market__buy__table_field__qty' },
   ];
+
   return (
-    <div className="px-4">
+    <div className="px-4" data-testid="buy-subpanel">
       <h2 className="text-xl font-bold uppercase mb-4">
         <FormattedMessage id="market__buy_title" />
       </h2>

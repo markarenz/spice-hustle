@@ -6,7 +6,7 @@ import { render, screen, waitFor, act, fireEvent } from '@testing-library/react'
 import messages from 'locales/en-US/copy.json';
 import GamePanelDisplay from 'components/gamePage/GamePanelDisplay';
 import initGameState from 'data/initGameState';
-import { GameSliceState } from 'store/gameSlice';
+import { GameSliceState } from 'types';
 
 const initialState: GameSliceState = {
   appStatus: AppStatuses.StartPage,

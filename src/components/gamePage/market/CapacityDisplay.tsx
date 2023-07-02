@@ -10,6 +10,7 @@ const CapacityDisplay = () => {
   const isOverCapacity = used.volume >= max.volume || used.weight >= max.weight;
   return (
     <span
+      data-testid="market-capacity"
       className={`text-base ${
         isOverCapacity ? 'text-orange-500 font-bold' : 'text-gray-200 font-normal'
       }`}
