@@ -7,3 +7,7 @@
 ## Notes
 
 - We are using `baseUrl` in the `.tsconfig` file to allow absolute import paths. Aliasing is not fully supported with CRA TS projects currently. Ideally, we would use an `@` to represent the `src` directory for absolute imports to prevent confusion with imported libraries. However, this solution works well for local build and is the one the TS docs indicate is the paved road for this use case.
+
+## Image Credits
+
+- Images for the location backgrounds provided by freepik and the following users: upklyak, macrovector, brgfx, rawpixel

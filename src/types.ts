@@ -10,13 +10,42 @@ export type Loan = {
   interestRate: number;
 };
 
-export type Price = {
-  itemId: string;
+/*
+  We are using both weight and volume for inventory max calculation
+  If you go to buy something when your pack or cart are full, you get a modal explaining why you cannot buy it
+*/
+export type PriceModel = {
   locations: string[];
-  seasons: string[];
-  basePrice: number;
-  variability: number; // + or - number, not percentage
+  seasons: number[];
+  actions: string[];
+  qtyMin: number;
+  qtyMax: number;
+  priceMin: number;
+  priceMax: number;
 };
+
+export type Product = {
+  itemId: string;
+  volume: number; // in vols, used for inventory max calculation - example: 1v
+  weight: number; // in oofs, used for inventory max calculation - example: 2o
+  prices: PriceModel[];
+};
+
+export type Price = {
+  id: string;
+  value: number;
+  qty: number;
+  actions: string[];
+  volume: number;
+  weight: number;
+};
+
+export type InventoryItem = {
+  itemId: string;
+  qty: number;
+};
+
+export type ItemsInfo = { [key: string]: Product }; // Generic type for flexibility
 
 /*
   Flags are flexible booleans that can be used for detailed progress markers and gates without having to drill into separate purpose-built structures
@@ -31,6 +60,7 @@ export type Flag = boolean | null | undefined;
 
 export type Flags = { [key: string]: any }; // Generic type for flexibility
 
+export type Inventory = { [key: string]: InventoryItem };
 export type GameState = {
   id: string; // timestamp of creation date
   location: string; // ID of location
@@ -39,11 +69,14 @@ export type GameState = {
   savings: number;
   loans: Loan[];
   netWealth: number; // cash + savings - sum(loan.principle)
-  prices: Price[];
+  prices: { [key: string]: Price };
+  inventory: Inventory;
+  capacity: Capacity;
   flags: Flags;
   createdAt: string;
   modifiedAt: string;
 };
+
 export type GameSaveListItem = {
   id: string;
   location: string;
@@ -60,28 +93,18 @@ export type GameSaveListItemDisplay = {
 };
 
 export type TableFieldLabel = {
-  slug: string,
-  titleKey: string,
-};
-
-/*
-  We are using both weight and volume for inventory max calculation
-  If you go to buy something when your pack or cart are full, you get a modal explaining why you cannot buy it
-*/
-export type Item = {
-  id: string;
-  title: string;
-  description: string;
-  volume: number; // in vols, used for inventory max calculation - example: 1v
-  weight: number; // in oofs, used for inventory max calculation - example: 2o
+  slug: string;
+  titleKey: string;
 };
 
 export enum Locations {
   Oskah = 'oskah',
-  Tabbih = 'tabbih',
+  Tabbith = 'tabbith',
   Butre = 'butre',
   Luci = 'luci',
   Clionne = 'clionne',
+  Winnie = 'winnie',
+  Tigi = 'tigi',
 }
 
 export type location = {
@@ -95,3 +118,50 @@ export enum AppStatuses {
   Game = 'game',
   GameOver = 'gameOver',
 }
+
+export type GameTab = {
+  label: string;
+  slug: string;
+};
+
+export enum GameTabSlugs {
+  Market = 'market',
+  Bank = 'bank',
+  Guild = 'guild',
+  Tools = 'tools',
+  Travel = 'travel',
+}
+
+export type InGameDate = {
+  day: number;
+  season: number;
+  years: number;
+};
+
+export type Transaction = {
+  qty: number;
+  itemId: string;
+  price: number;
+  action: string;
+};
+
+export type VolWeight = {
+  weight: number;
+  volume: number;
+};
+
+export type Capacity = {
+  used: VolWeight;
+  max: VolWeight;
+};
+
+export type CapacityData = { [key: string]: VolWeight };
+
+export type GameSliceState = {
+  appStatus: string;
+  gamePanel: string;
+  marketStatus: string;
+  modalStatus: string;
+  currentModal: string;
+  gameState: GameState;
+};

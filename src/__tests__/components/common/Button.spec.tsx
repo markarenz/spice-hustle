@@ -65,4 +65,16 @@ describe('Button', () => {
     // bg-transparent is a class for secondary variant only
     expect(element.className.includes('bg-transparent')).toBe(true);
   });
+
+  it('includes the labelValue if one is provided', () => {
+    act(() => {
+      render(
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <Button {...mockProps} labelKey="max" labelValue={12} />
+        </IntlProvider>,
+      );
+    });
+    const element = screen.getByTestId('btn-label');
+    expect(element.textContent).toEqual('Max: 12');
+  });
 });

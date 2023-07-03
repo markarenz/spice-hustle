@@ -1,23 +1,48 @@
 import { IntlProvider } from 'react-intl';
+import { Provider } from 'react-redux';
+import { AppStatuses } from 'types';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
 import messages from 'locales/en-US/copy.json';
 import Modal from 'components/common/Modal';
+import initGameState from 'data/initGameState';
+import { GameSliceState } from 'types';
+
+const initialState: GameSliceState = {
+  appStatus: AppStatuses.StartPage,
+  modalStatus: 'closed',
+  gameState: initGameState,
+  marketStatus: 'buy',
+  currentModal: '',
+  gamePanel: 'market',
+};
 
 jest.useFakeTimers();
 const mockProps = {
   titleKey: 'title_page__saved_game_modal__title',
-  handleClose: jest.fn(),
 };
 
 describe('Modal', () => {
-  it('renders component', () => {
+  it('renders component: closed', async () => {
     act(() => {
+      const mockGameSlice = createSlice({
+        name: 'game',
+        initialState,
+        reducers: {},
+      });
+      const mockStore = configureStore({
+        reducer: {
+          game: mockGameSlice.reducer,
+        },
+      });
       render(
-        <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <Modal {...mockProps}>
-            <div>Content goes here</div>
-          </Modal>
-        </IntlProvider>,
+        <Provider store={mockStore}>
+          <IntlProvider messages={messages} locale="en" defaultLocale="en">
+            <Modal {...mockProps}>
+              <div>Content goes here</div>
+            </Modal>
+          </IntlProvider>
+        </Provider>,
       );
     });
     act(() => {
@@ -26,41 +51,40 @@ describe('Modal', () => {
     const element = screen.getByTestId('modal');
     expect(element).toBeInTheDocument();
   });
-  it('calls handleClose when close button clicked', async () => {
-    act(() => {
-      render(
-        <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <Modal {...mockProps}>
-            <div>Content goes here</div>
-          </Modal>
-        </IntlProvider>,
-      );
-    });
-    await waitFor(async () => {
-      fireEvent.click(screen.getByTestId('btn-close'));
-    });
-    act(() => {
-      jest.advanceTimersByTime(500);
-    });
-    expect(mockProps.handleClose).toHaveBeenCalled();
-  });
 
-  it('calls handleClose when BG clicked', async () => {
+  it('renders component: open & click close', async () => {
+    // In this test, we are using a mock store to inject our own version of initialState
     act(() => {
+      const mockGameSlice = createSlice({
+        name: 'game',
+        initialState: { ...initialState, modalStatus: 'open' },
+        reducers: {},
+      });
+      const mockStore = configureStore({
+        reducer: {
+          game: mockGameSlice.reducer,
+        },
+      });
       render(
-        <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <Modal {...mockProps}>
-            <div>Content goes here</div>
-          </Modal>
-        </IntlProvider>,
+        <Provider store={mockStore}>
+          <IntlProvider messages={messages} locale="en" defaultLocale="en">
+            <Modal {...mockProps}>
+              <div>Content goes here</div>
+            </Modal>
+          </IntlProvider>
+        </Provider>,
       );
+    });
+    act(() => {
+      jest.advanceTimersByTime(550);
     });
     await waitFor(async () => {
       fireEvent.click(screen.getByTestId('modal-bg-btn'));
     });
     act(() => {
-      jest.advanceTimersByTime(500);
+      jest.advanceTimersByTime(550);
     });
-    expect(mockProps.handleClose).toHaveBeenCalled();
+    const element = screen.getByTestId('modal');
+    expect(element).toBeInTheDocument();
   });
 });

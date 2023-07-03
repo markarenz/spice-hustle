@@ -1,36 +1,31 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useGameSliceSelector, useGameSliceDispatch } from 'store/reduxHooks';
 import { FormattedMessage } from 'react-intl';
 import CloseButton from 'components/common/CloseButton';
+import { setModalStatus } from 'store/gameSlice';
 
 type Props = {
   children: JSX.Element;
   titleKey: string;
-  handleClose: Function;
 };
-const Modal: React.FC<Props> = ({ children, titleKey, handleClose }) => {
-  const [modalStatus, setModalStatus] = useState<string>('');
-
-  useEffect(() => {
-    setModalStatus('opening');
-    const timer = setTimeout(() => {
-      setModalStatus('open');
-    }, 510);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
+const Modal: React.FC<Props> = ({ children, titleKey }) => {
+  const [isInitted, setIsInitted] = useState(false);
+  const dispatch = useGameSliceDispatch();
+  const { modalStatus } = useGameSliceSelector((state) => state.game);
   const handleTriggerClose = () => {
-    setModalStatus('closing');
+    dispatch(setModalStatus('closing'));
     setTimeout(() => {
-      setModalStatus('');
-      handleClose();
+      dispatch(setModalStatus('closed'));
     }, 510);
   };
-  const isOpening = ['opening', 'open'].includes(modalStatus);
+  const isOpening = ['opening', 'open'].includes(modalStatus) && isInitted;
   const isOpen = modalStatus === 'open';
+  useEffect(() => {
+    setIsInitted(true);
+  }, []);
   return (
     <div
-      className="fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center"
+      className="fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center z-10"
       data-testid="modal"
     >
       <button
@@ -42,7 +37,8 @@ const Modal: React.FC<Props> = ({ children, titleKey, handleClose }) => {
         onClick={() => handleTriggerClose()}
       />
       <div
-        className={`relative max-w-3xl mx-auto bg-gray-200 rounded-md ring-4 ring-orange-700 drop-shadow-[2px_2px_10px_rgba(0,0,0,.9)] min-w-[20rem] max-h-[calc(100vh_-_2rem)] max-w-[calc(100vw_-_2rem)] overflow-y-scroll transition-all duration-500 overflow-x-hidden ${
+        data-testid="modal-card"
+        className={`relative max-w-full lg:max-w-[70vw] mx-auto bg-gray-200 rounded-md ring-4 ring-orange-700 drop-shadow-[2px_2px_10px_rgba(0,0,0,.9)] min-w-[20rem] max-h-[calc(100vh_-_2rem)] max-w-[calc(100vw_-_2rem)] overflow-y-scroll transition-all duration-500 overflow-x-hidden ${
           isOpening ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
         }`}
       >
@@ -52,9 +48,10 @@ const Modal: React.FC<Props> = ({ children, titleKey, handleClose }) => {
           </h2>
           {
             <div
+              data-testid="modal-close"
               className={`transform-all duration-300 ${
                 isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
-              }`}
+              } ${modalStatus}`}
             >
               <CloseButton handleClose={handleTriggerClose} />
             </div>

@@ -1,167 +1,155 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GameState, AppStatuses } from 'types';
+import { GameSliceState, GameState, AppStatuses, GameTabSlugs, Transaction } from 'types';
+import { getLocalPrices, getNetWealth, getCapacity } from 'utils/utils';
+import { getInitialState } from './storeUtils';
 import initGameState from 'data/initGameState';
 import { saveGameLocal } from 'utils/saveLoadUtils';
 
-// import {
-//   getIdHash,
-//   saveToStorage,
-//   loadFromStorage,
-//   getTagsFromStorage,
-//   getTagsFromTodos,
-//   getTagFilterDefault,
-//   saveTagFilter
-// } from '../helpers';
-// import { Todo, TodoActionById } from '../type.d';
-
-export type GameSliceState = {
-  appStatus: string;
-  isModalOpen: boolean;
-  gameState: GameState | null;
+export type Slices = {
+  game: GameSliceState;
 };
 
-const initialState: GameSliceState = {
-  appStatus: AppStatuses.StartPage,
-  isModalOpen: false,
-  gameState: null,
-};
-
+const getNewGameData = () => ({
+  ...initGameState,
+  id: `${new Date().getTime()}`,
+  prices: getLocalPrices(initGameState.location, 0),
+  capacity: getCapacity({}, {}),
+});
 export const gameSlice = createSlice({
   name: 'game',
-  initialState,
+  initialState: getInitialState(),
   reducers: {
     initState: (state) => {
       state.appStatus = AppStatuses.StartPage;
-      state.gameState = { ...initGameState };
+      const newGameData = getNewGameData();
+      state.gameState = { ...newGameData };
+      state.gamePanel = GameTabSlugs.Market;
     },
     startNewGame: (state) => {
+      const newGameData = getNewGameData();
+      state.marketStatus = 'buy';
       state.appStatus = AppStatuses.Game;
-      state.gameState = { ...initGameState };
-      saveGameLocal({ ...initGameState });
+      state.gameState = { ...newGameData };
+      saveGameLocal({ ...newGameData });
+      state.gamePanel = GameTabSlugs.Market;
     },
-    toggleModal: (state) => {
-      state.isModalOpen = !state.isModalOpen;
+    setModalStatus: (state, action: PayloadAction<string>) => {
+      state.modalStatus = `${action.payload}`;
+      if (action.payload === '') {
+        state.currentModal = '';
+      }
     },
-    // saveTodo: (state, action: PayloadAction<string>) => {
-    //   const newTodo = {
-    //     title: `${action.payload}`,
-    //     id: getIdHash(),
-    //     dateCreated: `${new Date()}`,
-    //     dateCompleted: '',
-    //     isComplete: false,
-    //     tags: [],
-    //   };
-    //   const newTodos = [newTodo, ...state.todos];
-    //   saveToStorage(newTodos);
-    //   state.todos = [newTodo, ...state.todos];
-    // },
-    // addTag: (state, action: PayloadAction<TodoActionById>) => {
-    //   const { id, value } = action.payload;
-    //   const newTodos = state.todos.map((t) =>
-    //     t.id === id
-    //       ? {
-    //           ...t,
-    //           tags: [...t.tags.filter((tg) => tg !== value), value.toLowerCase()],
-    //         }
-    //       : t,
-    //   );
-    //   saveToStorage(newTodos);
-    //   state.tags = getTagsFromTodos(newTodos);
-    //   state.todos = [...newTodos];
-    // },
-    // deleteTag: (state, action: PayloadAction<TodoActionById>) => {
-    //   const { id, value } = action.payload;
-    //   const newTodos = state.todos.map((t) =>
-    //     t.id === id
-    //       ? {
-    //           ...t,
-    //           tags: t.tags.filter((tg) => tg !== value),
-    //         }
-    //       : t,
-    //   );
-    //   saveToStorage(newTodos);
-    //   state.todos = [...newTodos];
-    // },
-    // deleteTodo: (state, action: PayloadAction<string>) => {
-    //   const newTodos = state.todos.filter((t) => t.id !== action.payload);
-    //   saveToStorage(newTodos);
-    //   state.todos = [...newTodos];
-    // },
-    // toggleCompleteTodo: (state, action: PayloadAction<string>) => {
-    //   const newTodos = state.todos.map((t) =>
-    //     t.id === action.payload
-    //       ? {
-    //           ...t,
-    //           isComplete: !t.isComplete,
-    //           dateCompleted: !t.isComplete ? `${new Date()}` : '',
-    //         }
-    //       : t,
-    //   );
-    //   saveToStorage(newTodos);
-    //   state.todos = [...newTodos];
-    // },
-    // updateTodoTitle: (state, action: PayloadAction<TodoActionById>) => {
-    //   const { id, value } = action.payload;
-    //   const newTodos = state.todos.map((t) =>
-    //     t.id === id
-    //       ? {
-    //           ...t,
-    //           title: value,
-    //         }
-    //       : t,
-    //   );
-    //   saveToStorage(newTodos);
-    //   state.todos = [...newTodos];
-    // },
-    // selectTodoTitleForEdit: (state, action: PayloadAction<string>) => {
-    //   state.isEditingTodoTitle = true;
-    //   state.selectedTodoId = action.payload;
-    // },
-    // setTodoTitleEditComplete: (state) => {
-    //   state.isEditingTodoTitle = false;
-    //   state.selectedTodoId = '';
-    // },
-    // setTagModalOpen: (state, action: PayloadAction<string>) => {
-    //   state.selectedTodoId = action.payload;
-    //   state.isTagModalOpen = action.payload !== '';
-    // },
-    // setFilterModalOpen: (state, action: PayloadAction<string>) => {
-    //   state.isFilterModalOpen = action.payload === 'open';
-    // },
-    // setHideCompleted: (state, action: PayloadAction<string>) => {
-    //   state.hideCompleted = action.payload === 'hide';
-    // },
-    // setTagFilter: (state, action: PayloadAction<string>) => {
-    //   state.tagFilter = action.payload;
-    //   saveTagFilter(action.payload);
-    // },
-    // clearAll: (state) => {
-    //   state.tagFilter = '';
-    //   state.tags = [];
-    //   state.todos = [];
-    //   saveToStorage([]);
-    // },
+    setCurrentModal: (state, action: PayloadAction<string>) => {
+      state.currentModal = action.payload;
+    },
+    loadSavedGame: (state, action: PayloadAction<GameState>) => {
+      state.appStatus = AppStatuses.Game;
+      state.gameState = action.payload;
+      state.gamePanel = GameTabSlugs.Market;
+      state.modalStatus = 'closed';
+    },
+    setGamePanel: (state, action: PayloadAction<string>) => {
+      state.gamePanel = action.payload;
+      state.modalStatus = 'closed';
+    },
+    closeGame: (state) => {
+      state.appStatus = AppStatuses.StartPage;
+      state.modalStatus = 'closed';
+    },
+    setMarketStatus: (state, action: PayloadAction<string>) => {
+      state.marketStatus = action.payload;
+      state.modalStatus = 'closed';
+    },
+    buyItem: (state, action: PayloadAction<Transaction>) => {
+      const { qty, itemId, price } = action.payload;
+      const cost = qty * price;
+      const newPrices = {
+        ...state.gameState.prices,
+        [itemId]: {
+          ...state.gameState.prices[itemId],
+          qty: state.gameState.prices[itemId].qty - qty,
+        },
+      };
+      const newCash = state.gameState.cash - cost;
+      const newNetWealth = getNetWealth(newCash, state.gameState.loans);
+      const newInventory = {
+        ...state.gameState.inventory,
+        [itemId]: { itemId, qty: (state.gameState.inventory[itemId]?.qty || 0) + qty },
+      };
+      const newGameState = {
+        ...state.gameState,
+        cash: newCash,
+        netWealth: newNetWealth,
+        prices: { ...newPrices },
+        inventory: newInventory,
+        capacity: getCapacity(newInventory, state.gameState.flags),
+      };
+      state.gameState = {
+        ...newGameState,
+      };
+      saveGameLocal({ ...newGameState });
+    },
+    sellItem: (state, action: PayloadAction<Transaction>) => {
+      const { qty, itemId, price } = action.payload;
+      const cost = qty * price;
+      const newPrices = {
+        ...state.gameState.prices,
+        [itemId]: {
+          ...state.gameState.prices[itemId],
+          qty: state.gameState.prices[itemId].qty + qty,
+        },
+      };
+      const newCash = state.gameState.cash + cost;
+      const newNetWealth = getNetWealth(newCash, state.gameState.loans);
+      const newInventory = {
+        ...state.gameState.inventory,
+        [itemId]: { itemId, qty: state.gameState.inventory[itemId]?.qty - qty },
+      };
+      const newGameState = {
+        ...state.gameState,
+        cash: newCash,
+        netWealth: newNetWealth,
+        prices: { ...newPrices },
+        inventory: newInventory,
+        capacity: getCapacity(newInventory, state.gameState.flags),
+      };
+      state.gameState = {
+        ...newGameState,
+      };
+      saveGameLocal({ ...newGameState });
+    },
+    relocate: (state, action: PayloadAction<string>) => {
+      // TODO: add bandits
+      // TODO: add duration for long treks
+      const newGameState = {
+        ...state.gameState,
+        prices: getLocalPrices(action.payload, 0),
+        numTurns: state.gameState.numTurns + 1,
+        location: action.payload,
+      };
+      state.modalStatus = 'closed';
+      state.gamePanel = 'market';
+      state.gameState = {
+        ...newGameState,
+      };
+      state.marketStatus = 'buy';
+      saveGameLocal({ ...newGameState });
+    },
   },
 });
 
 export const {
   initState,
   startNewGame,
-  toggleModal,
-  // saveTodo,
-  // deleteTodo,
-  // toggleCompleteTodo,
-  // initState,
-  // deleteTag,
-  // addTag,
-  // setTagModalOpen,
-  // updateTodoTitle,
-  // selectTodoTitleForEdit,
-  // setTodoTitleEditComplete,
-  // setFilterModalOpen,
-  // setHideCompleted,
-  // setTagFilter,
-  // clearAll,
+  setModalStatus,
+  loadSavedGame,
+  setGamePanel,
+  closeGame,
+  setMarketStatus,
+  buyItem,
+  sellItem,
+  relocate,
+  setCurrentModal,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

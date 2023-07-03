@@ -13,7 +13,7 @@ beforeEach(() => {
 });
 
 describe('App', () => {
-  it('renders component', () => {
+  it('renders component', async () => {
     act(() => {
       render(
         <Provider store={store}>
@@ -23,7 +23,10 @@ describe('App', () => {
         </Provider>,
       );
     });
-    const element = screen.getByTestId('app');
+    let element = null;
+    await waitFor(async () => {
+      element = screen.getByTestId('app');
+    });
     expect(element).toBeInTheDocument();
   });
   it('opens the game panel when the start new game button is clicked', async () => {
@@ -41,7 +44,6 @@ describe('App', () => {
     });
     expect(await screen.findByTestId('game')).toBeInTheDocument();
   });
-
   it('opens modal when load save button clicked', async () => {
     Storage.prototype.getItem = jest.fn().mockReturnValue(JSON.stringify(mockGameSavesList));
     render(
