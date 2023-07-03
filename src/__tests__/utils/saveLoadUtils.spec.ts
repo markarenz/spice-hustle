@@ -1,4 +1,9 @@
-import { saveGameLocal, deleteSaveItem, getLocalSavesList } from 'utils/saveLoadUtils';
+import {
+  saveGameLocal,
+  deleteSaveItem,
+  getLocalSavesList,
+  getLocalGameSave,
+} from 'utils/saveLoadUtils';
 import mockGameState from '__tests__/__fixtures__/mockGameState';
 import mockGameSavesList from '__tests__/__fixtures__/mockGameSavesList';
 
@@ -10,11 +15,32 @@ afterEach(() => {
 const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
 
 describe('saveGameLocal', () => {
-  it('saves game data to local storage', async () => {
+  it('saves game data to local storage: new', async () => {
     Storage.prototype.getItem = jest.fn().mockReturnValue(JSON.stringify(mockGameSavesList));
     await saveGameLocal(mockGameState);
     expect(localStorage.setItem).toHaveBeenCalledTimes(2);
   });
+  it('saves game data to local storage: update - sort', async () => {
+    Storage.prototype.getItem = jest.fn().mockReturnValue(JSON.stringify(mockGameSavesList));
+    await saveGameLocal({ ...mockGameState, id: mockGameSavesList[0].id });
+    expect(localStorage.setItem).toHaveBeenCalledTimes(2);
+  });
+  it('saves game data to local storage: update - sort rev', async () => {
+    Storage.prototype.getItem = jest
+      .fn()
+      .mockReturnValue(
+        JSON.stringify([mockGameSavesList[1], mockGameSavesList[0], mockGameSavesList[0]]),
+      );
+    await saveGameLocal({ ...mockGameState, id: mockGameSavesList[0].id });
+    expect(localStorage.setItem).toHaveBeenCalledTimes(2);
+  });
+
+  it('handles empty saves list string', async () => {
+    Storage.prototype.getItem = jest.fn().mockReturnValue('');
+    await saveGameLocal({ ...mockGameState, id: mockGameSavesList[0].id });
+    expect(localStorage.setItem).toHaveBeenCalledTimes(2);
+  });
+
   it('saves handles thrown error', async () => {
     Storage.prototype.getItem = jest.fn().mockRejectedValue(null);
     await saveGameLocal(mockGameState);
@@ -58,5 +84,18 @@ describe('getLocalSavesList', () => {
     const result = await getLocalSavesList();
     expect(result.length).toBe(0);
     expect(consoleError).toHaveBeenCalled();
+  });
+});
+
+describe('getLocalGameSave', () => {
+  it('returns saved game data', async () => {
+    Storage.prototype.getItem = jest.fn().mockReturnValue(JSON.stringify(mockGameState));
+    const result = await getLocalGameSave('test-123');
+    expect(result.location).toEqual(mockGameState.location);
+  });
+  it('handles error', async () => {
+    Storage.prototype.getItem = jest.fn().mockRejectedValue('');
+    const result = await getLocalGameSave('test-123');
+    expect(result).toBe(null);
   });
 });

@@ -103,7 +103,7 @@ export const gameSlice = createSlice({
       const newNetWealth = getNetWealth(newCash, state.gameState.loans);
       const newInventory = {
         ...state.gameState.inventory,
-        [itemId]: { itemId, qty: (state.gameState.inventory[itemId]?.qty || 0) - qty },
+        [itemId]: { itemId, qty: state.gameState.inventory[itemId]?.qty - qty },
       };
       const newGameState = {
         ...state.gameState,

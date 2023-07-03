@@ -86,7 +86,7 @@ export const getCapacity = (inventory: Inventory, flags: Flags): Capacity => {
 export const getMaxQty = (gameState: GameState, selectedItem: any, itemsData: ItemsInfo): number =>
   Math.min(
     selectedItem.qty,
-    Math.floor((gameState?.cash || 0) / selectedItem?.value),
+    Math.floor(gameState.cash / selectedItem.value),
     Math.floor(
       gameState.capacity.max.volume /
         ((itemsData[selectedItem.id]?.volume || 0) + gameState.capacity.used.volume),

@@ -1,7 +1,5 @@
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import { AppStatuses } from 'types';
-import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { store } from 'store/store';
 import { initState } from 'store/gameSlice';
 import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
