@@ -64,6 +64,7 @@ export type Inventory = { [key: string]: InventoryItem };
 export type GameState = {
   id: string; // timestamp of creation date
   location: string; // ID of location
+  mapVersion: number; // 0 = default, upgrades 1, 2, 3, etc
   numTurns: number; // we need a function that turns numTurns into a date for seasonality and game end checks
   cash: number;
   savings: number;
@@ -164,4 +165,55 @@ export type GameSliceState = {
   modalStatus: string;
   currentModal: string;
   gameState: GameState;
+};
+
+export type RouteDangerEffect = {
+  type: string; // cash, inventory, delay
+  severity: string; // minor, mid, major
+};
+
+export enum DangerTypes {
+  Bandits = 'bandits',
+  RockSlide = 'rockSlide',
+  Flood = 'flood',
+  Wolves = 'wolves',
+  Tricksters = 'tricksters',
+}
+
+export type RouteDanger = {
+  type: DangerTypes;
+  chance: number;
+  effects: RouteDangerEffect[];
+};
+export type RouteSection = {
+  dangers: RouteDanger[];
+};
+export type Route = {
+  locations: Locations[];
+  sections: RouteSection[];
+};
+export type Map = {
+  slug: string;
+  locations: Locations[];
+  routes: Route[];
+};
+
+export enum TravelDayState {
+  idle = 'idle',
+  encounterCheck = 'encounterCheck',
+  encounterResults = 'encounterResults',
+}
+export type TravelState = {
+  destination: string;
+  progress: number;
+  routeDays: number;
+  dayState: TravelDayState;
+  route: Route | null;
+  danger: RouteDanger | null;
+  dice: {
+    encounterCheck1: number;
+    encounterCheck2: number;
+    encounterResult1: number;
+    encounterResult2: number;
+  };
 };

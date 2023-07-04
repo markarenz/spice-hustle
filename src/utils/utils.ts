@@ -96,3 +96,5 @@ export const getMaxQty = (gameState: GameState, selectedItem: any, itemsData: It
         ((itemsData[selectedItem.id]?.weight || 0) + gameState.capacity.used.weight),
     ),
   );
+
+export const getRnd1d6 = () => Math.floor(Math.random() * 6) + 1;

@@ -14,7 +14,7 @@ const Button: React.FC<Props> = ({ onClick, labelKey, testId, variant, labelValu
       data-testid={testId || labelKey}
       onClick={() => onClick()}
       className={`
-      relative py-2 px-4 rounded-lg border-2 group block lg:inline w-full lg:w-auto
+      relative py-2 px-4 rounded-lg border-2 group block lg:inline w-full lg:w-auto lg:inline-block
       ${
         variant === 'primary' &&
         'border-gray-800 hover:scale-110 transition-all text-gray-100 bg-gradient-to-b from-yellow-500 to-red-900 ring-0 ring-gray-100 hover:ring-2'
@@ -33,7 +33,7 @@ const Button: React.FC<Props> = ({ onClick, labelKey, testId, variant, labelValu
       )}
       <span
         data-testid="btn-label"
-        className="text-[1rem] uppercase font-bold drop-shadow-[0px_1px_1px_rgba(255,255,255,0.6)]"
+        className="text-[1rem] uppercase font-bold drop-shadow-[0px_1px_1px_rgba(255,255,255,0.6)] whitespace-nowrap"
       >
         {!!labelValue ? (
           <FormattedMessage id={labelKey} values={{ labelValue }} />

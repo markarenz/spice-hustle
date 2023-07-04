@@ -1,4 +1,3 @@
-import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { gameSlice } from 'store/gameSlice';
 import { GameSliceState, AppStatuses, Transaction } from 'types';
 import initGameState from 'data/initGameState';
