@@ -13,13 +13,18 @@ import { getBgImg } from './headerUtils';
 
 const GameHeader = () => {
   const [bgImgs, setBgImgs] = useState<string[]>([]);
+  const [isShowingBg, setIsShowingBg] = useState<boolean>(false);
   const dispatch = useGameSliceDispatch();
   const { gameState, gamePanel, modalStatus, currentModal } = useGameSliceSelector(
     (state) => state.game,
   );
   const { location } = gameState;
   const handleLocationChange = useCallback(() => {
-    setBgImgs(getBgImg(location));
+    setIsShowingBg(false);
+    setTimeout(() => {
+      setBgImgs(getBgImg(location));
+      setIsShowingBg(true);
+    }, 500);
   }, [location]);
   useEffect(() => {
     handleLocationChange();
@@ -39,12 +44,7 @@ const GameHeader = () => {
   const isThisModalOpen = isModalOpen && currentModal === 'location';
   return (
     <header className="w-full" data-testid="game-header">
-      <div
-        className="bg-gray-800 background-repeat-none relative bg-cover bg-center bg-repeat-none"
-        // style={{
-        //   backgroundImage: `url(${getBgImg()})`,
-        // }}
-      >
+      <div className="bg-gray-800 background-repeat-none relative bg-cover bg-center bg-repeat-none">
         <img
           src={bgImgs[1]}
           aria-hidden="true"
@@ -63,6 +63,7 @@ const GameHeader = () => {
             <sup>
               <button
                 data-testid="location-info-btn"
+                aria-label="Info"
                 className="bg-orange-500 rounded-full w-8 h-8 transition-transform duration-150 hover:scale-125 border-2 border-gray-800"
                 onClick={() => openModal()}
               >
@@ -71,6 +72,13 @@ const GameHeader = () => {
             </sup>
           </h1>
         </div>
+        <div
+          aria-hidden="true"
+          className={`absolute top-0 left-0 h-full w-full bg-gray-800 transition-opacity duration-300 ${
+            isShowingBg ? 'opacity-0' : 'opacity-100'
+          }`}
+        />
+
         <div className="absolute right-[1rem] top-[1rem]" data-testid="close-game">
           <CloseButton handleClose={() => handleCloseGame()} />
         </div>

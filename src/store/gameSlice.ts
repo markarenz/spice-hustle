@@ -1,6 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { GameSliceState, GameState, AppStatuses, GameTabSlugs, Transaction } from 'types';
-import { getLocalPrices, getNetWealth, getCapacity } from 'utils/utils';
+import {
+  GameSliceState,
+  GameState,
+  AppStatuses,
+  GameTabSlugs,
+  Transaction,
+  RouteDanger,
+} from 'types';
+import { getLocalPrices, getNetWealth, getCapacity, getRandRange } from 'utils/utils';
 import { getInitialState } from './storeUtils';
 import initGameState from 'data/initGameState';
 import { saveGameLocal } from 'utils/saveLoadUtils';
@@ -118,13 +125,79 @@ export const gameSlice = createSlice({
       };
       saveGameLocal({ ...newGameState });
     },
+    processTravelDay: (state, action: PayloadAction<RouteDanger | null>) => {
+      const danger = action.payload;
+      let daysLost = 1;
+      let cashLost = 0;
+      const currentCash = state.gameState.cash;
+      const newInventory = { ...state.gameState.inventory };
+      if (danger?.effects) {
+        danger?.effects.forEach((effect) => {
+          switch (effect.type) {
+            case 'inventory':
+              // ??
+              Object.keys(newInventory).forEach((itemId) => {
+                const qty = newInventory[itemId].qty;
+                let newQty = qty;
+                Math.floor(currentCash * getRandRange(0.05, 0.1));
+                if (effect.severity === 'sm') {
+                  newQty = Math.floor(qty * getRandRange(0.85, 0.99));
+                } else if (effect.severity === 'md') {
+                  newQty = Math.floor(qty * getRandRange(0.5, 0.84));
+                } else {
+                  // lg
+                  newQty = Math.floor(qty * getRandRange(0.1, 0.49));
+                }
+                newInventory[itemId].qty = newQty;
+              });
+              break;
+            case 'delay':
+              // advance days
+              if (effect.severity === 'sm') {
+                daysLost = getRandRange(2, 6);
+              } else if (effect.severity === 'md') {
+                daysLost = getRandRange(7, 14);
+              } else {
+                // lg
+                daysLost = getRandRange(15, 40);
+              }
+              break;
+            case 'cash':
+            default:
+              // reduce cash
+              if (effect.severity === 'sm') {
+                cashLost = Math.floor(currentCash * getRandRange(0.05, 0.1));
+              } else if (effect.severity === 'md') {
+                cashLost = Math.floor(currentCash * getRandRange(0.11, 0.4));
+              } else {
+                // lg
+                cashLost = Math.floor(currentCash * getRandRange(0.41, 0.6));
+              }
+              break;
+          }
+        });
+      }
+      const newCash = Math.max(state.gameState.cash - cashLost, 0);
+      // const newNumTurns = state.gameState.numTurns + 0
+      const newGameState: GameState = {
+        ...state.gameState,
+        numTurns: state.gameState.numTurns + daysLost,
+        cash: newCash,
+        inventory: newInventory,
+        netWealth: getNetWealth(newCash, state.gameState.loans),
+      };
+      state.gameState = {
+        ...newGameState,
+      };
+      saveGameLocal({ ...newGameState });
+    },
     relocate: (state, action: PayloadAction<string>) => {
       // TODO: add bandits
       // TODO: add duration for long treks
       const newGameState = {
         ...state.gameState,
         prices: getLocalPrices(action.payload, 0),
-        numTurns: state.gameState.numTurns + 1,
+        // numTurns: state.gameState.numTurns + 1,
         location: action.payload,
       };
       state.modalStatus = 'closed';
@@ -150,6 +223,7 @@ export const {
   sellItem,
   relocate,
   setCurrentModal,
+  processTravelDay,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

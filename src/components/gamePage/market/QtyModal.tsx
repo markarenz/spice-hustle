@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useGameSliceSelector } from 'store/reduxHooks';
 import Modal from 'components/common/Modal';
@@ -16,14 +16,10 @@ const QtyModal: React.FC<Props> = ({ action, selectedItem, handleConfirm, handle
   const { gameState } = useGameSliceSelector((state) => state.game);
   const [qty, setQty] = useState<number>(0);
   const [maxQty, setMaxQty] = useState<number | null>(null);
-  useEffect(() => {
-    if (maxQty === null && !!selectedItem.id) {
-      setMaxQty(
-        action === 'buy' ? getMaxQty(gameState, selectedItem, itemsData) : selectedItem.qty,
-      );
-    }
-  }, [selectedItem]);
 
+  if (!!selectedItem.id && maxQty === null) {
+    setMaxQty(action === 'buy' ? getMaxQty(gameState, selectedItem, itemsData) : selectedItem.qty);
+  }
   const handleQtyChange = (e: React.ChangeEvent<HTMLInputElement>, max: number) => {
     let val = parseInt(e.target.value);
     if (val < 1) {
