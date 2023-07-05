@@ -7,3 +7,4 @@ import '@testing-library/jest-dom';
 const mockMath = Object.create(global.Math);
 mockMath.random = () => 0.5;
 global.Math = mockMath;
+window.scrollTo = jest.fn();

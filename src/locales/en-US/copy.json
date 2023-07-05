@@ -93,6 +93,10 @@
   "travel__modal__danger__none": "An uneventful day. You travel safely down the road on your way to your destination.",
   "travel__modal__danger__bandits": "Bandits attack! The pesky bandits have stolen some of your cash and your inventory.",
   "travel__modal__danger__rockSlide": "Rock slide! Your progress is impeded and you lose X days in your journey.",
+  "travel__modal__danger__flood": "The road is flooded, greatly slowing your progress. This is going to cost you time.",
+  "travel__modal__danger__wolves": "Wolves! A pack of hungry, ferocious wolves surround you and attack. You're lucky to have survived.",
+  "travel__modal__danger__tricksters": "Those strangers you met on the road seemed nice, but now some of your things are missing. They may have been thieves.",
+
   "travel__modal__danger__effect__cash__sm": "You have lost a small amount of money (if you still have any).",
   "travel__modal__danger__effect__cash__md": "You have lost a moderate amount of money (if you still have any).",
   "travel__modal__danger__effect__cash__lg": "You have lost a great deal of money (if you still have any).",

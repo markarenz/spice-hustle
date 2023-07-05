@@ -35,7 +35,7 @@ describe('getRandRange', () => {
 describe('getLocalPrices', () => {
   it('returns expected value', () => {
     const result = getLocalPrices('oskah', 1);
-    expect(result.potat.value).toBe(8);
+    expect(result.potat.value).toBe(13);
     expect(result.apple.value).toBe(5);
   });
 

@@ -207,13 +207,10 @@ export type TravelState = {
   destination: string;
   progress: number;
   routeDays: number;
-  dayState: TravelDayState;
   route: Route | null;
   danger: RouteDanger | null;
   dice: {
     encounterCheck1: number;
     encounterCheck2: number;
-    encounterResult1: number;
-    encounterResult2: number;
   };
 };

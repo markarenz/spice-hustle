@@ -136,6 +136,20 @@ export const gameSlice = createSlice({
           switch (effect.type) {
             case 'inventory':
               // ??
+              Object.keys(newInventory).forEach((itemId) => {
+                const qty = newInventory[itemId].qty;
+                let newQty = qty;
+                Math.floor(currentCash * getRandRange(0.05, 0.1));
+                if (effect.severity === 'sm') {
+                  newQty = Math.floor(qty * getRandRange(0.85, 0.99));
+                } else if (effect.severity === 'md') {
+                  newQty = Math.floor(qty * getRandRange(0.5, 0.84));
+                } else {
+                  // lg
+                  newQty = Math.floor(qty * getRandRange(0.1, 0.49));
+                }
+                newInventory[itemId].qty = newQty;
+              });
               break;
             case 'delay':
               // advance days

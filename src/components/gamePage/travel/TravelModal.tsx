@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { TravelDayState } from 'types';
 import DieOneDSix from './DieOneDSix';
 import Button from 'components/common/Button';
 import { FormattedMessage } from 'react-intl';
@@ -23,21 +22,21 @@ const TravelModal: React.FC<Props> = ({
 }) => {
   const [isInitted, setIsInitted] = useState(false);
   const isOpening = ['opening', 'open'].includes(travelModalStatus) && isInitted;
-  const showCard = isOpening && travelTransitionStatus !== 'off';
+  const showCard = travelTransitionStatus !== 'off';
   useEffect(() => {
     setIsInitted(true);
   }, []);
   return (
     <div
       className="fixed left-0 top-0 w-[100vw] h-[100vh] flex items-center justify-center z-10"
-      data-testid="modal"
+      data-testid="travel-modal"
     >
       <button
         className={`fixed left-0 top-0 w-[100vw] h-[100vh] cursor-default bg-gray-700 transition-opacity duration-300 ${
           isOpening ? 'opacity-75' : 'opacity-0'
         }`}
         aria-hidden="true"
-        data-testid="modal-bg-btn"
+        data-testid="travel-modal-bg-btn"
         onClick={() => closeModal()}
       />
       <div
@@ -69,59 +68,57 @@ const TravelModal: React.FC<Props> = ({
                       />
                     </h3>
                   </div>
-                  {travelState.dayState === TravelDayState.encounterCheck && (
-                    <div>
-                      <div className="flex justify-center mb-4">
-                        <div className="w-16 h-16 mr-4">
-                          <DieOneDSix value={travelState.dice.encounterCheck1} idx={0} />
-                        </div>
-                        <div className="w-16 h-16">
-                          <DieOneDSix value={travelState.dice.encounterCheck2} idx={1} />
-                        </div>
+
+                  <div>
+                    <div className="flex justify-center mb-4">
+                      <div className="w-16 h-16 mr-4">
+                        <DieOneDSix value={travelState.dice.encounterCheck1} idx={0} />
                       </div>
-                      <div
-                        className={`pb-4 delay-1000 transition-opacity duration-300 ${
-                          travelTransitionStatus === '' ? 'opacity-100' : 'opacity-0'
-                        }`}
-                      >
-                        {!travelState.danger ? (
-                          <FormattedMessage id="travel__modal__danger__none" />
-                        ) : (
-                          <div>
-                            <FormattedMessage
-                              id={`travel__modal__danger__${travelState.danger.type}`}
-                            />{' '}
-                            {travelState.danger.effects.map((dangerEffect) => (
-                              <span key={dangerEffect.type}>
-                                <FormattedMessage
-                                  id={`travel__modal__danger__effect__${dangerEffect.type}__${dangerEffect.severity}`}
-                                />{' '}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                      <div className="text-center">
-                        {travelState.progress < travelState.routeDays && (
-                          <span className="mr-4">
-                            <Button
-                              testId="travel-btn-cancel"
-                              variant="secondary"
-                              labelKey="travel__modal__btn_cancel"
-                              onClick={() => closeModal()}
-                            />
-                          </span>
-                        )}
-                        <Button
-                          testId="travel-btn-ok"
-                          variant="primary"
-                          labelKey="travel__modal__btn_ok"
-                          onClick={() => handleTravelContinue()}
-                        />
+                      <div className="w-16 h-16">
+                        <DieOneDSix value={travelState.dice.encounterCheck2} idx={1} />
                       </div>
                     </div>
-                  )}
-                  {travelState.dayState === TravelDayState.encounterResults && <div>Result</div>}
+                    <div
+                      className={`pb-4 delay-1000 transition-opacity duration-300 ${
+                        travelTransitionStatus === '' ? 'opacity-100' : 'opacity-0'
+                      }`}
+                    >
+                      {!travelState.danger ? (
+                        <FormattedMessage id="travel__modal__danger__none" />
+                      ) : (
+                        <div>
+                          <FormattedMessage
+                            id={`travel__modal__danger__${travelState.danger.type}`}
+                          />{' '}
+                          {travelState.danger.effects.map((dangerEffect) => (
+                            <span key={dangerEffect.type}>
+                              <FormattedMessage
+                                id={`travel__modal__danger__effect__${dangerEffect.type}__${dangerEffect.severity}`}
+                              />{' '}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                    <div className="text-center">
+                      {travelState.progress < travelState.routeDays && (
+                        <span className="mr-4">
+                          <Button
+                            testId="travel-btn-cancel"
+                            variant="secondary"
+                            labelKey="travel__modal__btn_cancel"
+                            onClick={() => closeModal()}
+                          />
+                        </span>
+                      )}
+                      <Button
+                        testId="travel-btn-ok"
+                        variant="primary"
+                        labelKey="travel__modal__btn_ok"
+                        onClick={() => handleTravelContinue()}
+                      />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

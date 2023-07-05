@@ -28,6 +28,7 @@ const Map01: React.FC<Props> = ({ location, availableLocations, handleLocationSe
       xmlnsXlink="http://www.w3.org/1999/xlink"
       version="1.1"
       viewBox="0 0 100 100"
+      data-testid="map-01"
     >
       <defs>
         <linearGradient id="linearGradient6774">
@@ -317,6 +318,7 @@ const Map01: React.FC<Props> = ({ location, availableLocations, handleLocationSe
             strokeOpacity="1"
             strokeWidth="0.3"
             stroke="#520"
+            data-testid="btn-butre"
             {...getDotProps('butre')}
           ></circle>
           {location === 'butre' && (
@@ -330,6 +332,7 @@ const Map01: React.FC<Props> = ({ location, availableLocations, handleLocationSe
               strokeWidth="0.3"
               d="M30.758 60.016c-3.171.041.076 4.296.076 4.296s3.299-4.322 0-4.296h-.076z"
               paintOrder="normal"
+              data-testid="marker-butre"
             ></path>
           )}
         </g>
@@ -376,6 +379,7 @@ const Map01: React.FC<Props> = ({ location, availableLocations, handleLocationSe
             strokeOpacity="1"
             strokeWidth="0.3"
             stroke="#520"
+            data-testid="btn-tabbith"
             {...getDotProps('tabbith')}
           ></circle>
           {location === 'tabbith' && (
@@ -390,6 +394,7 @@ const Map01: React.FC<Props> = ({ location, availableLocations, handleLocationSe
               strokeWidth="0.3"
               d="M80.823 33.147c-3.171.041.076 4.296.076 4.296s3.299-4.322 0-4.296h-.076z"
               paintOrder="normal"
+              data-testid="marker-tabbith"
             ></path>
           )}
         </g>
@@ -436,6 +441,7 @@ const Map01: React.FC<Props> = ({ location, availableLocations, handleLocationSe
             strokeOpacity="1"
             strokeWidth="0.3"
             stroke="#520"
+            data-testid="btn-oskah"
             {...getDotProps('oskah')}
           ></circle>
           {location === 'oskah' && (
@@ -449,6 +455,7 @@ const Map01: React.FC<Props> = ({ location, availableLocations, handleLocationSe
               strokeWidth="0.3"
               d="M23.906 30.913c-3.171.041.076 4.296.076 4.296s3.299-4.322 0-4.296h-.076z"
               paintOrder="normal"
+              data-testid="marker-oskah"
             ></path>
           )}
         </g>

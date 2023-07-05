@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Map, RouteDanger, TravelState, TravelDayState } from 'types';
+import { Map, RouteDanger, TravelState } from 'types';
 import { FormattedMessage } from 'react-intl';
 import { Slices, processTravelDay, relocate } from 'store/gameSlice';
 import { useGameSliceSelector, useGameSliceDispatch } from 'store/reduxHooks';
@@ -15,12 +15,9 @@ const TravelPanel = () => {
     routeDays: 0,
     route: null,
     danger: null,
-    dayState: TravelDayState.idle,
     dice: {
       encounterCheck1: 0,
       encounterCheck2: 0,
-      encounterResult1: 0,
-      encounterResult2: 0,
     },
   };
   const [travelState, setTravelState] = useState<TravelState>(initTravelState);
@@ -80,13 +77,10 @@ const TravelPanel = () => {
           progress: progress + 1,
           route,
           routeDays: route.sections.length,
-          dayState: TravelDayState.encounterCheck,
           danger: dangerEncountered,
           dice: {
             encounterCheck1: rolls[0],
             encounterCheck2: rolls[1],
-            encounterResult1: rolls[2],
-            encounterResult2: rolls[3],
           },
         };
         setTravelState(newTravelState);
@@ -96,9 +90,9 @@ const TravelPanel = () => {
   };
   const handleTravelStart = (destination: string) => {
     const route = mapData.routes.find(
-      (route) =>
-        route.locations.map((loc) => `${loc}`).includes(location) &&
-        route.locations.map((loc) => `${loc}`).includes(destination),
+      (item) =>
+        item.locations.map((loc) => `${loc}`).includes(location) &&
+        item.locations.map((loc) => `${loc}`).includes(destination),
     );
     if (route) {
       const initTravelState = {
@@ -106,13 +100,10 @@ const TravelPanel = () => {
         progress: 0,
         route,
         routeDays: route.sections.length,
-        dayState: TravelDayState.encounterCheck,
         danger: null,
         dice: {
           encounterCheck1: 0,
           encounterCheck2: 0,
-          encounterResult1: 0,
-          encounterResult2: 0,
         },
       };
       setTravelState({ ...initTravelState });

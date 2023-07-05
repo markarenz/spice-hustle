@@ -13,6 +13,7 @@ const DieOneDSix: React.FC<Props> = ({ value, idx }) => {
   }, []);
   return (
     <div
+      data-testid={`die1d6-${idx}`}
       className={`w-16 h-16 transition-all duration-500 ${
         animStatus === 'open' ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'
       } ${idx > 0 ? 'delay-200' : 'delay-0'}`}
