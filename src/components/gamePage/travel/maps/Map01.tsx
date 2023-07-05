@@ -12,6 +12,7 @@ const Map01: React.FC<Props> = ({ location, availableLocations, handleLocationSe
     if (availableLocations.includes(dotLocation)) {
       props.className = 'fill-green-500 hover:fill-gray-200 transition-all duration-150';
       props.role = 'button';
+      props['aria-label'] = dotLocation;
       props.onClick = () => {
         handleLocationSelect(dotLocation);
       };

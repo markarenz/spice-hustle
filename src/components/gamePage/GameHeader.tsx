@@ -63,6 +63,7 @@ const GameHeader = () => {
             <sup>
               <button
                 data-testid="location-info-btn"
+                aria-label="Info"
                 className="bg-orange-500 rounded-full w-8 h-8 transition-transform duration-150 hover:scale-125 border-2 border-gray-800"
                 onClick={() => openModal()}
               >
