@@ -10,9 +10,7 @@ const mockProps = {
 };
 describe('Map01', () => {
   it('renders component: oskah', () => {
-    act(() => {
-      render(<Map01 {...mockProps} />);
-    });
+    render(<Map01 {...mockProps} />);
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -21,9 +19,7 @@ describe('Map01', () => {
   });
 
   it('renders component: butre', () => {
-    act(() => {
-      render(<Map01 {...mockProps} location={'butre'} />);
-    });
+    render(<Map01 {...mockProps} location={'butre'} />);
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -32,9 +28,7 @@ describe('Map01', () => {
   });
 
   it('renders component: tabbith', () => {
-    act(() => {
-      render(<Map01 {...mockProps} location={'tabbith'} availableLocations={['oskah', 'butre']} />);
-    });
+    render(<Map01 {...mockProps} location={'tabbith'} availableLocations={['oskah', 'butre']} />);
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -43,9 +37,7 @@ describe('Map01', () => {
   });
 
   it('handles location click', async () => {
-    act(() => {
-      render(<Map01 {...mockProps} />);
-    });
+    render(<Map01 {...mockProps} />);
     act(() => {
       jest.advanceTimersByTime(550);
     });

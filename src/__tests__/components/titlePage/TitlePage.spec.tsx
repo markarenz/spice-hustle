@@ -15,15 +15,13 @@ beforeEach(() => {
 
 describe('TitlePage', () => {
   it('renders component', async () => {
-    act(() => {
-      render(
-        <Provider store={store}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <TitlePage />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={store}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <TitlePage />
+        </IntlProvider>
+      </Provider>,
+    );
     let element = null;
     await waitFor(async () => {
       element = screen.getByTestId('title-page');
@@ -31,15 +29,13 @@ describe('TitlePage', () => {
     expect(element).toBeInTheDocument();
   });
   it('handles start button click', async () => {
-    act(() => {
-      render(
-        <Provider store={store}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <TitlePage />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={store}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <TitlePage />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -58,16 +54,13 @@ describe('TitlePage', () => {
   });
 
   it('handles load button click', async () => {
-    act(() => {
-      render(
-        <Provider store={store}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <TitlePage />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
-    let element = null;
+    render(
+      <Provider store={store}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <TitlePage />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });

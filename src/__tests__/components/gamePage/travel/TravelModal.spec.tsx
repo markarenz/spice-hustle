@@ -42,13 +42,11 @@ const mockProps = {
 };
 describe('TravelModal', () => {
   it('renders component', () => {
-    act(() => {
-      render(
-        <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <TravelModal {...mockProps} />
-        </IntlProvider>,
-      );
-    });
+    render(
+      <IntlProvider messages={messages} locale="en" defaultLocale="en">
+        <TravelModal {...mockProps} />
+      </IntlProvider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -56,13 +54,11 @@ describe('TravelModal', () => {
     expect(element).toBeInTheDocument();
   });
   it('renders component - no encounter', () => {
-    act(() => {
-      render(
-        <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <TravelModal {...mockProps} travelState={mockTravelStateNoEncounter} />
-        </IntlProvider>,
-      );
-    });
+    render(
+      <IntlProvider messages={messages} locale="en" defaultLocale="en">
+        <TravelModal {...mockProps} travelState={mockTravelStateNoEncounter} />
+      </IntlProvider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -124,32 +120,12 @@ describe('TravelModal', () => {
     expect(mockProps.handleTravelContinue).toHaveBeenCalled();
   });
 
-  it('calls travelContinue when OK is clicked', async () => {
+  it('renders component - closing', () => {
     render(
       <IntlProvider messages={messages} locale="en" defaultLocale="en">
-        <TravelModal {...mockProps} />
+        <TravelModal {...mockProps} travelTransitionStatus="closing" />
       </IntlProvider>,
     );
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
-    await waitFor(async () => {
-      fireEvent.click(screen.getByTestId('travel-btn-ok'));
-    });
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
-    expect(mockProps.handleTravelContinue).toHaveBeenCalled();
-  });
-
-  it('renders component - closing', () => {
-    act(() => {
-      render(
-        <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <TravelModal {...mockProps} travelTransitionStatus="closing" />
-        </IntlProvider>,
-      );
-    });
     act(() => {
       jest.advanceTimersByTime(500);
     });

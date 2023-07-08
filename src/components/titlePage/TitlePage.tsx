@@ -2,7 +2,7 @@ import { FormattedMessage } from 'react-intl';
 import Button from 'components/common/Button';
 import Footer from 'components/common/Footer';
 import { useGameSliceSelector, useGameSliceDispatch } from 'store/reduxHooks';
-import { startNewGame, setModalStatus } from 'store/gameSlice';
+import { startNewGame, setModalStatus, setAppStatus } from 'store/gameSlice';
 import SavedGameModal from './SavedGameModal';
 import BgLayer0 from 'img/titlePage/spice-hustle-title-page-bg.svg';
 import Cloud1 from 'img/titlePage/cloud-1.svg';
@@ -10,6 +10,7 @@ import Cloud2 from 'img/titlePage/cloud-2.svg';
 import Cloud3 from 'img/titlePage/cloud-3.svg';
 import Cloud4 from 'img/titlePage/cloud-4.svg';
 import styles from 'styles/modules/titlePage.module.scss';
+import { AppStatuses } from 'types';
 
 const TitlePage = () => {
   const { modalStatus } = useGameSliceSelector((state) => state.game);
@@ -23,6 +24,9 @@ const TitlePage = () => {
     setTimeout(() => {
       dispatch(setModalStatus('open'));
     }, 510);
+  };
+  const handleOpenAbout = () => {
+    dispatch(setAppStatus(AppStatuses.AboutPage));
   };
   return (
     <div className="w-full min-h-[100vh] relative" data-testid="title-page">
@@ -59,7 +63,7 @@ const TitlePage = () => {
       <div className="relative min-h-[calc(100vh_-_2rem)]">
         <header className="pt-[6rem]">
           <h1 className="leading-none text-center relative">
-            <span className="block text-[8rem] lg:text-[10rem] text-transparent bg-clip-text bg-gradient-to-b from-yellow-500 to-red-900 drop-shadow-3xl">
+            <span className="block text-[8rem] lg:text-[10rem] text-transparent bg-clip-text bg-gradient-to-b from-yellow-300 to-red-600 drop-shadow-3xl">
               <FormattedMessage id="title_page__title" />
             </span>
           </h1>
@@ -76,27 +80,37 @@ const TitlePage = () => {
           />
         </div>
 
-        <main className="container mx-auto px-4 text-center">
-          <div className="max-w-3xl py-[6rem] mx-auto text-center text-xl italic text-gray-200 drop-shadow-[1px_1px_3px_rgba(0,0,0,0.9)]">
+        <main className="container min-h-90vh mx-auto px-4 text-center">
+          <div className="max-w-3xl py-[4rem] mx-auto text-center text-xl italic text-gray-200 drop-shadow-[1px_1px_3px_rgba(0,0,0,0.9)]">
             <FormattedMessage id="title_page__explainer" />
           </div>
-          <div className="pb-[6rem] flex justify-center">
-            <div className="p-2">
+          <div className="pb-[6rem] text-center">
+            <span className="p-2">
               <Button
                 labelKey="title_page__btn_start_new"
                 variant="primary"
                 onClick={() => handleStartNewGame()}
                 testId="btn-start-new"
               />
-            </div>
-            <div className="p-2">
+            </span>
+            <span className="p-2">
               <Button
                 labelKey="title_page__btn_load_save"
-                variant="primary"
+                variant="secondary"
+                reverse
                 onClick={() => handleOpenSavedGameModal()}
                 testId="btn-load-save"
               />
-            </div>
+            </span>
+            <span className="p-2">
+              <Button
+                labelKey="title_page__btn_how_to_play"
+                variant="secondary"
+                reverse
+                onClick={() => handleOpenAbout()}
+                testId="btn-how-to-play"
+              />
+            </span>
           </div>
         </main>
       </div>

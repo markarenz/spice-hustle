@@ -3,7 +3,7 @@ import React from 'react';
 type Props = {
   location: string;
   availableLocations: string[];
-  handleLocationSelect: Function;
+  handleLocationSelect: (destination: string) => void;
 };
 
 const Map01: React.FC<Props> = ({ location, availableLocations, handleLocationSelect }) => {

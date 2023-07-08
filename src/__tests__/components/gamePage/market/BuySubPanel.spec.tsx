@@ -34,15 +34,13 @@ describe('BuySubPanel', () => {
         game: mockGameSlice.reducer,
       },
     });
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <BuySubPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <BuySubPanel />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -64,15 +62,13 @@ describe('BuySubPanel', () => {
       },
     });
     const spy = jest.spyOn(mockStore, 'dispatch');
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <BuySubPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <BuySubPanel />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -105,15 +101,13 @@ describe('BuySubPanel', () => {
       },
     });
     const spy = jest.spyOn(mockStore, 'dispatch');
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <BuySubPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <BuySubPanel />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -156,66 +150,13 @@ describe('BuySubPanel', () => {
       },
     });
     const spy = jest.spyOn(mockStore, 'dispatch');
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <BuySubPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
-    await waitFor(async () => {
-      fireEvent.click(screen.getByTestId('btn-info-apple'));
-    });
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
-    const args = spy.mock.calls.map((arg) => arg[0]);
-    const expected = [
-      { type: 'game/setCurrentModal', payload: 'info' },
-      { type: 'game/setModalStatus', payload: 'opening' },
-      { type: 'game/setModalStatus', payload: 'open' },
-    ];
-    expect(args).toEqual(expected);
-  });
-
-  it('displays info modal', async () => {
-    const mockGameSlice = createSlice({
-      name: 'game',
-      initialState: {
-        ...initialState,
-      },
-      reducers: {
-        setCurrentModal: (state, action: PayloadAction<string>) => {
-          state.currentModal = action.payload;
-        },
-        setModalStatus: (state, action: PayloadAction<string>) => {
-          state.modalStatus = `${action.payload}`;
-          if (action.payload === '') {
-            state.currentModal = '';
-          }
-        },
-      },
-    });
-    const mockStore = configureStore({
-      reducer: {
-        game: mockGameSlice.reducer,
-      },
-    });
-    const spy = jest.spyOn(mockStore, 'dispatch');
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <BuySubPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <BuySubPanel />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -250,15 +191,13 @@ describe('BuySubPanel', () => {
       },
     });
     const spy = jest.spyOn(mockStore, 'dispatch');
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <BuySubPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <BuySubPanel />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });

@@ -116,6 +116,7 @@ export type location = {
 
 export enum AppStatuses {
   StartPage = 'startPage',
+  AboutPage = 'aboutPage',
   Game = 'game',
   GameOver = 'gameOver',
 }
@@ -214,3 +215,16 @@ export type TravelState = {
     encounterCheck2: number;
   };
 };
+
+export type UpgradePrice = {
+  price: number;
+  locations: string[];
+};
+
+export type Upgrade = {
+  slug: string; // flag derived from slug
+  dependencies: string[]; // array of flag strings
+  prices: UpgradePrice[];
+};
+
+export type UpgradeData = { [key: string]: Upgrade };

@@ -49,13 +49,17 @@ const GameHeader = () => {
           src={bgImgs[1]}
           aria-hidden="true"
           alt="city-bg"
-          className="absolute top-0 lef-0 h-full w-full"
+          className="absolute top-0 left-0 h-full w-full"
         />
         <img
           src={bgImgs[0]}
           aria-hidden="true"
           alt="city"
           className="absolute top-0 right-0 h-full"
+        />
+        <div
+          className="absolute top-0 left-0 h-full w-3/4 bg-gradient-to-r from-orange-800 opacity-90"
+          aria-hidden="true"
         />
         <div className="container mx-auto pr-4 pt-[3rem] lg:pt-[6rem] pb-2">
           <h1 className="block leading-none text-[6rem] md:text-[8rem] lg:text-[10rem] text-gray-200 drop-shadow-txtlinrev">

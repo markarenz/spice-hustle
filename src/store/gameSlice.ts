@@ -40,6 +40,9 @@ export const gameSlice = createSlice({
       saveGameLocal({ ...newGameData });
       state.gamePanel = GameTabSlugs.Market;
     },
+    setAppStatus: (state, action: PayloadAction<AppStatuses>) => {
+      state.appStatus = action.payload;
+    },
     setModalStatus: (state, action: PayloadAction<string>) => {
       state.modalStatus = `${action.payload}`;
       if (action.payload === '') {
@@ -67,6 +70,25 @@ export const gameSlice = createSlice({
       state.marketStatus = action.payload;
       state.modalStatus = 'closed';
     },
+    buyUpgrade: (state, action: PayloadAction<Transaction>) => {
+      const { itemId, price } = action.payload;
+      const newCash = state.gameState.cash - price;
+      const newNetWealth = getNetWealth(newCash, state.gameState.loans);
+      const newFlags = { ...state.gameState.flags, [`upgrade__${itemId}`]: true };
+      const newGameState = {
+        ...state.gameState,
+        numTurns: state.gameState.numTurns + 1,
+        cash: newCash,
+        netWealth: newNetWealth,
+        flags: newFlags,
+        // other attributes affected by flags?
+        capacity: getCapacity(state.gameState.inventory, newFlags),
+      };
+      state.gameState = {
+        ...newGameState,
+      };
+      saveGameLocal({ ...newGameState });
+    },
     buyItem: (state, action: PayloadAction<Transaction>) => {
       const { qty, itemId, price } = action.payload;
       const cost = qty * price;
@@ -85,6 +107,7 @@ export const gameSlice = createSlice({
       };
       const newGameState = {
         ...state.gameState,
+        numTurns: state.gameState.numTurns + 1,
         cash: newCash,
         netWealth: newNetWealth,
         prices: { ...newPrices },
@@ -114,6 +137,7 @@ export const gameSlice = createSlice({
       };
       const newGameState = {
         ...state.gameState,
+        numTurns: state.gameState.numTurns + 1,
         cash: newCash,
         netWealth: newNetWealth,
         prices: { ...newPrices },
@@ -178,7 +202,6 @@ export const gameSlice = createSlice({
         });
       }
       const newCash = Math.max(state.gameState.cash - cashLost, 0);
-      // const newNumTurns = state.gameState.numTurns + 0
       const newGameState: GameState = {
         ...state.gameState,
         numTurns: state.gameState.numTurns + daysLost,
@@ -214,11 +237,13 @@ export const gameSlice = createSlice({
 export const {
   initState,
   startNewGame,
+  setAppStatus,
   setModalStatus,
   loadSavedGame,
   setGamePanel,
   closeGame,
   setMarketStatus,
+  buyUpgrade,
   buyItem,
   sellItem,
   relocate,

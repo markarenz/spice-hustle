@@ -65,11 +65,11 @@ describe('getCapacityMax', () => {
     expect(result).toEqual({ weight: 5, volume: 5 });
   });
   it('returns value for pack (lvl 2) capacity', () => {
-    const result = getCapacityMax({ capacity_pack: true });
+    const result = getCapacityMax({ upgrade__capacity_1: true });
     expect(result).toEqual({ weight: 100, volume: 30 });
   });
   it('returns value for largeCart (lvl 5) capacity', () => {
-    const result = getCapacityMax({ capacity_largeCart: true });
+    const result = getCapacityMax({ upgrade__capacity_4: true });
     expect(result).toEqual({ weight: 3000, volume: 1200 });
   });
 });

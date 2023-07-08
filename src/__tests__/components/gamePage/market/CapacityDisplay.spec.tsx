@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { AppStatuses, GameSliceState } from 'types';
 import { getLocalPrices } from 'utils/utils';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { render, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import initGameState from 'data/initGameState';
 import CapacityDisplay from 'components/gamePage/market/CapacityDisplay';
 
@@ -33,15 +33,13 @@ describe('CapacityDisplay', () => {
         game: mockGameSlice.reducer,
       },
     });
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <CapacityDisplay />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <CapacityDisplay />
+        </IntlProvider>
+      </Provider>,
+    );
     const element = screen.getByTestId('market-capacity');
     expect(element.className.includes('font-bold')).toBe(false);
   });
@@ -63,15 +61,13 @@ describe('CapacityDisplay', () => {
         game: mockGameSlice.reducer,
       },
     });
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <CapacityDisplay />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <CapacityDisplay />
+        </IntlProvider>
+      </Provider>,
+    );
     const element = screen.getByTestId('market-capacity');
     expect(element.className.includes('font-bold')).toBe(true);
   });
@@ -93,15 +89,13 @@ describe('CapacityDisplay', () => {
         game: mockGameSlice.reducer,
       },
     });
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <CapacityDisplay />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <CapacityDisplay />
+        </IntlProvider>
+      </Provider>,
+    );
     const element = screen.getByTestId('market-capacity');
     expect(element.className.includes('font-bold')).toBe(true);
   });

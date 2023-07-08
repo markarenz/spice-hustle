@@ -8,8 +8,8 @@ type Props = {
   travelState: TravelState;
   travelModalStatus: string;
   travelTransitionStatus: string;
-  handleTravelContinue: Function;
-  closeModal: Function;
+  handleTravelContinue: React.MouseEventHandler<HTMLButtonElement>;
+  closeModal: React.MouseEventHandler<HTMLButtonElement>;
   titleKey: string;
 };
 const TravelModal: React.FC<Props> = ({
@@ -37,7 +37,7 @@ const TravelModal: React.FC<Props> = ({
         }`}
         aria-hidden="true"
         data-testid="travel-modal-bg-btn"
-        onClick={() => closeModal()}
+        onClick={closeModal}
       />
       <div
         data-testid="travel-modal-card-wrap"
@@ -107,7 +107,7 @@ const TravelModal: React.FC<Props> = ({
                             testId="travel-btn-cancel"
                             variant="secondary"
                             labelKey="travel__modal__btn_cancel"
-                            onClick={() => closeModal()}
+                            onClick={closeModal}
                           />
                         </span>
                       )}
@@ -115,7 +115,7 @@ const TravelModal: React.FC<Props> = ({
                         testId="travel-btn-ok"
                         variant="primary"
                         labelKey="travel__modal__btn_ok"
-                        onClick={() => handleTravelContinue()}
+                        onClick={handleTravelContinue}
                       />
                     </div>
                   </div>

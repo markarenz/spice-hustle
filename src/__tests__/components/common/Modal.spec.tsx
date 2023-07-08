@@ -24,27 +24,25 @@ const mockProps = {
 
 describe('Modal', () => {
   it('renders component: closed', async () => {
-    act(() => {
-      const mockGameSlice = createSlice({
-        name: 'game',
-        initialState,
-        reducers: {},
-      });
-      const mockStore = configureStore({
-        reducer: {
-          game: mockGameSlice.reducer,
-        },
-      });
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <Modal {...mockProps}>
-              <div>Content goes here</div>
-            </Modal>
-          </IntlProvider>
-        </Provider>,
-      );
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState,
+      reducers: {},
     });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <Modal {...mockProps}>
+            <div>Content goes here</div>
+          </Modal>
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -54,27 +52,25 @@ describe('Modal', () => {
 
   it('renders component: open & click close', async () => {
     // In this test, we are using a mock store to inject our own version of initialState
-    act(() => {
-      const mockGameSlice = createSlice({
-        name: 'game',
-        initialState: { ...initialState, modalStatus: 'open' },
-        reducers: {},
-      });
-      const mockStore = configureStore({
-        reducer: {
-          game: mockGameSlice.reducer,
-        },
-      });
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <Modal {...mockProps}>
-              <div>Content goes here</div>
-            </Modal>
-          </IntlProvider>
-        </Provider>,
-      );
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState: { ...initialState, modalStatus: 'open' },
+      reducers: {},
     });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <Modal {...mockProps}>
+            <div>Content goes here</div>
+          </Modal>
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });

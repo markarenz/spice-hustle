@@ -1,5 +1,5 @@
 import { IntlProvider } from 'react-intl';
-import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { store } from 'store/store';
 import { initState } from 'store/gameSlice';
@@ -14,15 +14,13 @@ beforeEach(() => {
 
 describe('App', () => {
   it('renders component', async () => {
-    act(() => {
-      render(
-        <Provider store={store}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <App />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={store}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <App />
+        </IntlProvider>
+      </Provider>,
+    );
     let element = null;
     await waitFor(async () => {
       element = screen.getByTestId('app');
@@ -30,15 +28,13 @@ describe('App', () => {
     expect(element).toBeInTheDocument();
   });
   it('opens the game panel when the start new game button is clicked', async () => {
-    act(() => {
-      render(
-        <Provider store={store}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <App />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={store}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <App />
+        </IntlProvider>
+      </Provider>,
+    );
     await waitFor(async () => {
       fireEvent.click(screen.getByTestId('btn-start-new'));
     });

@@ -35,15 +35,13 @@ describe('TravelPanel', () => {
         game: mockGameSlice.reducer,
       },
     });
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <TravelPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <TravelPanel />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -63,15 +61,13 @@ describe('TravelPanel', () => {
       },
     });
     const spy = jest.spyOn(mockStore, 'dispatch');
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <TravelPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <TravelPanel />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -106,15 +102,13 @@ describe('TravelPanel', () => {
       },
     });
     const spy = jest.spyOn(mockStore, 'dispatch');
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <TravelPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <TravelPanel />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -130,8 +124,12 @@ describe('TravelPanel', () => {
     act(() => {
       jest.advanceTimersByTime(550);
     });
-    const travelPanel = screen.getByTestId('travel-modal');
-    expect(travelPanel).toBeInTheDocument();
+    const args = spy.mock.calls.map((arg) => arg[0]);
+    const expected = [
+      { type: 'game/processTravelDay', payload: null },
+      { type: 'game/processTravelDay', payload: null },
+    ];
+    expect(args).toEqual(expected);
   });
 
   it('handles cancel travel click BG', async () => {
@@ -145,15 +143,13 @@ describe('TravelPanel', () => {
         game: mockGameSlice.reducer,
       },
     });
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <TravelPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <TravelPanel />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -185,15 +181,13 @@ describe('TravelPanel', () => {
         game: mockGameSlice.reducer,
       },
     });
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <TravelPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <TravelPanel />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });

@@ -7,9 +7,7 @@ describe('DieOneDSix', () => {
   values.forEach((value) => {
     it(`renders die value ${value}`, () => {
       const idx = value % 2;
-      act(() => {
-        render(<DieOneDSix value={value} idx={idx} />);
-      });
+      render(<DieOneDSix value={value} idx={idx} />);
       act(() => {
         jest.advanceTimersByTime(550);
       });

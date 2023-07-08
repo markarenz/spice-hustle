@@ -1,6 +1,6 @@
 import { IntlProvider } from 'react-intl';
 import { TableFieldLabel } from 'types';
-import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import messages from 'locales/en-US/copy.json';
 import mockGameSavesList from '__tests__/__fixtures__/mockGameSavesList';
 import Table from 'components/common/Table';
@@ -27,13 +27,11 @@ const mockProps = {
 
 describe('Table', () => {
   it('renders component', () => {
-    act(() => {
-      render(
-        <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <Table {...mockProps} />
-        </IntlProvider>,
-      );
-    });
+    render(
+      <IntlProvider messages={messages} locale="en" defaultLocale="en">
+        <Table {...mockProps} />
+      </IntlProvider>,
+    );
     const element = screen.getByTestId('table');
     expect(element).toBeInTheDocument();
   });

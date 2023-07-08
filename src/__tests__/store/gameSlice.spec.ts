@@ -183,16 +183,15 @@ describe('processTravelDay', () => {
     const result = store.getState().game.gameState;
     expect(result.cash).toEqual(86);
     expect(result.inventory.apple.qty).toEqual(8);
-    expect(result.numTurns).toEqual(4);
+    expect(result.numTurns).toEqual(5);
   });
-  it('updates state for a travel day: danger sm', () => {
+  it('updates state for a travel day: danger md', () => {
     const mockTransaction: Transaction = {
       action: 'buy',
       qty: 15,
       itemId: 'apple',
       price: 1,
     };
-    const result2 = store.getState().game.gameState;
     store.dispatch(startNewGame());
     store.dispatch(buyItem(mockTransaction));
     store.dispatch(
@@ -208,7 +207,7 @@ describe('processTravelDay', () => {
     const result = store.getState().game.gameState;
     expect(result.cash).toEqual(76);
     expect(result.inventory.apple.qty).toEqual(7);
-    expect(result.numTurns).toEqual(10);
+    expect(result.numTurns).toEqual(11);
   });
   it('updates state for a travel day: danger lg', () => {
     const mockTransaction: Transaction = {
@@ -232,6 +231,6 @@ describe('processTravelDay', () => {
     const result = store.getState().game.gameState;
     expect(result.cash).toEqual(48);
     expect(result.inventory.apple.qty).toEqual(2);
-    expect(result.numTurns).toEqual(27);
+    expect(result.numTurns).toEqual(28);
   });
 });
