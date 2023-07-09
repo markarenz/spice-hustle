@@ -5,7 +5,7 @@ import {
   AppStatuses,
   GameTabSlugs,
   Transaction,
-  RouteDanger,
+  TravelTurnDangerResult,
 } from 'types';
 import { getLocalPrices, getNetWealth, getCapacity, getRandRange } from 'utils/utils';
 import { getInitialState } from './storeUtils';
@@ -149,17 +149,21 @@ export const gameSlice = createSlice({
       };
       saveGameLocal({ ...newGameState });
     },
-    processTravelDay: (state, action: PayloadAction<RouteDanger | null>) => {
-      const danger = action.payload;
+    processTravelDay: (state, action: PayloadAction<TravelTurnDangerResult>) => {
+      const travelTurnDangerResult = action.payload;
+      const { danger, upgradeUsed } = travelTurnDangerResult;
       let daysLost = 1;
       let cashLost = 0;
       const currentCash = state.gameState.cash;
       const newInventory = { ...state.gameState.inventory };
-      if (danger?.effects) {
+      const newFlags = { ...state.gameState.flags };
+      if (upgradeUsed && danger) {
+        delete newFlags[`upgrade__counterDanger__${danger.type}`];
+      }
+      if (!upgradeUsed && danger?.effects) {
         danger?.effects.forEach((effect) => {
           switch (effect.type) {
             case 'inventory':
-              // ??
               Object.keys(newInventory).forEach((itemId) => {
                 const qty = newInventory[itemId].qty;
                 let newQty = qty;
@@ -176,7 +180,6 @@ export const gameSlice = createSlice({
               });
               break;
             case 'delay':
-              // advance days
               if (effect.severity === 'sm') {
                 daysLost = getRandRange(2, 6);
               } else if (effect.severity === 'md') {
@@ -188,7 +191,6 @@ export const gameSlice = createSlice({
               break;
             case 'cash':
             default:
-              // reduce cash
               if (effect.severity === 'sm') {
                 cashLost = Math.floor(currentCash * getRandRange(0.05, 0.1));
               } else if (effect.severity === 'md') {
@@ -206,6 +208,7 @@ export const gameSlice = createSlice({
         ...state.gameState,
         numTurns: state.gameState.numTurns + daysLost,
         cash: newCash,
+        flags: newFlags,
         inventory: newInventory,
         netWealth: getNetWealth(newCash, state.gameState.loans),
       };

@@ -22,6 +22,7 @@ export type PriceModel = {
   qtyMax: number;
   priceMin: number;
   priceMax: number;
+  guildDiscount: number;
 };
 
 export type Product = {
@@ -180,12 +181,21 @@ export enum DangerTypes {
   Wolves = 'wolves',
   Tricksters = 'tricksters',
 }
-
+export type Position = {
+  x: number;
+  y: number;
+};
 export type RouteDanger = {
   type: DangerTypes;
   chance: number;
   effects: RouteDangerEffect[];
+  position: Position;
 };
+export type TravelTurnDangerResult = {
+  danger: RouteDanger | null;
+  upgradeUsed: boolean;
+};
+
 export type RouteSection = {
   dangers: RouteDanger[];
 };
@@ -210,6 +220,7 @@ export type TravelState = {
   routeDays: number;
   route: Route | null;
   danger: RouteDanger | null;
+  upgradeUsed: boolean;
   dice: {
     encounterCheck1: number;
     encounterCheck2: number;
@@ -219,6 +230,7 @@ export type TravelState = {
 export type UpgradePrice = {
   price: number;
   locations: string[];
+  guildOnly: boolean;
 };
 
 export type Upgrade = {

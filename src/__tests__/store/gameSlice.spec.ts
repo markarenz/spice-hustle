@@ -5,6 +5,7 @@ import { store } from 'store/store';
 import {
   initState,
   startNewGame,
+  setAppStatus,
   setModalStatus,
   loadSavedGame,
   setGamePanel,
@@ -15,6 +16,7 @@ import {
   relocate,
   setCurrentModal,
   processTravelDay,
+  buyUpgrade,
 } from 'store/gameSlice';
 import mockGameState from '__tests__/__fixtures__/mockGameState';
 import mockDanger from '__tests__/__fixtures__/travel/mockDanger';
@@ -51,6 +53,14 @@ describe('startNewGame', () => {
     store.dispatch(startNewGame());
     const result = store.getState().game;
     expect(result.appStatus).toBe('game');
+  });
+});
+
+describe('setAppStatus', () => {
+  it('sets the app status', () => {
+    store.dispatch(setAppStatus(AppStatuses.AboutPage));
+    const result = store.getState().game;
+    expect(result.appStatus).toBe(AppStatuses.AboutPage);
   });
 });
 
@@ -157,9 +167,42 @@ describe('setCurrentModal', () => {
 describe('processTravelDay', () => {
   it('updates state for a travel day: safe passage', () => {
     store.dispatch(startNewGame());
-    store.dispatch(processTravelDay(null));
+    store.dispatch(
+      processTravelDay({
+        danger: null,
+        upgradeUsed: false,
+      }),
+    );
     const result = store.getState().game.gameState.numTurns;
     expect(result).toBe(1);
+  });
+
+  it('updates state for a travel day - danger avoided with upgrade', () => {
+    const mockTransaction: Transaction = {
+      action: 'buy',
+      qty: 10,
+      itemId: 'apple',
+      price: 1,
+    };
+    store.dispatch(startNewGame());
+    store.dispatch(buyItem(mockTransaction));
+    store.dispatch(
+      processTravelDay({
+        danger: {
+          ...mockDanger,
+          effects: [
+            { type: 'cash', severity: 'sm' },
+            { type: 'inventory', severity: 'sm' },
+            { type: 'delay', severity: 'sm' },
+          ],
+        },
+        upgradeUsed: true,
+      }),
+    );
+    const result = store.getState().game.gameState;
+    expect(result.cash).toEqual(90);
+    expect(result.inventory.apple.qty).toEqual(10);
+    expect(result.numTurns).toEqual(2);
   });
   it('updates state for a travel day: danger sm', () => {
     const mockTransaction: Transaction = {
@@ -172,12 +215,15 @@ describe('processTravelDay', () => {
     store.dispatch(buyItem(mockTransaction));
     store.dispatch(
       processTravelDay({
-        ...mockDanger,
-        effects: [
-          { type: 'cash', severity: 'sm' },
-          { type: 'inventory', severity: 'sm' },
-          { type: 'delay', severity: 'sm' },
-        ],
+        danger: {
+          ...mockDanger,
+          effects: [
+            { type: 'cash', severity: 'sm' },
+            { type: 'inventory', severity: 'sm' },
+            { type: 'delay', severity: 'sm' },
+          ],
+        },
+        upgradeUsed: false,
       }),
     );
     const result = store.getState().game.gameState;
@@ -196,12 +242,15 @@ describe('processTravelDay', () => {
     store.dispatch(buyItem(mockTransaction));
     store.dispatch(
       processTravelDay({
-        ...mockDanger,
-        effects: [
-          { type: 'cash', severity: 'md' },
-          { type: 'inventory', severity: 'md' },
-          { type: 'delay', severity: 'md' },
-        ],
+        danger: {
+          ...mockDanger,
+          effects: [
+            { type: 'cash', severity: 'md' },
+            { type: 'inventory', severity: 'md' },
+            { type: 'delay', severity: 'md' },
+          ],
+        },
+        upgradeUsed: false,
       }),
     );
     const result = store.getState().game.gameState;
@@ -220,17 +269,36 @@ describe('processTravelDay', () => {
     store.dispatch(buyItem(mockTransaction));
     store.dispatch(
       processTravelDay({
-        ...mockDanger,
-        effects: [
-          { type: 'cash', severity: 'lg' },
-          { type: 'inventory', severity: 'lg' },
-          { type: 'delay', severity: 'lg' },
-        ],
+        danger: {
+          ...mockDanger,
+          effects: [
+            { type: 'cash', severity: 'lg' },
+            { type: 'inventory', severity: 'lg' },
+            { type: 'delay', severity: 'lg' },
+          ],
+        },
+        upgradeUsed: false,
       }),
     );
     const result = store.getState().game.gameState;
     expect(result.cash).toEqual(48);
     expect(result.inventory.apple.qty).toEqual(2);
     expect(result.numTurns).toEqual(28);
+  });
+});
+
+describe('buyUpgrade', () => {
+  it('processes upgrade purchase', () => {
+    const mockTransaction: Transaction = {
+      action: 'buy',
+      qty: 1,
+      itemId: 'capacity_1',
+      price: 20,
+    };
+    store.dispatch(startNewGame());
+    store.dispatch(buyUpgrade(mockTransaction));
+    const result = store.getState().game.gameState;
+    expect(result.cash).toEqual(80);
+    expect(result.flags['upgrade__capacity_1']).toBe(true);
   });
 });

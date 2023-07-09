@@ -95,7 +95,9 @@ const BuySubPanel = () => {
       <div className="text-right py-2">
         <CapacityDisplay />
       </div>
-      {isModalOpen && currentModal === 'info' && <ItemInfoModal itemId={selectedItem.id} />}
+      {isModalOpen && currentModal === 'info' && (
+        <ItemInfoModal itemId={selectedItem.id} closeInfoModal={closeModal} />
+      )}
       {isModalOpen && currentModal === 'qty' && (
         <QtyModal
           action="buy"

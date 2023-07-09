@@ -54,4 +54,26 @@ describe('App', () => {
     });
     expect(await screen.findByTestId('modal')).toBeInTheDocument();
   });
+
+  it('opens about page when load about button clicked', async () => {
+    const spy = jest.spyOn(store, 'dispatch');
+    render(
+      <Provider store={store}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <App />
+        </IntlProvider>
+      </Provider>,
+    );
+    await waitFor(async () => {
+      fireEvent.click(screen.getByTestId('btn-how-to-play'));
+    });
+    const args = spy.mock.calls.map((arg) => arg[0]);
+    const expected = [
+      {
+        type: 'game/setAppStatus',
+        payload: 'aboutPage',
+      },
+    ];
+    expect(args).toEqual(expected);
+  });
 });

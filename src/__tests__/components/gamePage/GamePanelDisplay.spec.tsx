@@ -94,4 +94,29 @@ describe('GamePanelDisplay', () => {
     const element = screen.getByTestId('travel-panel');
     expect(element).toBeInTheDocument();
   });
+
+  it('renders component: tools panel', async () => {
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState: { ...initialState, gamePanel: 'tools' },
+      reducers: {},
+    });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <GamePanelDisplay />
+        </IntlProvider>
+      </Provider>,
+    );
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+    const element = screen.getByTestId('tools-panel');
+    expect(element).toBeInTheDocument();
+  });
 });

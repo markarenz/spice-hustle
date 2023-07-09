@@ -5,10 +5,10 @@ import { useGameSliceSelector, useGameSliceDispatch } from 'store/reduxHooks';
 import { startNewGame, setModalStatus, setAppStatus } from 'store/gameSlice';
 import SavedGameModal from './SavedGameModal';
 import BgLayer0 from 'img/titlePage/spice-hustle-title-page-bg.svg';
-import Cloud1 from 'img/titlePage/cloud-1.svg';
-import Cloud2 from 'img/titlePage/cloud-2.svg';
-import Cloud3 from 'img/titlePage/cloud-3.svg';
-import Cloud4 from 'img/titlePage/cloud-4.svg';
+import ImgCloud1 from './images/ImgCloud1';
+import ImgCloud2 from './images/ImgCloud2';
+import ImgCloud3 from './images/ImgCloud3';
+import ImgCloud4 from './images/ImgCloud4';
 import styles from 'styles/modules/titlePage.module.scss';
 import { AppStatuses } from 'types';
 
@@ -41,24 +41,16 @@ const TitlePage = () => {
             backgroundImage: `url(${BgLayer0})`,
           }}
         />
-        <img
-          src={Cloud1}
-          alt="cloud"
-          aria-hidden="true"
-          className={`${styles.cloud} ${styles.cloud1}`}
-        />
-        <img
-          src={Cloud2}
-          alt="cloud"
-          aria-hidden="true"
-          className={`${styles.cloud} ${styles.cloud2}`}
-        />
-        <img
-          src={Cloud3}
-          alt="cloud"
-          aria-hidden="true"
-          className={`${styles.cloud} ${styles.cloud3}`}
-        />
+
+        <div aria-hidden="true" className={`${styles.cloud} ${styles.cloud1}`}>
+          <ImgCloud1 />
+        </div>
+        <div aria-hidden="true" className={`${styles.cloud} ${styles.cloud2}`}>
+          <ImgCloud2 />
+        </div>
+        <div aria-hidden="true" className={`${styles.cloud} ${styles.cloud3}`}>
+          <ImgCloud3 />
+        </div>
       </div>
       <div className="relative min-h-[calc(100vh_-_2rem)]">
         <header className="pt-[6rem]">
@@ -72,12 +64,9 @@ const TitlePage = () => {
           data-testid="title-page-bg-2"
           className="absolute w-full min-w-[100vw] h-full min-h-[100vh] left-0 top-0 overflow-hidden pointer-events-none"
         >
-          <img
-            src={Cloud4}
-            alt="cloud"
-            aria-hidden="true"
-            className={`${styles.cloud} ${styles.cloud4}`}
-          />
+          <div aria-hidden="true" className={`${styles.cloud} ${styles.cloud4}`}>
+            <ImgCloud4 />
+          </div>
         </div>
 
         <main className="container min-h-90vh mx-auto px-4 text-center">

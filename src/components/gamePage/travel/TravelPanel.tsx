@@ -15,6 +15,7 @@ const TravelPanel = () => {
     routeDays: 0,
     route: null,
     danger: null,
+    upgradeUsed: false,
     dice: {
       encounterCheck1: 0,
       encounterCheck2: 0,
@@ -32,9 +33,7 @@ const TravelPanel = () => {
   mapData.routes.forEach((route) => {
     if (route.locations.map((loc) => `${loc}`).includes(location)) {
       const otherLocation = route.locations.find((loc) => loc !== location);
-      if (!availableLocations.includes(`${otherLocation}`)) {
-        availableLocations.push(`${otherLocation}`);
-      }
+      availableLocations.push(`${otherLocation}`);
     }
   });
   const openModal = () => {
@@ -59,16 +58,21 @@ const TravelPanel = () => {
     const perc = (rolls[0] + rolls[1] - 2) / 10;
     let thresh = 0;
     let dangerEncountered: RouteDanger | null = null;
+    let upgradeUsed = false;
     const { route, destination, progress, routeDays } = tempTravelState;
-    if (!!route) {
+    const reversedSections = route?.locations[0] !== location;
+    if (route) {
       if (progress >= routeDays) {
         dispatch(relocate(destination));
       } else {
-        route.sections[0].dangers.forEach((danger) => {
+        const routeSectionDangers =
+          route.sections[reversedSections ? routeDays - 1 - progress : progress].dangers;
+        routeSectionDangers.forEach((danger) => {
           if (!dangerEncountered) {
             thresh += danger.chance;
             if (perc <= thresh) {
               dangerEncountered = danger;
+              upgradeUsed = !!gameState.flags[`upgrade__counterDanger__${dangerEncountered.type}`];
             }
           }
         });
@@ -78,13 +82,14 @@ const TravelPanel = () => {
           route,
           routeDays: route.sections.length,
           danger: dangerEncountered,
+          upgradeUsed,
           dice: {
             encounterCheck1: rolls[0],
             encounterCheck2: rolls[1],
           },
         };
         setTravelState(newTravelState);
-        dispatch(processTravelDay(dangerEncountered));
+        dispatch(processTravelDay({ danger: dangerEncountered, upgradeUsed }));
       }
     }
   };
@@ -101,6 +106,7 @@ const TravelPanel = () => {
         route,
         routeDays: route.sections.length,
         danger: null,
+        upgradeUsed: false,
         dice: {
           encounterCheck1: 0,
           encounterCheck2: 0,

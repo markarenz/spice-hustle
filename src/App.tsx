@@ -2,7 +2,7 @@ import { AppStatuses } from './types';
 import { IntlProvider } from 'react-intl';
 import TitlePage from 'components/titlePage/TitlePage';
 import GamePage from 'components/gamePage/GamePage';
-import AboutPage from 'aboutPage/AboutPage';
+import AboutPage from 'components/aboutPage/AboutPage';
 import msg from 'locales/en-US/copy.json'; // Only en-US support for now
 import { useGameSliceSelector } from 'store/reduxHooks';
 

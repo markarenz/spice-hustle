@@ -7,6 +7,7 @@ const mockDanger = {
     { type: 'cash', severity: 'sm' },
     { type: 'inventory', severity: 'sm' },
   ],
+  position: { x: 0, y: 0 },
 };
 
 export default mockDanger;

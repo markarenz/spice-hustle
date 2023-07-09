@@ -32,30 +32,4 @@ describe('SavedGameModal', () => {
     });
     expect(await screen.findByTestId('modal')).toBeInTheDocument();
   });
-
-  // it('renders component and handles load click', async () => {
-  //   Storage.prototype.getItem = jest
-  //     .fn()
-  //     .mockReturnValue(JSON.stringify(mockGameSavesListStrWealth));
-  //   act(() => {
-  //     render(
-  //       <Provider store={store}>
-  //         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-  //           <SavedGameModal />
-  //         </IntlProvider>
-  //       </Provider>,
-  //     );
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-
-  //   await waitFor(async () => {
-  //     fireEvent.click(screen.getByTestId('btn-load-1686430723693'));
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   expect(await screen.findByTestId('modal')).toBeInTheDocument();
-  // });
 });

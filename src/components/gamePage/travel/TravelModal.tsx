@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import DieOneDSix from './DieOneDSix';
 import Button from 'components/common/Button';
 import { FormattedMessage } from 'react-intl';
+import IconDanger from 'components/icons/dangers/IconDanger';
+import IconUpgrade from 'components/icons/upgrades/IconUgrade';
 import { TravelState } from 'types';
 
 type Props = {
@@ -79,26 +81,44 @@ const TravelModal: React.FC<Props> = ({
                       </div>
                     </div>
                     <div
-                      className={`pb-4 delay-1000 transition-opacity duration-300 ${
+                      className={`pb-4 delay-500 transition-opacity duration-300 ${
                         travelTransitionStatus === '' ? 'opacity-100' : 'opacity-0'
                       }`}
                     >
-                      {!travelState.danger ? (
-                        <FormattedMessage id="travel__modal__danger__none" />
-                      ) : (
+                      <div className="flex gap-6">
+                        {travelState.danger && (
+                          <div className="w-[6rem] h-[6rem] aspect-square bg-gray-300 rounded-xl p-2">
+                            <IconDanger type={travelState.danger.type} />
+                          </div>
+                        )}
+                        {travelState.danger && travelState.upgradeUsed && (
+                          <div className="w-[6rem] h-[6rem] aspect-square bg-gray-300 rounded-xl p-2">
+                            <IconUpgrade type={`counterDanger__${travelState.danger.type}`} />
+                          </div>
+                        )}
+
                         <div>
-                          <FormattedMessage
-                            id={`travel__modal__danger__${travelState.danger.type}`}
-                          />{' '}
-                          {travelState.danger.effects.map((dangerEffect) => (
-                            <span key={dangerEffect.type}>
+                          {!travelState.danger ? (
+                            <FormattedMessage id="travel__modal__danger__none" />
+                          ) : (
+                            <div>
                               <FormattedMessage
-                                id={`travel__modal__danger__effect__${dangerEffect.type}__${dangerEffect.severity}`}
+                                id={`travel__modal__danger__${travelState.danger.type}${
+                                  travelState.upgradeUsed ? '_avoided' : ''
+                                }`}
                               />{' '}
-                            </span>
-                          ))}
+                              {!travelState.upgradeUsed &&
+                                travelState.danger.effects.map((dangerEffect) => (
+                                  <span key={dangerEffect.type}>
+                                    <FormattedMessage
+                                      id={`travel__modal__danger__effect__${dangerEffect.type}__${dangerEffect.severity}`}
+                                    />{' '}
+                                  </span>
+                                ))}
+                            </div>
+                          )}
                         </div>
-                      )}
+                      </div>
                     </div>
                     <div className="text-center">
                       {travelState.progress < travelState.routeDays && (

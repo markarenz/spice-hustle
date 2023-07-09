@@ -6,22 +6,25 @@ const upgradesData: UpgradeData = {
     prices: [
       {
         price: 100,
-        locations: ['oskah', 'butre'],
+        locations: ['oskah', 'tabbith'],
+        guildOnly: false,
       },
       {
-        price: 90,
-        locations: ['tabbith'],
+        price: 80,
+        locations: ['butre'],
+        guildOnly: false,
       },
     ],
   },
 
   water_wings: {
-    slug: 'water_wings',
+    slug: 'counterDanger__flood',
     dependencies: ['upgrade__capacity_1'],
     prices: [
       {
         price: 10,
         locations: ['oskah', 'butre', 'tabbith'],
+        guildOnly: false,
       },
     ],
   },

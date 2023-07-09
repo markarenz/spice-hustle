@@ -5,9 +5,9 @@ import Table from 'components/common/Table';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useGameSliceSelector, useGameSliceDispatch } from 'store/reduxHooks';
 import { buyUpgrade, setModalStatus, setCurrentModal } from 'store/gameSlice';
-import Modal from 'components/common/Modal';
 import { Transaction, TableFieldLabel } from 'types';
 import Button from 'components/common/Button';
+import ToolInfoModal from './ToolInfoModal';
 
 const ToolsPanel = () => {
   const [selectedItemId, setSelectedItemId] = useState('');
@@ -103,16 +103,7 @@ const ToolsPanel = () => {
         </div>
       </div>
       {isModalOpen && (
-        <Modal titleKey={`upgrades__${selectedItemId}__title`}>
-          <div>
-            <div className="text-gray-800 pb-4">
-              <FormattedMessage id={`upgrades__${selectedItemId}__description`} />
-            </div>
-            <div className="text-center">
-              <Button variant="primary" labelKey="ok" onClick={() => closeInfoModal()} />
-            </div>
-          </div>
-        </Modal>
+        <ToolInfoModal selectedItemId={selectedItemId} closeInfoModal={closeInfoModal} />
       )}
     </div>
   );

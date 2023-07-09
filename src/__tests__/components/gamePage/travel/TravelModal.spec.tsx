@@ -10,6 +10,7 @@ jest.useFakeTimers();
 
 const mockTravelState: TravelState = {
   destination: Locations.Oskah,
+  upgradeUsed: false,
   routeDays: 2,
   route: mockRoute,
   progress: 0,
@@ -22,6 +23,7 @@ const mockTravelState: TravelState = {
 
 const mockTravelStateNoEncounter: TravelState = {
   destination: Locations.Oskah,
+  upgradeUsed: false,
   routeDays: 2,
   route: mockRoute,
   progress: 0,
@@ -30,6 +32,10 @@ const mockTravelStateNoEncounter: TravelState = {
     encounterCheck1: 0.7,
     encounterCheck2: 0.7,
   },
+};
+const mockTravelStateAvoidedEncounter: TravelState = {
+  ...mockTravelState,
+  upgradeUsed: true,
 };
 
 const mockProps = {
@@ -57,6 +63,19 @@ describe('TravelModal', () => {
     render(
       <IntlProvider messages={messages} locale="en" defaultLocale="en">
         <TravelModal {...mockProps} travelState={mockTravelStateNoEncounter} />
+      </IntlProvider>,
+    );
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+    const element = screen.getByTestId('travel-modal');
+    expect(element).toBeInTheDocument();
+  });
+
+  it('renders component - avoided encounter', () => {
+    render(
+      <IntlProvider messages={messages} locale="en" defaultLocale="en">
+        <TravelModal {...mockProps} travelState={mockTravelStateAvoidedEncounter} />
       </IntlProvider>,
     );
     act(() => {

@@ -17,6 +17,7 @@ const initialState: GameSliceState = {
     ...initGameState,
     prices: getLocalPrices(initGameState.location, 1),
     capacity: { used: { weight: 0, volume: 0 }, max: { weight: 10, volume: 10 } },
+    mapVersion: 1,
   },
   marketStatus: 'buy',
   currentModal: '',
@@ -84,7 +85,13 @@ describe('TravelPanel', () => {
     expect(travelPanel).toBeInTheDocument();
     const args = spy.mock.calls.map((arg) => arg[0]);
     const expected = [
-      { type: 'game/processTravelDay', payload: null },
+      {
+        type: 'game/processTravelDay',
+        payload: {
+          danger: null,
+          upgradeUsed: false,
+        },
+      },
       { type: 'game/relocate', payload: 'butre' },
     ];
     expect(args).toEqual(expected);
@@ -126,8 +133,8 @@ describe('TravelPanel', () => {
     });
     const args = spy.mock.calls.map((arg) => arg[0]);
     const expected = [
-      { type: 'game/processTravelDay', payload: null },
-      { type: 'game/processTravelDay', payload: null },
+      { type: 'game/processTravelDay', payload: { danger: null, upgradeUsed: false } },
+      { type: 'game/processTravelDay', payload: { danger: null, upgradeUsed: false } },
     ];
     expect(args).toEqual(expected);
   });
@@ -181,6 +188,7 @@ describe('TravelPanel', () => {
         game: mockGameSlice.reducer,
       },
     });
+    const spy = jest.spyOn(mockStore, 'dispatch');
     render(
       <Provider store={mockStore}>
         <IntlProvider messages={messages} locale="en" defaultLocale="en">
@@ -197,7 +205,24 @@ describe('TravelPanel', () => {
     act(() => {
       jest.advanceTimersByTime(550);
     });
-    // const travelPanel = screen.getByTestId('travel-modal');
-    // expect(travelPanel).toBeInTheDocument();
+    const args = spy.mock.calls.map((arg) => arg[0]);
+    const expected = [
+      {
+        type: 'game/processTravelDay',
+        payload: {
+          danger: {
+            type: 'bandits',
+            chance: 0.1,
+            effects: [
+              { type: 'cash', severity: 'sm' },
+              { type: 'inventory', severity: 'sm' },
+            ],
+            position: { x: 17, y: 50 },
+          },
+          upgradeUsed: false,
+        },
+      },
+    ];
+    expect(args).toEqual(expected);
   });
 });
