@@ -5,18 +5,8 @@ import { store } from 'store/store';
 import messages from 'locales/en-US/copy.json';
 import SavedGameModal from 'components/titlePage/SavedGameModal';
 import mockGameSavesListStrWealth from '__tests__/__fixtures__/mockGameSavesListStrWealth';
-import { GameSliceState, AppStatuses } from 'types';
-import initGameState from 'data/initGameState';
 
 jest.useFakeTimers();
-const initialState: GameSliceState = {
-  appStatus: AppStatuses.StartPage,
-  modalStatus: 'closed',
-  gameState: initGameState,
-  marketStatus: 'buy',
-  currentModal: '',
-  gamePanel: 'market',
-};
 
 afterEach(() => {
   jest.resetAllMocks();
@@ -27,15 +17,13 @@ describe('SavedGameModal', () => {
     Storage.prototype.getItem = jest
       .fn()
       .mockReturnValue(JSON.stringify(mockGameSavesListStrWealth));
-    act(() => {
-      render(
-        <Provider store={store}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <SavedGameModal />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={store}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <SavedGameModal />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -44,30 +32,4 @@ describe('SavedGameModal', () => {
     });
     expect(await screen.findByTestId('modal')).toBeInTheDocument();
   });
-
-  // it('renders component and handles load click', async () => {
-  //   Storage.prototype.getItem = jest
-  //     .fn()
-  //     .mockReturnValue(JSON.stringify(mockGameSavesListStrWealth));
-  //   act(() => {
-  //     render(
-  //       <Provider store={store}>
-  //         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-  //           <SavedGameModal />
-  //         </IntlProvider>
-  //       </Provider>,
-  //     );
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-
-  //   await waitFor(async () => {
-  //     fireEvent.click(screen.getByTestId('btn-load-1686430723693'));
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   expect(await screen.findByTestId('modal')).toBeInTheDocument();
-  // });
 });

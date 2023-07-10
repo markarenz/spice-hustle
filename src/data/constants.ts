@@ -11,23 +11,27 @@ export const dateConfig = {
 
 export const capacityData: CapacityData = {
   // You cannot carry much with just your hands, silly.
-  default: {
+  0: {
     weight: 5,
     volume: 5,
   },
-  pack: {
+  1: {
+    // pack
     weight: 100,
     volume: 30,
   },
-  largePack: {
+  2: {
+    // largePack
     weight: 300,
     volume: 100,
   },
-  cart: {
+  3: {
+    // cart
     weight: 1000,
     volume: 500,
   },
-  largeCart: {
+  4: {
+    // largeCart
     weight: 3000,
     volume: 1200,
   },

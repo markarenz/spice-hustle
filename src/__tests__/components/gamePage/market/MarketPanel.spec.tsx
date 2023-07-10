@@ -34,15 +34,13 @@ describe('MarketPanel', () => {
         game: mockGameSlice.reducer,
       },
     });
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <MarketPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <MarketPanel />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });
@@ -65,15 +63,13 @@ describe('MarketPanel', () => {
         game: mockGameSlice.reducer,
       },
     });
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <MarketPanel />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <MarketPanel />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });

@@ -1,13 +1,23 @@
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { TableFieldLabel } from 'types';
 
 type Props = {
   data: any[]; // data item type should have a shape that includes an `id` property
   fieldLabels: TableFieldLabel[];
-  actions?: Function;
+  actions?: (id: string) => JSX.Element;
 };
-
 const Table: React.FC<Props> = ({ data, fieldLabels, actions }) => {
+  const { formatMessage } = useIntl();
+  const getProcessedFieldValue = (item: any, field: TableFieldLabel) => {
+    const val = item[field.slug];
+    if (['price', 'priceValue'].includes(field.slug)) {
+      return `⌾${val}`;
+    }
+    if (typeof val === 'boolean') {
+      return formatMessage({ id: val ? 'yes' : 'no' });
+    }
+    return val;
+  };
   return (
     <table
       className="gap-4 w-full max-w-full overflow-x-hidden border-collapse"
@@ -39,7 +49,7 @@ const Table: React.FC<Props> = ({ data, fieldLabels, actions }) => {
                   <FormattedMessage id={field.titleKey} />
                   :&nbsp;
                 </span>
-                {item[field.slug]}
+                {getProcessedFieldValue(item, field)}
               </td>
             ))}
             {!!actions && <td className="p-4 block sm:table-cell">{actions(item.id)}</td>}

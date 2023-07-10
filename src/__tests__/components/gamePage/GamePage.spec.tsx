@@ -21,25 +21,23 @@ jest.useFakeTimers();
 
 describe('GamePage', () => {
   it('renders component', () => {
-    act(() => {
-      const mockGameSlice = createSlice({
-        name: 'game',
-        initialState: initialState,
-        reducers: {},
-      });
-      const mockStore = configureStore({
-        reducer: {
-          game: mockGameSlice.reducer,
-        },
-      });
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <GamePage />
-          </IntlProvider>
-        </Provider>,
-      );
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState: initialState,
+      reducers: {},
     });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <GamePage />
+        </IntlProvider>
+      </Provider>,
+    );
     act(() => {
       jest.advanceTimersByTime(550);
     });

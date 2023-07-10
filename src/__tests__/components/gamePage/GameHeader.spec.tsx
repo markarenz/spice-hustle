@@ -13,30 +13,26 @@ beforeEach(() => {
 
 describe('GameHeader', () => {
   it('renders component', () => {
-    act(() => {
-      render(
-        <Provider store={store}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <GameHeader />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={store}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <GameHeader />
+        </IntlProvider>
+      </Provider>,
+    );
     const element = screen.getByTestId('game-header');
     expect(element).toBeInTheDocument();
   });
 
   it('opens modal when info button is clicked', async () => {
     const spy = jest.spyOn(store, 'dispatch');
-    act(() => {
-      render(
-        <Provider store={store}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <GameHeader />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={store}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <GameHeader />
+        </IntlProvider>
+      </Provider>,
+    );
     await waitFor(async () => {
       fireEvent.click(screen.getByTestId('location-info-btn'));
     });
@@ -54,15 +50,13 @@ describe('GameHeader', () => {
 
   it('opens closes game when close button is clicked', async () => {
     const spy = jest.spyOn(store, 'dispatch');
-    act(() => {
-      render(
-        <Provider store={store}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <GameHeader />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={store}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <GameHeader />
+        </IntlProvider>
+      </Provider>,
+    );
     await waitFor(async () => {
       const buttons = screen.getAllByTestId('btn-close');
       fireEvent.click(buttons[0]);

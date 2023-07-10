@@ -55,9 +55,9 @@ export const getNetWealth = (cash: number, loans: Loan[]) => {
 };
 
 export const getCapacityMax = (flags: Flags): VolWeight => {
-  let max: VolWeight = capacityData['default'];
+  let max: VolWeight = capacityData[0];
   Object.keys(capacityData).forEach((key) => {
-    if (flags[`capacity_${key}`]) {
+    if (flags[`upgrade__capacity_${key}`]) {
       max = capacityData[key];
     }
   });

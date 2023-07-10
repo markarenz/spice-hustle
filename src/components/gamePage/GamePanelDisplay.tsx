@@ -4,6 +4,7 @@ import { GameTabSlugs } from 'types';
 import { Slices } from 'store/gameSlice';
 import MarketPanel from './market/MarketPanel';
 import TravelPanel from './travel/TravelPanel';
+import ToolsPanel from './tools/ToolsPanel';
 
 const GamePanelDisplay = () => {
   const { gamePanel } = useGameSliceSelector((state: Slices) => state.game);
@@ -17,6 +18,8 @@ const GamePanelDisplay = () => {
       return <TravelPanel />;
     case GameTabSlugs.Market.toLowerCase():
       return <MarketPanel />;
+    case GameTabSlugs.Tools.toLowerCase():
+      return <ToolsPanel />;
     default:
       return <div data-testid="default-panel">DEFAULT PANEL</div>;
   }

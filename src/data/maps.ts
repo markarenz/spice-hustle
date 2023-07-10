@@ -56,11 +56,13 @@ const mapDefault: Map = {
               type: DangerTypes.RockSlide,
               chance: 0.1,
               effects: [effects.delayMd, effects.inventorySm],
+              position: { x: 33, y: 32 },
             },
             {
               type: DangerTypes.Bandits,
               chance: 0.2,
               effects: [effects.cashSm, effects.inventorySm],
+              position: { x: 40, y: 22 },
             },
           ],
         },
@@ -70,11 +72,13 @@ const mapDefault: Map = {
               type: DangerTypes.Bandits,
               chance: 0.1,
               effects: [effects.cashSm, effects.inventorySm],
+              position: { x: 60, y: 24 },
             },
             {
               type: DangerTypes.RockSlide,
               chance: 0.2,
               effects: [effects.delayMd, effects.inventorySm],
+              position: { x: 68, y: 32 },
             },
           ],
         },
@@ -89,11 +93,13 @@ const mapDefault: Map = {
               type: DangerTypes.Wolves,
               chance: 0.1,
               effects: [effects.inventoryMd],
+              position: { x: 43, y: 65 },
             },
             {
               type: DangerTypes.Flood,
-              chance: 0.2,
+              chance: 0.9,
               effects: [effects.delaySm, effects.inventorySm],
+              position: { x: 51, y: 62 },
             },
           ],
         },
@@ -103,6 +109,7 @@ const mapDefault: Map = {
               type: DangerTypes.Bandits,
               chance: 0.2,
               effects: [effects.cashSm, effects.inventorySm],
+              position: { x: 70, y: 55 },
             },
           ],
         },
@@ -114,14 +121,67 @@ const mapDefault: Map = {
         {
           dangers: [
             {
-              type: DangerTypes.Flood,
+              type: DangerTypes.Bandits,
               chance: 0.1,
+              effects: [effects.cashSm, effects.inventorySm],
+              position: { x: 17, y: 50 },
+            },
+            {
+              type: DangerTypes.Flood,
+              chance: 0.2,
               effects: [effects.delaySm, effects.inventorySm],
+              position: { x: 28, y: 53 },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+const mapTwo: Map = {
+  slug: 'two',
+  locations: [
+    Locations.Oskah,
+    Locations.Tabbith,
+    Locations.Butre,
+    Locations.Luci,
+    Locations.Clionne,
+  ],
+  routes: [
+    ...mapDefault.routes,
+    {
+      locations: [Locations.Oskah, Locations.Luci],
+      sections: [
+        {
+          dangers: [
+            {
+              type: DangerTypes.RockSlide,
+              chance: 0.1,
+              effects: [effects.delayMd, effects.inventorySm],
+              position: { x: 33, y: 32 },
             },
             {
               type: DangerTypes.Bandits,
               chance: 0.2,
               effects: [effects.cashSm, effects.inventorySm],
+              position: { x: 40, y: 22 },
+            },
+          ],
+        },
+        {
+          dangers: [
+            {
+              type: DangerTypes.Bandits,
+              chance: 0.1,
+              effects: [effects.cashSm, effects.inventorySm],
+              position: { x: 60, y: 24 },
+            },
+            {
+              type: DangerTypes.RockSlide,
+              chance: 0.2,
+              effects: [effects.delayMd, effects.inventorySm],
+              position: { x: 68, y: 32 },
             },
           ],
         },
@@ -136,4 +196,5 @@ type MapsData = {
 
 export const maps: MapsData = {
   0: mapDefault,
+  1: mapTwo,
 };

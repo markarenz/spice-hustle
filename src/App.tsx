@@ -2,6 +2,7 @@ import { AppStatuses } from './types';
 import { IntlProvider } from 'react-intl';
 import TitlePage from 'components/titlePage/TitlePage';
 import GamePage from 'components/gamePage/GamePage';
+import AboutPage from 'components/aboutPage/AboutPage';
 import msg from 'locales/en-US/copy.json'; // Only en-US support for now
 import { useGameSliceSelector } from 'store/reduxHooks';
 
@@ -13,6 +14,7 @@ const App = () => {
       <div id="app" data-testid="app" className={isModalOpen ? 'modalOpen' : ''}>
         {appStatus === AppStatuses.StartPage && <TitlePage />}
         {appStatus === AppStatuses.Game && <GamePage />}
+        {appStatus === AppStatuses.AboutPage && <AboutPage />}
       </div>
     </IntlProvider>
   );

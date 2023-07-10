@@ -32,15 +32,13 @@ describe('MarketActionTabButton', () => {
         game: mockGameSlice.reducer,
       },
     });
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <MarketActionTabButton slug="buy" />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <MarketActionTabButton slug="buy" />
+        </IntlProvider>
+      </Provider>,
+    );
     const btn = screen.getByTestId('market-tab-btn-buy');
     expect(btn).toBeInTheDocument();
     const element = screen.getByTestId('market-tab-btn-label-wrap');
@@ -62,15 +60,13 @@ describe('MarketActionTabButton', () => {
         game: mockGameSlice.reducer,
       },
     });
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <MarketActionTabButton slug="buy" />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <MarketActionTabButton slug="buy" />
+        </IntlProvider>
+      </Provider>,
+    );
     const btn = screen.getByTestId('market-tab-btn-buy');
     expect(btn).toBeInTheDocument();
     const element = screen.getByTestId('market-tab-btn-label-wrap');
@@ -93,15 +89,13 @@ describe('MarketActionTabButton', () => {
       },
     });
     const spy = jest.spyOn(mockStore, 'dispatch');
-    act(() => {
-      render(
-        <Provider store={mockStore}>
-          <IntlProvider messages={messages} locale="en" defaultLocale="en">
-            <MarketActionTabButton slug="buy" />
-          </IntlProvider>
-        </Provider>,
-      );
-    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <MarketActionTabButton slug="buy" />
+        </IntlProvider>
+      </Provider>,
+    );
     await waitFor(async () => {
       fireEvent.click(screen.getByTestId('market-tab-btn-buy'));
     });

@@ -9,8 +9,8 @@ import { getMaxQty } from 'utils/utils';
 type Props = {
   action: string;
   selectedItem: any;
-  handleConfirm: Function;
-  handleQtyClose: Function;
+  handleConfirm: (buyQty: number) => void;
+  handleQtyClose: React.MouseEventHandler<HTMLButtonElement>;
 };
 const QtyModal: React.FC<Props> = ({ action, selectedItem, handleConfirm, handleQtyClose }) => {
   const { gameState } = useGameSliceSelector((state) => state.game);

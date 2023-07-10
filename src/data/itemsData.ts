@@ -14,6 +14,7 @@ const itemsData: ItemsInfo = {
         qtyMax: 10,
         priceMin: 10,
         priceMax: 17,
+        guildDiscount: 0,
       },
       {
         locations: [Locations.Oskah, Locations.Butre],
@@ -23,15 +24,17 @@ const itemsData: ItemsInfo = {
         qtyMax: 10,
         priceMin: 7,
         priceMax: 9,
+        guildDiscount: 0,
       },
       {
         locations: [Locations.Tabbith],
         seasons: [0, 1],
         actions: ['buy', 'sell'],
-        qtyMin: 0,
+        qtyMin: 1,
         qtyMax: 10,
         priceMin: 3,
         priceMax: 5,
+        guildDiscount: 0,
       },
       {
         locations: [Locations.Tabbith],
@@ -41,6 +44,7 @@ const itemsData: ItemsInfo = {
         qtyMax: 10,
         priceMin: 1,
         priceMax: 3,
+        guildDiscount: 0,
       },
     ],
   },
@@ -57,6 +61,7 @@ const itemsData: ItemsInfo = {
         qtyMax: 10,
         priceMin: 4,
         priceMax: 7,
+        guildDiscount: 0,
       },
       {
         locations: [Locations.Clionne],
@@ -66,6 +71,7 @@ const itemsData: ItemsInfo = {
         qtyMax: 10,
         priceMin: 40,
         priceMax: 55,
+        guildDiscount: 0,
       },
       {
         locations: [Locations.Clionne],
@@ -75,6 +81,7 @@ const itemsData: ItemsInfo = {
         qtyMax: 4,
         priceMin: 30,
         priceMax: 45,
+        guildDiscount: 0,
       },
     ],
   },
