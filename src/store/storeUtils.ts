@@ -5,7 +5,7 @@ export const initialState: GameSliceState = {
   appStatus: AppStatuses.StartPage,
   modalStatus: 'closed',
   gameState: initGameState,
-  marketStatus: 'buy',
+  subPanelStatus: 'buy',
   currentModal: '',
   gamePanel: 'market',
 };
@@ -14,7 +14,7 @@ export const getInitialState = (): GameSliceState => ({
   appStatus: AppStatuses.StartPage,
   modalStatus: 'closed',
   gameState: initGameState,
-  marketStatus: 'buy',
+  subPanelStatus: 'buy',
   currentModal: '',
   gamePanel: 'market',
 });

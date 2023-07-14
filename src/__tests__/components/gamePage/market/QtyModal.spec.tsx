@@ -26,7 +26,7 @@ const initialState: GameSliceState = {
     prices,
     capacity: { used: { weight: 0, volume: 0 }, max: { weight: 10, volume: 10 } },
   },
-  marketStatus: 'buy',
+  subPanelStatus: 'buy',
   currentModal: 'qty',
   gamePanel: 'market',
 };
@@ -61,7 +61,7 @@ describe('BuySubPanel', () => {
       name: 'game',
       initialState: {
         ...initialState,
-        marketStatus: 'sell',
+        subPanelStatus: 'sell',
       },
       reducers: {},
     });
@@ -84,7 +84,7 @@ describe('BuySubPanel', () => {
     expect(element).toBeInTheDocument();
   });
 
-  it('handles input change', async () => {
+  it('handles input change & OK button', async () => {
     const mockGameSlice = createSlice({
       name: 'game',
       initialState,
@@ -110,6 +110,10 @@ describe('BuySubPanel', () => {
     });
     const element = screen.getByTestId('qty-input');
     expect(element.getAttribute('value')).toBe('1');
+    await waitFor(async () => {
+      fireEvent.click(screen.getByTestId('qty-modal-btn-ok'));
+    });
+    expect(mockData.handleConfirm).toHaveBeenCalled();
   });
 
   it('handles input change: Negative', async () => {
@@ -137,10 +141,7 @@ describe('BuySubPanel', () => {
       fireEvent.change(screen.getByTestId('qty-input'), { target: { value: '-1' } });
     });
     const element = screen.getByTestId('qty-input');
-    expect(element.getAttribute('value')).toBe('1');
-    await waitFor(async () => {
-      fireEvent.click(screen.getByTestId('qty-modal-btn-ok'));
-    });
+    expect(element.getAttribute('value')).toBe('0');
   });
 
   it('handles input change: Max', async () => {

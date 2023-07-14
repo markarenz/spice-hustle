@@ -13,7 +13,7 @@ const initialState: GameSliceState = {
   gameState: {
     ...initGameState,
   },
-  marketStatus: 'buy',
+  subPanelStatus: 'buy',
   currentModal: 'info',
   gamePanel: 'market',
 };
@@ -34,7 +34,7 @@ describe('ItemInfoModal', () => {
     render(
       <Provider store={mockStore}>
         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <ItemInfoModal itemId="apple" />
+          <ItemInfoModal itemId="apple" closeInfoModal={jest.fn()} />
         </IntlProvider>
       </Provider>,
     );

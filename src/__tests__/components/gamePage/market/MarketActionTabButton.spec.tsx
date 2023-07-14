@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { GameSliceState, AppStatuses } from 'types';
 import initGameState from 'data/initGameState';
-import MarketActionTabButton from 'components/gamePage/market/MarketActionTabButton';
+import PanelActionTabButton from 'components/gamePage/market/PanelActionTabButton';
 
 jest.useFakeTimers();
 
@@ -15,12 +15,12 @@ const initialState: GameSliceState = {
   gameState: {
     ...initGameState,
   },
-  marketStatus: 'buy',
+  subPanelStatus: 'buy',
   currentModal: 'info',
   gamePanel: 'market',
 };
 
-describe('MarketActionTabButton', () => {
+describe('PanelActionTabButton', () => {
   it('renders component: active', () => {
     const mockGameSlice = createSlice({
       name: 'game',
@@ -35,7 +35,7 @@ describe('MarketActionTabButton', () => {
     render(
       <Provider store={mockStore}>
         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <MarketActionTabButton slug="buy" />
+          <PanelActionTabButton slug="buy" />
         </IntlProvider>
       </Provider>,
     );
@@ -51,7 +51,7 @@ describe('MarketActionTabButton', () => {
       name: 'game',
       initialState: {
         ...initialState,
-        marketStatus: 'sell',
+        subPanelStatus: 'sell',
       },
       reducers: {},
     });
@@ -63,7 +63,7 @@ describe('MarketActionTabButton', () => {
     render(
       <Provider store={mockStore}>
         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <MarketActionTabButton slug="buy" />
+          <PanelActionTabButton slug="buy" />
         </IntlProvider>
       </Provider>,
     );
@@ -79,7 +79,7 @@ describe('MarketActionTabButton', () => {
       name: 'game',
       initialState: {
         ...initialState,
-        marketStatus: 'sell',
+        subPanelStatus: 'sell',
       },
       reducers: {},
     });
@@ -92,7 +92,7 @@ describe('MarketActionTabButton', () => {
     render(
       <Provider store={mockStore}>
         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <MarketActionTabButton slug="buy" />
+          <PanelActionTabButton slug="buy" />
         </IntlProvider>
       </Provider>,
     );
@@ -103,7 +103,7 @@ describe('MarketActionTabButton', () => {
       jest.advanceTimersByTime(550);
     });
     const args = spy.mock.calls.map((arg) => arg[0]);
-    const expected = [{ type: 'game/setMarketStatus', payload: 'buy' }];
+    const expected = [{ type: 'game/setSubPanelStatus', payload: 'buy' }];
     expect(args).toEqual(expected);
   });
 });

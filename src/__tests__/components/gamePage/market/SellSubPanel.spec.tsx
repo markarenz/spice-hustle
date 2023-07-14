@@ -21,7 +21,7 @@ const initialState: GameSliceState = {
       apple: { itemId: 'apple', qty: 5 },
     },
   },
-  marketStatus: 'sell',
+  subPanelStatus: 'sell',
   currentModal: '',
   gamePanel: 'market',
 };

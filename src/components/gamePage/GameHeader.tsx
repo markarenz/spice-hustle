@@ -78,7 +78,7 @@ const GameHeader = () => {
         </div>
         <div
           aria-hidden="true"
-          className={`absolute top-0 left-0 h-full w-full bg-gray-800 transition-opacity duration-300 ${
+          className={`absolute top-0 left-0 h-full w-full bg-gray-800 transition-opacity pointer-events-none duration-300 ${
             isShowingBg ? 'opacity-0' : 'opacity-100'
           }`}
         />

@@ -47,15 +47,15 @@ describe('getLocalPrices', () => {
 
 describe('getNetWealth', () => {
   it('returns the correct value', () => {
-    const result = getNetWealth(500, [
+    const result = getNetWealth(500, 50, [
       {
-        id: '123',
+        location: '123',
         initialAmount: 120,
         principal: 100,
-        interestRate: 10,
+        dueDate: 100,
       },
     ]);
-    expect(result).toBe(400); // 500 - 100 = 400
+    expect(result).toBe(450); // 500 + 50 - 100 = 450
   });
 });
 
