@@ -49,9 +49,9 @@ export const getLocalPrices = (location: string, numTurns: number) => {
   return prices;
 };
 
-export const getNetWealth = (cash: number, loans: Loan[]) => {
+export const getNetWealth = (cash: number, savings: number, loans: Loan[]) => {
   const loansTotal = loans.reduce((sum, item) => sum + item.principal, 0);
-  return cash - loansTotal;
+  return cash + savings - loansTotal;
 };
 
 export const getCapacityMax = (flags: Flags): VolWeight => {

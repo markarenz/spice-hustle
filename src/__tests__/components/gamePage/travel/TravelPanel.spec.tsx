@@ -19,7 +19,7 @@ const initialState: GameSliceState = {
     capacity: { used: { weight: 0, volume: 0 }, max: { weight: 10, volume: 10 } },
     mapVersion: 1,
   },
-  marketStatus: 'buy',
+  subPanelStatus: 'buy',
   currentModal: '',
   gamePanel: 'market',
 };

@@ -1,13 +1,22 @@
-/* 
-  Loans each day, we run a function that adds to the principal based on the interest rate
-  Do we need a loan term? Nobody is coming to break your legs. It just keeps getting more expensive to pay off
-*/
+export type GuildItem = {
+  location: string;
+  price: number;
+};
+export type GuildItemData = { [key: string]: GuildItem };
+
+export type LoanOffering = {
+  location: string;
+  amount: number;
+  term: number;
+  guildOnly: boolean;
+};
+export type LoanOfferingsData = { [key: string]: LoanOffering };
 
 export type Loan = {
-  id: string;
+  location: string;
   initialAmount: number;
   principal: number;
-  interestRate: number;
+  dueDate: number;
 };
 
 /*
@@ -163,7 +172,7 @@ export type CapacityData = { [key: string]: VolWeight };
 export type GameSliceState = {
   appStatus: string;
   gamePanel: string;
-  marketStatus: string;
+  subPanelStatus: string;
   modalStatus: string;
   currentModal: string;
   gameState: GameState;

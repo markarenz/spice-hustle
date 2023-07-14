@@ -12,7 +12,7 @@ const initialState: GameSliceState = {
   appStatus: AppStatuses.StartPage,
   modalStatus: 'closed',
   gameState: initGameState,
-  marketStatus: 'buy',
+  subPanelStatus: 'buy',
   currentModal: '',
   gamePanel: 'market',
 };
@@ -67,6 +67,31 @@ describe('GamePanelDisplay', () => {
       jest.advanceTimersByTime(550);
     });
     const element = screen.getByTestId('market-panel');
+    expect(element).toBeInTheDocument();
+  });
+
+  it('renders component: bank panel', async () => {
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState: { ...initialState, gamePanel: 'bank' },
+      reducers: {},
+    });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <GamePanelDisplay />
+        </IntlProvider>
+      </Provider>,
+    );
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+    const element = screen.getByTestId('bank-panel');
     expect(element).toBeInTheDocument();
   });
 

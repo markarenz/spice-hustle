@@ -21,14 +21,8 @@ const QtyModal: React.FC<Props> = ({ action, selectedItem, handleConfirm, handle
     setMaxQty(action === 'buy' ? getMaxQty(gameState, selectedItem, itemsData) : selectedItem.qty);
   }
   const handleQtyChange = (e: React.ChangeEvent<HTMLInputElement>, max: number) => {
-    let val = parseInt(e.target.value);
-    if (val < 1) {
-      val = 1;
-    }
-    if (val > max) {
-      val = max;
-    }
-    setQty(val);
+    const val = parseInt(e.target.value);
+    setQty(Math.max(Math.min(val, max), 0));
   };
   if (maxQty === null) {
     return null;

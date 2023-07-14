@@ -16,7 +16,7 @@ const initialState: GameSliceState = {
     prices: getLocalPrices(initGameState.location, 1),
     capacity: { used: { weight: 0, volume: 0 }, max: { weight: 10, volume: 10 } },
   },
-  marketStatus: 'buy',
+  subPanelStatus: 'buy',
   currentModal: '',
   gamePanel: 'market',
 };

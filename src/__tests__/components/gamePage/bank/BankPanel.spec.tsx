@@ -1,13 +1,11 @@
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import { AppStatuses, GameSliceState } from 'types';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { render, screen, act, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import messages from 'locales/en-US/copy.json';
 import initGameState from 'data/initGameState';
-import ToolInfoModal from 'components/gamePage/tools/ToolInfoModal';
-
-jest.useFakeTimers();
+import { AppStatuses, GameSliceState } from 'types';
+import BankPanel from 'components/gamePage/bank/BankPanel';
 
 const initialState: GameSliceState = {
   appStatus: AppStatuses.StartPage,
@@ -15,13 +13,13 @@ const initialState: GameSliceState = {
   gameState: {
     ...initGameState,
   },
-  subPanelStatus: 'buy',
+  subPanelStatus: 'savings',
   currentModal: '',
-  gamePanel: 'market',
+  gamePanel: 'bank',
 };
-
-describe('ToolInfoModal', () => {
-  it('renders component', () => {
+describe('BankPanel', () => {
+  // subPanelStatus
+  it('renders the bank panel default savings', () => {
     const mockGameSlice = createSlice({
       name: 'game',
       initialState,
@@ -32,28 +30,24 @@ describe('ToolInfoModal', () => {
         game: mockGameSlice.reducer,
       },
     });
-    const mockProps = {
-      selectedItemId: 'capacity_1',
-      closeInfoModal: jest.fn(),
-    };
     render(
       <Provider store={mockStore}>
         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <ToolInfoModal {...mockProps} />
+          <BankPanel />
         </IntlProvider>
       </Provider>,
     );
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
-    const mktPanel = screen.getByTestId('modal');
-    expect(mktPanel).toBeInTheDocument();
+    expect(screen.getByTestId('savings-panel')).toBeInTheDocument();
   });
 
-  it('handles close button', async () => {
+  it('renders the bank panel loans', () => {
     const mockGameSlice = createSlice({
       name: 'game',
-      initialState,
+      initialState: {
+        ...initialState,
+        gamePanel: 'bank',
+        subPanelStatus: 'loans',
+      },
       reducers: {},
     });
     const mockStore = configureStore({
@@ -61,24 +55,13 @@ describe('ToolInfoModal', () => {
         game: mockGameSlice.reducer,
       },
     });
-    const mockProps = {
-      selectedItemId: 'capacity_1',
-      closeInfoModal: jest.fn(),
-    };
     render(
       <Provider store={mockStore}>
         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <ToolInfoModal {...mockProps} />
+          <BankPanel />
         </IntlProvider>
       </Provider>,
     );
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
-    await waitFor(async () => {
-      fireEvent.click(screen.getByTestId('btn-tools-info-close'));
-    });
-    const mktPanel = screen.getByTestId('modal');
-    expect(mktPanel).toBeInTheDocument();
+    expect(screen.getByTestId('loans-panel')).toBeInTheDocument();
   });
 });

@@ -10,13 +10,14 @@ import {
   loadSavedGame,
   setGamePanel,
   closeGame,
-  setMarketStatus,
+  setSubPanelStatus,
   buyItem,
   sellItem,
   relocate,
   setCurrentModal,
   processTravelDay,
   buyUpgrade,
+  processBankDepositWithdrawal,
 } from 'store/gameSlice';
 import mockGameState from '__tests__/__fixtures__/mockGameState';
 import mockDanger from '__tests__/__fixtures__/travel/mockDanger';
@@ -25,7 +26,7 @@ const mockInitialState: GameSliceState = {
   appStatus: AppStatuses.StartPage,
   modalStatus: 'closed',
   gameState: initGameState,
-  marketStatus: 'buy',
+  subPanelStatus: 'buy',
   currentModal: '',
   gamePanel: 'market',
 };
@@ -87,10 +88,23 @@ describe('loadSavedGame', () => {
 });
 
 describe('setGamePanel', () => {
-  it('updates gamePanel', () => {
+  it('updates gamePanel for market', () => {
     store.dispatch(setGamePanel('market'));
-    const result = store.getState().game.gamePanel;
-    expect(result).toBe('market');
+    const result = store.getState().game;
+    expect(result.gamePanel).toBe('market');
+    expect(result.subPanelStatus).toBe('buy');
+  });
+  it('updates gamePanel for bank', () => {
+    store.dispatch(setGamePanel('bank'));
+    const result = store.getState().game;
+    expect(result.gamePanel).toBe('bank');
+    expect(result.subPanelStatus).toBe('savings');
+  });
+  it('updates gamePanel for travel', () => {
+    store.dispatch(setGamePanel('travel'));
+    const result = store.getState().game;
+    expect(result.gamePanel).toBe('travel');
+    expect(result.subPanelStatus).toBe('');
   });
 });
 
@@ -102,10 +116,10 @@ describe('closeGame', () => {
   });
 });
 
-describe('setMarketStatus', () => {
+describe('setSubPanelStatus', () => {
   it('closes game', () => {
-    store.dispatch(setMarketStatus('buy'));
-    const result = store.getState().game.marketStatus;
+    store.dispatch(setSubPanelStatus('buy'));
+    const result = store.getState().game.subPanelStatus;
     expect(result).toBe('buy');
   });
 });
@@ -300,5 +314,20 @@ describe('buyUpgrade', () => {
     const result = store.getState().game.gameState;
     expect(result.cash).toEqual(80);
     expect(result.flags['upgrade__capacity_1']).toBe(true);
+  });
+});
+
+describe('processBankDepositWithdrawal', () => {
+  it('processes deposit and withdrawal', () => {
+    store.dispatch(startNewGame());
+    store.dispatch(processBankDepositWithdrawal(10));
+    const result = store.getState().game.gameState;
+    expect(result.cash).toEqual(90);
+    expect(result.savings).toEqual(10);
+
+    store.dispatch(processBankDepositWithdrawal(-5));
+    const result2 = store.getState().game.gameState;
+    expect(result2.cash).toEqual(95);
+    expect(result2.savings).toEqual(5);
   });
 });
