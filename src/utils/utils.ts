@@ -98,3 +98,12 @@ export const getMaxQty = (gameState: GameState, selectedItem: any, itemsData: It
   );
 
 export const getRnd1d6 = () => Math.floor(Math.random() * 6) + 1;
+
+export const getHasLocalLoan = (loans: Loan[], location: string): boolean =>
+  loans.some((loan) => loan.location === location);
+
+export const getLoanByLocation = (loans: Loan[], location: string) =>
+  loans.find((loan) => loan.location === location);
+
+export const getHasOverdueLoanForLocation = (gameState: GameState, location: string): boolean =>
+  gameState.loans.some((loan) => loan.location === location && loan.dueDate < gameState.numTurns);

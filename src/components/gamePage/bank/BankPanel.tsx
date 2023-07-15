@@ -1,6 +1,6 @@
 import { Slices } from 'store/gameSlice';
 import { useGameSliceSelector } from 'store/reduxHooks';
-import PanelActionTabButton from '../market/PanelActionTabButton';
+import PanelActionTabButton from 'components/common/PanelActionTabButton';
 import SavingsPanel from './SavingsPanel';
 import LoansPanel from './LoansPanel';
 

@@ -1,7 +1,7 @@
 import { useGameSliceSelector } from 'store/reduxHooks';
 import BuySubPanel from './BuySubPanel';
 import SellSubPanel from './SellSubPanel';
-import PanelActionTabButton from './PanelActionTabButton';
+import PanelActionTabButton from 'components/common/PanelActionTabButton';
 
 const MarketPanel = () => {
   const { subPanelStatus } = useGameSliceSelector((state) => state.game);

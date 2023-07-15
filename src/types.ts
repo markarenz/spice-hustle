@@ -7,6 +7,7 @@ export type GuildItemData = { [key: string]: GuildItem };
 export type LoanOffering = {
   location: string;
   amount: number;
+  markup: number;
   term: number;
   guildOnly: boolean;
 };

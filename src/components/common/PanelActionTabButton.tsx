@@ -11,10 +11,13 @@ const PanelActionTabButton: React.FC<Props> = ({ slug }) => {
   const handleClick = () => {
     dispatch(setSubPanelStatus(slug));
   };
+  const isActive = subPanelStatus === slug;
   return (
     <button
       data-testid={`market-tab-btn-${slug}`}
-      className="relative p-4 w-full uppercase font-bold group"
+      className={`relative p-4 w-full uppercase font-bold group ${
+        isActive ? 'pointer-events-none' : ''
+      }`}
       onClick={handleClick}
     >
       <div
@@ -24,7 +27,7 @@ const PanelActionTabButton: React.FC<Props> = ({ slug }) => {
       <div
         data-testid="market-tab-btn-label-wrap"
         className={`absolute w-full left-0 bottom-0 transition-all duration-150 w-full bg-gray-900 ${
-          subPanelStatus === slug ? 'h-full' : 'h-0'
+          isActive ? 'h-full' : 'h-0'
         }`}
         aria-hidden="true"
       />

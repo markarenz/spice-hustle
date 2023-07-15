@@ -67,4 +67,14 @@ describe('Button', () => {
     const element = screen.getByTestId('btn-label');
     expect(element.textContent).toEqual('Max: 12');
   });
+
+  it('renders component while disabled (loan not paid)', () => {
+    render(
+      <IntlProvider messages={messages} locale="en" defaultLocale="en">
+        <Button {...mockProps} disabled />
+      </IntlProvider>,
+    );
+    const element = screen.getByTestId('test-testid');
+    expect(element.className.includes('bg-gray-400')).toBe(true);
+  });
 });

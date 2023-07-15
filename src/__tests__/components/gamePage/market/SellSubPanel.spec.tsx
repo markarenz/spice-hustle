@@ -85,6 +85,43 @@ describe('SellSubPanel', () => {
     expect(element).toBeInTheDocument();
   });
 
+  it('handles info click', async () => {
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState,
+      reducers: {},
+    });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    const spy = jest.spyOn(mockStore, 'dispatch');
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <SellSubPanel />
+        </IntlProvider>
+      </Provider>,
+    );
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+    await waitFor(async () => {
+      fireEvent.click(screen.getByTestId('btn-info-apple'));
+    });
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+    const args = spy.mock.calls.map((arg) => arg[0]);
+    const expected = [
+      { type: 'game/setCurrentModal', payload: 'info' },
+      { type: 'game/setModalStatus', payload: 'opening' },
+      { type: 'game/setModalStatus', payload: 'open' },
+    ];
+    expect(args).toEqual(expected);
+  });
+
   it('handles sell click', async () => {
     const mockGameSlice = createSlice({
       name: 'game',
@@ -179,240 +216,4 @@ describe('SellSubPanel', () => {
     ];
     expect(args).toEqual(expected);
   });
-
-  // it('handles buy click - opens QTY modal', async () => {
-  //   const mockGameSlice = createSlice({
-  //     name: 'game',
-  //     initialState: {
-  //       ...initialState,
-  //     },
-  //     reducers: {},
-  //   });
-  //   const mockStore = configureStore({
-  //     reducer: {
-  //       game: mockGameSlice.reducer,
-  //     },
-  //   });
-  //   const spy = jest.spyOn(mockStore, 'dispatch');
-  //   act(() => {
-  //     render(
-  //       <Provider store={mockStore}>
-  //         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-  //           <BuySubPanel />
-  //         </IntlProvider>
-  //       </Provider>,
-  //     );
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   await waitFor(async () => {
-  //     fireEvent.click(screen.getByTestId('btn-buy-apple'));
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   const args = spy.mock.calls.map((arg) => arg[0]);
-  //   const expected = [
-  //     { type: 'game/setCurrentModal', payload: 'qty' },
-  //     { type: 'game/setModalStatus', payload: 'opening' },
-  //     { type: 'game/setModalStatus', payload: 'open' },
-  //   ];
-  //   expect(args).toEqual(expected);
-  // });
-
-  // it('handles info click - opens Info modal', async () => {
-  //   const mockGameSlice = createSlice({
-  //     name: 'game',
-  //     initialState: {
-  //       ...initialState,
-  //     },
-  //     reducers: {},
-  //   });
-  //   const mockStore = configureStore({
-  //     reducer: {
-  //       game: mockGameSlice.reducer,
-  //     },
-  //   });
-  //   const spy = jest.spyOn(mockStore, 'dispatch');
-  //   act(() => {
-  //     render(
-  //       <Provider store={mockStore}>
-  //         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-  //           <BuySubPanel />
-  //         </IntlProvider>
-  //       </Provider>,
-  //     );
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   await waitFor(async () => {
-  //     fireEvent.click(screen.getByTestId('btn-info-apple'));
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   const args = spy.mock.calls.map((arg) => arg[0]);
-  //   const expected = [
-  //     { type: 'game/setCurrentModal', payload: 'info' },
-  //     { type: 'game/setModalStatus', payload: 'opening' },
-  //     { type: 'game/setModalStatus', payload: 'open' },
-  //   ];
-  //   expect(args).toEqual(expected);
-  // });
-
-  // it('displays info modal', async () => {
-  //   const mockGameSlice = createSlice({
-  //     name: 'game',
-  //     initialState: {
-  //       ...initialState,
-  //     },
-  //     reducers: {
-  //       setCurrentModal: (state, action: PayloadAction<string>) => {
-  //         state.currentModal = action.payload;
-  //       },
-  //       setModalStatus: (state, action: PayloadAction<string>) => {
-  //         state.modalStatus = `${action.payload}`;
-  //         if (action.payload === '') {
-  //           state.currentModal = '';
-  //         }
-  //       },
-  //     },
-  //   });
-  //   const mockStore = configureStore({
-  //     reducer: {
-  //       game: mockGameSlice.reducer,
-  //     },
-  //   });
-  //   const spy = jest.spyOn(mockStore, 'dispatch');
-  //   act(() => {
-  //     render(
-  //       <Provider store={mockStore}>
-  //         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-  //           <BuySubPanel />
-  //         </IntlProvider>
-  //       </Provider>,
-  //     );
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   await waitFor(async () => {
-  //     fireEvent.click(screen.getByTestId('btn-info-apple'));
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   const args = spy.mock.calls.map((arg) => arg[0]);
-  //   const expected = [
-  //     { type: 'game/setCurrentModal', payload: 'info' },
-  //     { type: 'game/setModalStatus', payload: 'opening' },
-  //     { type: 'game/setModalStatus', payload: 'open' },
-  //   ];
-  //   expect(args).toEqual(expected);
-  // });
-
-  // it('displays info modal', async () => {
-  //   const mockGameSlice = createSlice({
-  //     name: 'game',
-  //     initialState: {
-  //       ...initialState,
-  //     },
-  //     reducers: {
-  //       setCurrentModal: (state, action: PayloadAction<string>) => {
-  //         state.currentModal = action.payload;
-  //       },
-  //       setModalStatus: (state, action: PayloadAction<string>) => {
-  //         state.modalStatus = `${action.payload}`;
-  //         if (action.payload === '') {
-  //           state.currentModal = '';
-  //         }
-  //       },
-  //     },
-  //   });
-  //   const mockStore = configureStore({
-  //     reducer: {
-  //       game: mockGameSlice.reducer,
-  //     },
-  //   });
-  //   const spy = jest.spyOn(mockStore, 'dispatch');
-  //   act(() => {
-  //     render(
-  //       <Provider store={mockStore}>
-  //         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-  //           <BuySubPanel />
-  //         </IntlProvider>
-  //       </Provider>,
-  //     );
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   await waitFor(async () => {
-  //     fireEvent.click(screen.getByTestId('btn-info-apple'));
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   const args = spy.mock.calls.map((arg) => arg[0]);
-  //   const expected = [
-  //     { type: 'game/setCurrentModal', payload: 'info' },
-  //     { type: 'game/setModalStatus', payload: 'opening' },
-  //     { type: 'game/setModalStatus', payload: 'open' },
-  //   ];
-  //   expect(args).toEqual(expected);
-  // });
-
-  // it('handles buy click - closes modal', async () => {
-  //   const mockGameSlice = createSlice({
-  //     name: 'game',
-  //     initialState: {
-  //       ...initialState,
-  //       currentModal: 'qty',
-  //       modalStatus: 'open',
-  //     },
-  //     reducers: {},
-  //   });
-  //   const mockStore = configureStore({
-  //     reducer: {
-  //       game: mockGameSlice.reducer,
-  //     },
-  //   });
-  //   const spy = jest.spyOn(mockStore, 'dispatch');
-  //   act(() => {
-  //     render(
-  //       <Provider store={mockStore}>
-  //         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-  //           <BuySubPanel />
-  //         </IntlProvider>
-  //       </Provider>,
-  //     );
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   await waitFor(async () => {
-  //     fireEvent.click(screen.getByTestId('btn-buy-apple'));
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   await waitFor(async () => {
-  //     fireEvent.click(screen.getByTestId('qty-btn-max'));
-  //   });
-  //   act(() => {
-  //     jest.advanceTimersByTime(550);
-  //   });
-  //   const args = spy.mock.calls.map((arg) => arg[0]);
-  //   const expected = [
-  //     { type: 'game/setCurrentModal', payload: 'qty' },
-  //     { type: 'game/setModalStatus', payload: 'opening' },
-  //     { type: 'game/setModalStatus', payload: 'open' },
-  //     { type: 'game/buyItem', payload: { qty: 5, itemId: 'apple', price: 5, action: 'buy' } },
-  //     { type: 'game/setModalStatus', payload: 'closing' },
-  //     { type: 'game/setModalStatus', payload: 'closed' },
-  //   ];
-  //   expect(args).toEqual(expected);
-  // });
 });

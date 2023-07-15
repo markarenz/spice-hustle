@@ -11,6 +11,7 @@ import { getLocalPrices, getNetWealth, getCapacity, getRandRange } from 'utils/u
 import { getInitialState } from './storeUtils';
 import initGameState from 'data/initGameState';
 import { saveGameLocal } from 'utils/saveLoadUtils';
+import loansData from 'data/loansData';
 
 export type Slices = {
   game: GameSliceState;
@@ -97,6 +98,64 @@ export const gameSlice = createSlice({
         ...newGameState,
       };
       saveGameLocal({ ...newGameState });
+    },
+    acceptLoanOffer: (state, action: PayloadAction<string>) => {
+      const location = action.payload;
+      const loan = loansData[location];
+      const newLoans = [
+        ...state.gameState.loans,
+        {
+          location,
+          initialAmount: loan.amount + loan.markup,
+          principal: loan.amount + loan.markup,
+          dueDate: state.gameState.numTurns + loan.term,
+        },
+      ];
+      const newCash = state.gameState.cash + loan.amount;
+      const newNetWealth = getNetWealth(newCash, state.gameState.savings, newLoans);
+      const newGameState = {
+        ...state.gameState,
+        numTurns: state.gameState.numTurns + 1,
+        cash: newCash,
+        netWealth: newNetWealth,
+        loans: newLoans,
+      };
+      state.gameState = {
+        ...newGameState,
+      };
+      saveGameLocal({ ...newGameState });
+    },
+    makeLoanPayment: (state, action: PayloadAction<number>) => {
+      const amt = action.payload;
+      const { location, loans } = state.gameState;
+      const selectedLoan = state.gameState.loans.find((loan) => loan.location === location);
+      if (selectedLoan) {
+        const newLoans =
+          selectedLoan.principal > amt
+            ? loans.map((loan) =>
+                loan.location === location
+                  ? {
+                      ...loan,
+                      principal: loan.principal - amt,
+                    }
+                  : loan,
+              )
+            : loans.filter((loan) => loan.location !== location);
+
+        const newCash = state.gameState.cash - amt;
+        const newNetWealth = getNetWealth(newCash, state.gameState.savings, newLoans);
+        const newGameState = {
+          ...state.gameState,
+          numTurns: state.gameState.numTurns + 1,
+          cash: newCash,
+          netWealth: newNetWealth,
+          loans: newLoans,
+        };
+        state.gameState = {
+          ...newGameState,
+        };
+        saveGameLocal({ ...newGameState });
+      }
     },
     buyUpgrade: (state, action: PayloadAction<Transaction>) => {
       const { itemId, price } = action.payload;
@@ -281,6 +340,8 @@ export const {
   setCurrentModal,
   processTravelDay,
   processBankDepositWithdrawal,
+  acceptLoanOffer,
+  makeLoanPayment,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

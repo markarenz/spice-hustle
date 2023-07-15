@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { GameSliceState, AppStatuses } from 'types';
 import initGameState from 'data/initGameState';
-import PanelActionTabButton from 'components/gamePage/market/PanelActionTabButton';
+import PanelActionTabButton from 'components/common/PanelActionTabButton';
 
 jest.useFakeTimers();
 

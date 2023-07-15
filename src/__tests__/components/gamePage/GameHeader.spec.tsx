@@ -2,8 +2,11 @@ import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
 import { store } from 'store/store';
 import { initState } from 'store/gameSlice';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { render, screen, waitFor, act, fireEvent } from '@testing-library/react';
 import messages from 'locales/en-US/copy.json';
+import { AppStatuses, GameSliceState } from 'types';
+import initGameState from 'data/initGameState';
 import GameHeader from 'components/gamePage/GameHeader';
 
 jest.useFakeTimers();
@@ -70,5 +73,45 @@ describe('GameHeader', () => {
       { type: 'game/closeGame', payload: undefined },
     ];
     expect(args).toEqual(expected);
+  });
+  it('displays warning when a local loan has expired', () => {
+    const initialState: GameSliceState = {
+      appStatus: AppStatuses.StartPage,
+      modalStatus: 'closed',
+      gameState: {
+        ...initGameState,
+        numTurns: 50,
+        loans: [
+          {
+            location: 'oskah',
+            initialAmount: 1200,
+            principal: 1000,
+            dueDate: 10,
+          },
+        ],
+      },
+      subPanelStatus: 'buy',
+      currentModal: '',
+      gamePanel: 'market',
+    };
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState,
+      reducers: {},
+    });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <GameHeader />
+        </IntlProvider>
+      </Provider>,
+    );
+    const element = screen.getByTestId('loan-expiration-warning-message');
+    expect(element).toBeInTheDocument();
   });
 });

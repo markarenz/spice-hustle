@@ -18,6 +18,8 @@ import {
   processTravelDay,
   buyUpgrade,
   processBankDepositWithdrawal,
+  acceptLoanOffer,
+  makeLoanPayment,
 } from 'store/gameSlice';
 import mockGameState from '__tests__/__fixtures__/mockGameState';
 import mockDanger from '__tests__/__fixtures__/travel/mockDanger';
@@ -329,5 +331,51 @@ describe('processBankDepositWithdrawal', () => {
     const result2 = store.getState().game.gameState;
     expect(result2.cash).toEqual(95);
     expect(result2.savings).toEqual(5);
+  });
+});
+
+describe('acceptLoanOffer', () => {
+  store.dispatch(startNewGame());
+  store.dispatch(acceptLoanOffer('oskah'));
+  const result = store.getState().game.gameState;
+  expect(result.cash).toEqual(600);
+  expect(result.loans.length).toEqual(1);
+});
+
+describe('makeLoanPayment', () => {
+  it('handles partial payment', () => {
+    store.dispatch(startNewGame());
+    store.dispatch(acceptLoanOffer('oskah'));
+    store.dispatch(makeLoanPayment(100));
+    const result = store.getState().game.gameState;
+    expect(result.cash).toEqual(500);
+    expect(result.loans.length).toEqual(1);
+  });
+  it('handles full payment', () => {
+    store.dispatch(startNewGame());
+    store.dispatch(acceptLoanOffer('oskah'));
+    store.dispatch(makeLoanPayment(600));
+    const result = store.getState().game.gameState;
+    expect(result.cash).toEqual(0);
+    expect(result.loans.length).toEqual(0);
+  });
+
+  it('handles attempt to pay on nonexistent loan', () => {
+    store.dispatch(startNewGame());
+    store.dispatch(acceptLoanOffer('tabbith'));
+    store.dispatch(makeLoanPayment(600));
+    const result = store.getState().game.gameState;
+    expect(result.cash).toEqual(1300);
+    expect(result.loans.length).toEqual(1);
+  });
+
+  it('handles partial payment with multiple loans', () => {
+    store.dispatch(startNewGame());
+    store.dispatch(acceptLoanOffer('tabbith'));
+    store.dispatch(acceptLoanOffer('oskah'));
+    store.dispatch(makeLoanPayment(100));
+    const result = store.getState().game.gameState;
+    expect(result.cash).toEqual(1700);
+    expect(result.loans.length).toEqual(2);
   });
 });

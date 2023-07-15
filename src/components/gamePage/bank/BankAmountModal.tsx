@@ -1,18 +1,39 @@
 import { useState } from 'react';
 import { useGameSliceSelector, useGameSliceDispatch } from 'store/reduxHooks';
 import { Slices } from 'store/gameSlice';
-import { setModalStatus, setCurrentModal, processBankDepositWithdrawal } from 'store/gameSlice';
+import {
+  setModalStatus,
+  setCurrentModal,
+  processBankDepositWithdrawal,
+  makeLoanPayment,
+} from 'store/gameSlice';
 import { FormattedMessage } from 'react-intl';
 import Modal from 'components/common/Modal';
 import Button from 'components/common/Button';
+import { getLoanByLocation } from 'utils/utils';
 
 const BankAmountModal = () => {
   const [amt, setAmt] = useState(0);
   const { currentModal, gameState } = useGameSliceSelector((state: Slices) => state.game);
   const dispatch = useGameSliceDispatch();
-  const { savings, cash } = gameState;
+  const { savings, cash, location, loans } = gameState;
   const isDeposit = currentModal === 'deposit';
-  const maxAmt = isDeposit ? cash : savings;
+  let maxAmt = 0;
+  const selectedLoan = getLoanByLocation(loans, location);
+  switch (currentModal) {
+    case 'loanpayment':
+      if (selectedLoan) {
+        maxAmt = Math.min(selectedLoan.principal, cash);
+      }
+      break;
+    case 'withdrawal':
+      maxAmt = savings;
+      break;
+    default:
+    case 'deposit':
+      maxAmt = cash;
+      break;
+  }
   const handleAmtChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = parseInt(e.target.value);
     setAmt(Math.max(Math.min(val, maxAmt), 0));
@@ -26,7 +47,11 @@ const BankAmountModal = () => {
     }, 510);
   };
   const handleConfirmAmt = (amt: number) => {
-    dispatch(processBankDepositWithdrawal(isDeposit ? amt : -1 * amt));
+    if (currentModal === 'loanpayment') {
+      dispatch(makeLoanPayment(amt));
+    } else {
+      dispatch(processBankDepositWithdrawal(isDeposit ? amt : -1 * amt));
+    }
     handleAmtClose();
   };
 
@@ -45,12 +70,9 @@ const BankAmountModal = () => {
           />
         </div>
 
-        <div
-          className="text-base italic pb-4"
-          data-testid={`explainer-${isDeposit ? 'deposit' : 'withdrawal'}`}
-        >
+        <div className="text-base italic pb-4" data-testid={`explainer-${currentModal}`}>
           <FormattedMessage
-            id={`bank__amount_modal__explainer__${isDeposit ? 'deposit' : 'withdrawal'}`}
+            id={`bank__amount_modal__explainer__${currentModal}`}
             values={{ maxAmt }}
           />
         </div>

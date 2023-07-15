@@ -208,7 +208,6 @@ describe('BankAmountModal', () => {
         game: mockGameSlice.reducer,
       },
     });
-    const spy = jest.spyOn(mockStore, 'dispatch');
     render(
       <Provider store={mockStore}>
         <IntlProvider messages={messages} locale="en" defaultLocale="en">
@@ -255,6 +254,63 @@ describe('BankAmountModal', () => {
     const args = spy.mock.calls.map((arg) => arg[0]);
     const expected = [
       { type: 'game/processBankDepositWithdrawal', payload: 100 },
+      { type: 'game/setModalStatus', payload: 'closing' },
+      { type: 'game/setCurrentModal', payload: '' },
+      { type: 'game/setModalStatus', payload: 'closed' },
+    ];
+    expect(args).toEqual(expected);
+  });
+
+  it('handles loan amt confirm click', async () => {
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState: {
+        ...initialState,
+        currentModal: 'loanpayment',
+        modalStatus: 'open',
+        gameState: {
+          ...initialState.gameState,
+          loans: [
+            {
+              location: 'oskah',
+              initialAmount: 1200,
+              principal: 1000,
+              dueDate: 100,
+            },
+          ],
+        },
+      },
+      reducers: {},
+    });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    const spy = jest.spyOn(mockStore, 'dispatch');
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <BankAmountModal />
+        </IntlProvider>
+      </Provider>,
+    );
+    await waitFor(async () => {
+      fireEvent.change(screen.getByTestId('bank-amount-input'), { target: { value: '10' } });
+    });
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+    await waitFor(async () => {
+      fireEvent.click(screen.getByTestId('bank-modal-btn-ok'));
+    });
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+
+    const args = spy.mock.calls.map((arg) => arg[0]);
+    const expected = [
+      { type: 'game/makeLoanPayment', payload: 10 },
       { type: 'game/setModalStatus', payload: 'closing' },
       { type: 'game/setCurrentModal', payload: '' },
       { type: 'game/setModalStatus', payload: 'closed' },
