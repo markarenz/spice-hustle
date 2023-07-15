@@ -49,9 +49,9 @@ export const getLocalPrices = (location: string, numTurns: number) => {
   return prices;
 };
 
-export const getNetWealth = (cash: number, loans: Loan[]) => {
+export const getNetWealth = (cash: number, savings: number, loans: Loan[]) => {
   const loansTotal = loans.reduce((sum, item) => sum + item.principal, 0);
-  return cash - loansTotal;
+  return cash + savings - loansTotal;
 };
 
 export const getCapacityMax = (flags: Flags): VolWeight => {
@@ -98,3 +98,12 @@ export const getMaxQty = (gameState: GameState, selectedItem: any, itemsData: It
   );
 
 export const getRnd1d6 = () => Math.floor(Math.random() * 6) + 1;
+
+export const getHasLocalLoan = (loans: Loan[], location: string): boolean =>
+  loans.some((loan) => loan.location === location);
+
+export const getLoanByLocation = (loans: Loan[], location: string) =>
+  loans.find((loan) => loan.location === location);
+
+export const getHasOverdueLoanForLocation = (gameState: GameState, location: string): boolean =>
+  gameState.loans.some((loan) => loan.location === location && loan.dueDate < gameState.numTurns);

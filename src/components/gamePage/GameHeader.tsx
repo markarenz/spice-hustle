@@ -10,6 +10,8 @@ import CurrencyDisplay from 'components/common/CurrencyDisplay';
 import Modal from 'components/common/Modal';
 import IconInfo from 'components/icons/IconInfo';
 import { getBgImg } from './headerUtils';
+import LoanExpirationWarning from './LoanExpirationWarning';
+import { getHasOverdueLoanForLocation } from 'utils/utils';
 
 const GameHeader = () => {
   const [bgImgs, setBgImgs] = useState<string[]>([]);
@@ -78,7 +80,7 @@ const GameHeader = () => {
         </div>
         <div
           aria-hidden="true"
-          className={`absolute top-0 left-0 h-full w-full bg-gray-800 transition-opacity duration-300 ${
+          className={`absolute top-0 left-0 h-full w-full bg-gray-800 transition-opacity pointer-events-none duration-300 ${
             isShowingBg ? 'opacity-0' : 'opacity-100'
           }`}
         />
@@ -105,6 +107,9 @@ const GameHeader = () => {
           </div>
         </div>
       </div>
+      {getHasOverdueLoanForLocation(gameState, location) && (
+        <LoanExpirationWarning location={location} />
+      )}
       <nav className="bg-gradient-to-b from-gray-500 to-gray-900 border-b-orange-500 border-b-4 border-t-4 border-t-gray-700">
         <div className="container mx-auto flex justify-between">
           {Object.keys(GameTabSlugs).map((slug) => (

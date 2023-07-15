@@ -1,20 +1,23 @@
 import { FormattedMessage } from 'react-intl';
 import { useGameSliceSelector, useGameSliceDispatch } from 'store/reduxHooks';
-import { setMarketStatus } from 'store/gameSlice';
+import { setSubPanelStatus } from 'store/gameSlice';
 
 type Props = {
   slug: string;
 };
-const MarketActionTabButton: React.FC<Props> = ({ slug }) => {
+const PanelActionTabButton: React.FC<Props> = ({ slug }) => {
   const dispatch = useGameSliceDispatch();
-  const { marketStatus } = useGameSliceSelector((state) => state.game);
+  const { subPanelStatus } = useGameSliceSelector((state) => state.game);
   const handleClick = () => {
-    dispatch(setMarketStatus(slug));
+    dispatch(setSubPanelStatus(slug));
   };
+  const isActive = subPanelStatus === slug;
   return (
     <button
       data-testid={`market-tab-btn-${slug}`}
-      className="relative p-4 w-full uppercase font-bold group"
+      className={`relative p-4 w-full uppercase font-bold group ${
+        isActive ? 'pointer-events-none' : ''
+      }`}
       onClick={handleClick}
     >
       <div
@@ -24,20 +27,20 @@ const MarketActionTabButton: React.FC<Props> = ({ slug }) => {
       <div
         data-testid="market-tab-btn-label-wrap"
         className={`absolute w-full left-0 bottom-0 transition-all duration-150 w-full bg-gray-900 ${
-          marketStatus === slug ? 'h-full' : 'h-0'
+          isActive ? 'h-full' : 'h-0'
         }`}
         aria-hidden="true"
       />
 
       <span
         className={`relative transition-colors duration-150 ${
-          marketStatus === slug ? 'text-gray-200' : 'text-gray-800'
+          subPanelStatus === slug ? 'text-gray-200' : 'text-gray-800'
         }`}
       >
-        <FormattedMessage id={`market__${slug}_btn_label`} />
+        <FormattedMessage id={`subpanel_tab__${slug}`} />
       </span>
     </button>
   );
 };
 
-export default MarketActionTabButton;
+export default PanelActionTabButton;

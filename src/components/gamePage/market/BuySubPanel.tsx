@@ -8,12 +8,14 @@ import CapacityDisplay from './CapacityDisplay';
 import Table from 'components/common/Table';
 import QtyModal from './QtyModal';
 import ItemInfoModal from './ItemInfoModal';
+import { getHasOverdueLoanForLocation } from 'utils/utils';
 
 const BuySubPanel = () => {
   const dispatch = useGameSliceDispatch();
   const [selectedItem, setSelectedItem] = useState<any>({});
   const { formatMessage } = useIntl();
   const { gameState, modalStatus, currentModal } = useGameSliceSelector((state) => state.game);
+  const hasOverdueLoan = getHasOverdueLoanForLocation(gameState, gameState.location);
   const isModalOpen = modalStatus !== 'closed';
   const prices = gameState.prices;
   const itemsForSale = Object.keys(gameState.prices)
@@ -73,6 +75,7 @@ const BuySubPanel = () => {
             labelKey="market__buy__table___btn_buy"
             variant="primary"
             testId={`btn-buy-${id}`}
+            disabled={hasOverdueLoan}
           />
         )}
       </span>

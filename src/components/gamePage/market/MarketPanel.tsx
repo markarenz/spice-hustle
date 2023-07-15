@@ -1,24 +1,24 @@
 import { useGameSliceSelector } from 'store/reduxHooks';
 import BuySubPanel from './BuySubPanel';
 import SellSubPanel from './SellSubPanel';
-import MarketActionTabButton from './MarketActionTabButton';
+import PanelActionTabButton from 'components/common/PanelActionTabButton';
 
 const MarketPanel = () => {
-  const { marketStatus } = useGameSliceSelector((state) => state.game);
+  const { subPanelStatus } = useGameSliceSelector((state) => state.game);
   return (
     <div data-testid="market-panel">
       <div className="bg-orange-500">
         <div className="container mx-auto">
           <div className="flex items-center justify-between">
             {['buy', 'sell'].map((slug) => (
-              <MarketActionTabButton slug={slug} key={slug} />
+              <PanelActionTabButton slug={slug} key={slug} />
             ))}
           </div>
         </div>
       </div>
       <div className="container mx-auto py-8">
-        {marketStatus === 'buy' && <BuySubPanel />}
-        {marketStatus === 'sell' && <SellSubPanel />}
+        {subPanelStatus === 'buy' && <BuySubPanel />}
+        {subPanelStatus === 'sell' && <SellSubPanel />}
       </div>
     </div>
   );

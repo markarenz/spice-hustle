@@ -10,7 +10,7 @@ const Table: React.FC<Props> = ({ data, fieldLabels, actions }) => {
   const { formatMessage } = useIntl();
   const getProcessedFieldValue = (item: any, field: TableFieldLabel) => {
     const val = item[field.slug];
-    if (['price', 'priceValue'].includes(field.slug)) {
+    if (['price', 'priceValue', 'principal'].includes(field.slug)) {
       return `⌾${val}`;
     }
     if (typeof val === 'boolean') {

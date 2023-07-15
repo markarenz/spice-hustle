@@ -1,33 +1,34 @@
 import { IntlProvider } from 'react-intl';
 import { Provider } from 'react-redux';
-import { AppStatuses, GameSliceState } from 'types';
-import { getLocalPrices } from 'utils/utils';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { render, screen, act, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, fireEvent, act } from '@testing-library/react';
 import messages from 'locales/en-US/copy.json';
 import initGameState from 'data/initGameState';
-import ToolsPanel from 'components/gamePage/tools/ToolsPanel';
+import { AppStatuses, GameSliceState } from 'types';
+import SavingsPanel from 'components/gamePage/bank/SavingsPanel';
 
 jest.useFakeTimers();
-
-// Mocking console.error to prevent output related to intl when we use mock state
-jest.spyOn(console, 'error').mockImplementation(() => {});
 
 const initialState: GameSliceState = {
   appStatus: AppStatuses.StartPage,
   modalStatus: 'closed',
   gameState: {
     ...initGameState,
-    prices: getLocalPrices(initGameState.location, 1),
-    capacity: { used: { weight: 0, volume: 0 }, max: { weight: 10, volume: 10 } },
+    loans: [
+      {
+        location: 'oskah',
+        initialAmount: 1200,
+        principal: 1000,
+        dueDate: 100,
+      },
+    ],
   },
-  subPanelStatus: 'buy',
+  subPanelStatus: 'savings',
   currentModal: '',
-  gamePanel: 'market',
+  gamePanel: 'bank',
 };
-
-describe('ToolsPanel', () => {
-  it('renders component', () => {
+describe('SavingsPanel', () => {
+  it('renders the component', () => {
     const mockGameSlice = createSlice({
       name: 'game',
       initialState,
@@ -41,61 +42,14 @@ describe('ToolsPanel', () => {
     render(
       <Provider store={mockStore}>
         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <ToolsPanel />
+          <SavingsPanel />
         </IntlProvider>
       </Provider>,
     );
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
-    const element = screen.getByTestId('tools-panel');
-    expect(element).toBeInTheDocument();
+    expect(screen.getByTestId('savings-panel')).toBeInTheDocument();
   });
 
-  it('handles upgrade buy click', async () => {
-    const mockGameSlice = createSlice({
-      name: 'game',
-      initialState,
-      reducers: {},
-    });
-    const mockStore = configureStore({
-      reducer: {
-        game: mockGameSlice.reducer,
-      },
-    });
-    const spy = jest.spyOn(mockStore, 'dispatch');
-    render(
-      <Provider store={mockStore}>
-        <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <ToolsPanel />
-        </IntlProvider>
-      </Provider>,
-    );
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
-    await waitFor(async () => {
-      fireEvent.click(screen.getByTestId('upgrade-btn-buy-capacity_1'));
-    });
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
-    const args = spy.mock.calls.map((arg) => arg[0]);
-    const expected = [
-      {
-        type: 'game/buyUpgrade',
-        payload: {
-          action: 'buy',
-          itemId: 'capacity_1',
-          price: 100,
-          qty: 1,
-        },
-      },
-    ];
-    expect(args).toEqual(expected);
-  });
-
-  it('handles upgrade info click', async () => {
+  it('handles deposit click', async () => {
     const mockGameSlice = createSlice({
       name: 'game',
       initialState,
@@ -110,44 +64,66 @@ describe('ToolsPanel', () => {
     render(
       <Provider store={mockStore}>
         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <ToolsPanel />
+          <SavingsPanel />
         </IntlProvider>
       </Provider>,
     );
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
     await waitFor(async () => {
-      fireEvent.click(screen.getByTestId('upgrade-btn-info-capacity_1'));
+      fireEvent.click(screen.getByTestId('bank-btn-deposit'));
     });
     act(() => {
       jest.advanceTimersByTime(550);
     });
     const args = spy.mock.calls.map((arg) => arg[0]);
     const expected = [
-      {
-        type: 'game/setCurrentModal',
-        payload: 'upgrade-info',
-      },
-      {
-        type: 'game/setModalStatus',
-        payload: 'opening',
-      },
-      {
-        type: 'game/setModalStatus',
-        payload: 'open',
-      },
+      { type: 'game/setCurrentModal', payload: 'deposit' },
+      { type: 'game/setModalStatus', payload: 'opening' },
+      { type: 'game/setModalStatus', payload: 'open' },
     ];
     expect(args).toEqual(expected);
   });
 
-  it('handles info close', async () => {
+  it('handles withdraw click', async () => {
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState,
+      reducers: {},
+    });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    const spy = jest.spyOn(mockStore, 'dispatch');
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <SavingsPanel />
+        </IntlProvider>
+      </Provider>,
+    );
+    await waitFor(async () => {
+      fireEvent.click(screen.getByTestId('bank-btn-withdraw'));
+    });
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+    const args = spy.mock.calls.map((arg) => arg[0]);
+    const expected = [
+      { type: 'game/setCurrentModal', payload: 'withdrawal' },
+      { type: 'game/setModalStatus', payload: 'opening' },
+      { type: 'game/setModalStatus', payload: 'open' },
+    ];
+    expect(args).toEqual(expected);
+  });
+
+  it('renders the component, modal open', () => {
     const mockGameSlice = createSlice({
       name: 'game',
       initialState: {
         ...initialState,
-        currentModal: 'upgrade-info',
         modalStatus: 'open',
+        currentModal: 'deposit',
       },
       reducers: {},
     });
@@ -156,34 +132,13 @@ describe('ToolsPanel', () => {
         game: mockGameSlice.reducer,
       },
     });
-    const spy = jest.spyOn(mockStore, 'dispatch');
     render(
       <Provider store={mockStore}>
         <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <ToolsPanel />
+          <SavingsPanel />
         </IntlProvider>
       </Provider>,
     );
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
-    await waitFor(async () => {
-      fireEvent.click(screen.getByTestId('btn-tools-info-close'));
-    });
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
-    const args = spy.mock.calls.map((arg) => arg[0]);
-    const expected = [
-      {
-        type: 'game/setModalStatus',
-        payload: 'closing',
-      },
-      {
-        type: 'game/setModalStatus',
-        payload: 'closed',
-      },
-    ];
-    expect(args).toEqual(expected);
+    expect(screen.getByTestId('modal')).toBeInTheDocument();
   });
 });

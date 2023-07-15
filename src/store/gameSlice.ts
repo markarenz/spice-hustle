@@ -11,6 +11,7 @@ import { getLocalPrices, getNetWealth, getCapacity, getRandRange } from 'utils/u
 import { getInitialState } from './storeUtils';
 import initGameState from 'data/initGameState';
 import { saveGameLocal } from 'utils/saveLoadUtils';
+import loansData from 'data/loansData';
 
 export type Slices = {
   game: GameSliceState;
@@ -34,7 +35,7 @@ export const gameSlice = createSlice({
     },
     startNewGame: (state) => {
       const newGameData = getNewGameData();
-      state.marketStatus = 'buy';
+      state.subPanelStatus = 'buy';
       state.appStatus = AppStatuses.Game;
       state.gameState = { ...newGameData };
       saveGameLocal({ ...newGameData });
@@ -60,20 +61,106 @@ export const gameSlice = createSlice({
     },
     setGamePanel: (state, action: PayloadAction<string>) => {
       state.gamePanel = action.payload;
+      switch (action.payload) {
+        case 'market':
+          state.subPanelStatus = 'buy';
+          break;
+        case 'bank':
+          state.subPanelStatus = 'savings';
+          break;
+        default:
+          state.subPanelStatus = '';
+      }
       state.modalStatus = 'closed';
     },
     closeGame: (state) => {
       state.appStatus = AppStatuses.StartPage;
       state.modalStatus = 'closed';
     },
-    setMarketStatus: (state, action: PayloadAction<string>) => {
-      state.marketStatus = action.payload;
+    setSubPanelStatus: (state, action: PayloadAction<string>) => {
+      state.subPanelStatus = action.payload;
       state.modalStatus = 'closed';
+    },
+    processBankDepositWithdrawal: (state, action: PayloadAction<number>) => {
+      // deposits = positive amounts, withdrawals = negative amounts
+      const amt = action.payload;
+      const newCash = state.gameState.cash - amt;
+      const newSavings = state.gameState.savings + amt;
+      const newNetWealth = getNetWealth(newCash, newSavings, state.gameState.loans);
+      const newGameState = {
+        ...state.gameState,
+        numTurns: state.gameState.numTurns + 1,
+        cash: newCash,
+        netWealth: newNetWealth,
+        savings: newSavings,
+      };
+      state.gameState = {
+        ...newGameState,
+      };
+      saveGameLocal({ ...newGameState });
+    },
+    acceptLoanOffer: (state, action: PayloadAction<string>) => {
+      const location = action.payload;
+      const loan = loansData[location];
+      const newLoans = [
+        ...state.gameState.loans,
+        {
+          location,
+          initialAmount: loan.amount + loan.markup,
+          principal: loan.amount + loan.markup,
+          dueDate: state.gameState.numTurns + loan.term,
+        },
+      ];
+      const newCash = state.gameState.cash + loan.amount;
+      const newNetWealth = getNetWealth(newCash, state.gameState.savings, newLoans);
+      const newGameState = {
+        ...state.gameState,
+        numTurns: state.gameState.numTurns + 1,
+        cash: newCash,
+        netWealth: newNetWealth,
+        loans: newLoans,
+      };
+      state.gameState = {
+        ...newGameState,
+      };
+      saveGameLocal({ ...newGameState });
+    },
+    makeLoanPayment: (state, action: PayloadAction<number>) => {
+      const amt = action.payload;
+      const { location, loans } = state.gameState;
+      const selectedLoan = state.gameState.loans.find((loan) => loan.location === location);
+      if (selectedLoan) {
+        const newLoans =
+          selectedLoan.principal > amt
+            ? loans.map((loan) =>
+                loan.location === location
+                  ? {
+                      ...loan,
+                      principal: loan.principal - amt,
+                    }
+                  : loan,
+              )
+            : loans.filter((loan) => loan.location !== location);
+
+        const newCash = state.gameState.cash - amt;
+        const newNetWealth = getNetWealth(newCash, state.gameState.savings, newLoans);
+        const newGameState = {
+          ...state.gameState,
+          numTurns: state.gameState.numTurns + 1,
+          cash: newCash,
+          netWealth: newNetWealth,
+          loans: newLoans,
+        };
+        state.gameState = {
+          ...newGameState,
+        };
+        saveGameLocal({ ...newGameState });
+      }
     },
     buyUpgrade: (state, action: PayloadAction<Transaction>) => {
       const { itemId, price } = action.payload;
       const newCash = state.gameState.cash - price;
-      const newNetWealth = getNetWealth(newCash, state.gameState.loans);
+      const newNetWealth = getNetWealth(newCash, state.gameState.savings, state.gameState.loans);
       const newFlags = { ...state.gameState.flags, [`upgrade__${itemId}`]: true };
       const newGameState = {
         ...state.gameState,
@@ -100,7 +187,7 @@ export const gameSlice = createSlice({
         },
       };
       const newCash = state.gameState.cash - cost;
-      const newNetWealth = getNetWealth(newCash, state.gameState.loans);
+      const newNetWealth = getNetWealth(newCash, state.gameState.savings, state.gameState.loans);
       const newInventory = {
         ...state.gameState.inventory,
         [itemId]: { itemId, qty: (state.gameState.inventory[itemId]?.qty || 0) + qty },
@@ -130,7 +217,7 @@ export const gameSlice = createSlice({
         },
       };
       const newCash = state.gameState.cash + cost;
-      const newNetWealth = getNetWealth(newCash, state.gameState.loans);
+      const newNetWealth = getNetWealth(newCash, state.gameState.savings, state.gameState.loans);
       const newInventory = {
         ...state.gameState.inventory,
         [itemId]: { itemId, qty: state.gameState.inventory[itemId]?.qty - qty },
@@ -210,7 +297,7 @@ export const gameSlice = createSlice({
         cash: newCash,
         flags: newFlags,
         inventory: newInventory,
-        netWealth: getNetWealth(newCash, state.gameState.loans),
+        netWealth: getNetWealth(newCash, 0, []),
       };
       state.gameState = {
         ...newGameState,
@@ -231,7 +318,7 @@ export const gameSlice = createSlice({
       state.gameState = {
         ...newGameState,
       };
-      state.marketStatus = 'buy';
+      state.subPanelStatus = 'buy';
       saveGameLocal({ ...newGameState });
     },
   },
@@ -245,13 +332,16 @@ export const {
   loadSavedGame,
   setGamePanel,
   closeGame,
-  setMarketStatus,
+  setSubPanelStatus,
   buyUpgrade,
   buyItem,
   sellItem,
   relocate,
   setCurrentModal,
   processTravelDay,
+  processBankDepositWithdrawal,
+  acceptLoanOffer,
+  makeLoanPayment,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

@@ -7,13 +7,16 @@ import CapacityDisplay from './CapacityDisplay';
 import { setModalStatus, sellItem, setCurrentModal } from 'store/gameSlice';
 import Table from 'components/common/Table';
 import QtyModal from './QtyModal';
+import ItemInfoModal from './ItemInfoModal';
+import { getHasOverdueLoanForLocation } from 'utils/utils';
 
 const SellSubPanel = () => {
   const dispatch = useGameSliceDispatch();
   const [selectedItem, setSelectedItem] = useState<any>({});
   const { formatMessage } = useIntl();
   const { gameState, modalStatus, currentModal } = useGameSliceSelector((state) => state.game);
-  const isModalOpen = modalStatus !== 'closed' && currentModal === 'sellQty';
+  const hasOverdueLoan = getHasOverdueLoanForLocation(gameState, gameState.location);
+  const isModalOpen = modalStatus !== 'closed' && ['sellQty', 'info'].includes(currentModal);
   const { inventory, prices } = gameState;
   const inventoryItems = Object.keys(gameState.prices)
     .filter(
@@ -25,8 +28,8 @@ const SellSubPanel = () => {
       priceValue: prices[key].value,
       qty: inventory[key]?.qty,
     }));
-  const openModal = () => {
-    dispatch(setCurrentModal('sellQty'));
+  const openModal = (slug: string) => {
+    dispatch(setCurrentModal(slug));
     dispatch(setModalStatus('opening'));
     setTimeout(() => {
       dispatch(setModalStatus('open'));
@@ -38,10 +41,10 @@ const SellSubPanel = () => {
       dispatch(setModalStatus('closed'));
     }, 510);
   };
-  const handleSellClick = (id: string) => {
+  const handleItemClick = (id: string, slug: string) => {
     const foundItem = inventoryItems.find((item: any) => item.id === id);
     setSelectedItem({ ...foundItem });
-    openModal();
+    openModal(slug);
   };
   const handleQtyClose = () => {
     closeModal();
@@ -59,12 +62,21 @@ const SellSubPanel = () => {
   };
   const sellTableActions = (id: string) => (
     <div className="px-4">
+      <span className="mr-4 mb-2">
+        <Button
+          onClick={() => handleItemClick(id, 'info')}
+          labelKey="market__buy__table___btn_info"
+          variant="secondary"
+          testId={`btn-info-${id}`}
+        />
+      </span>
       <span className="mr-4 mb-2 block lg:inline w-full lg:w-auto">
         <Button
-          onClick={() => handleSellClick(id)}
+          onClick={() => handleItemClick(id, 'sellQty')}
           labelKey="market__sell__table___btn_sell"
           variant="secondary"
           testId={`btn-sell-${id}`}
+          disabled={hasOverdueLoan}
         />
       </span>
     </div>
@@ -86,7 +98,10 @@ const SellSubPanel = () => {
       <div className="text-right py-2">
         <CapacityDisplay />
       </div>
-      {isModalOpen && (
+      {isModalOpen && currentModal === 'info' && (
+        <ItemInfoModal itemId={selectedItem.id} closeInfoModal={closeModal} />
+      )}
+      {isModalOpen && currentModal === 'sellQty' && (
         <QtyModal
           action="sell"
           selectedItem={selectedItem}

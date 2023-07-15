@@ -6,6 +6,9 @@ import {
   getRandRange,
   getLocalPrices,
   getInGameDate,
+  getHasLocalLoan,
+  getLoanByLocation,
+  getHasOverdueLoanForLocation,
 } from 'utils/utils';
 import mockGameState from '__tests__/__fixtures__/mockGameState';
 import itemsData from 'data/itemsData';
@@ -47,15 +50,15 @@ describe('getLocalPrices', () => {
 
 describe('getNetWealth', () => {
   it('returns the correct value', () => {
-    const result = getNetWealth(500, [
+    const result = getNetWealth(500, 50, [
       {
-        id: '123',
+        location: '123',
         initialAmount: 120,
         principal: 100,
-        interestRate: 10,
+        dueDate: 100,
       },
     ]);
-    expect(result).toBe(400); // 500 - 100 = 400
+    expect(result).toBe(450); // 500 + 50 - 100 = 450
   });
 });
 
@@ -145,5 +148,61 @@ describe('getMaxQty', () => {
       itemsData,
     );
     expect(result).toBe(9);
+  });
+});
+
+const mockLoans = [
+  {
+    location: 'oskah',
+    initialAmount: 1200,
+    principal: 1000,
+    dueDate: 100,
+  },
+];
+
+describe('getHasLocalLoan', () => {
+  it('returns true if we have a loan for this location', () => {
+    const result = getHasLocalLoan(mockLoans, 'oskah');
+    expect(result).toBe(true);
+  });
+  it('returns false if we do not have a loan for this location', () => {
+    const result = getHasLocalLoan(mockLoans, 'tabbith');
+    expect(result).toBe(false);
+  });
+});
+describe('getLoanByLocation', () => {
+  it('returns loan for location if it exists', () => {
+    const result = getLoanByLocation(mockLoans, 'oskah');
+    expect(result?.location).toBe('oskah');
+  });
+  it('returns nothing if loan for location does not exist', () => {
+    const result = getLoanByLocation(mockLoans, 'tabbith');
+    expect(result?.location).toBe(undefined);
+  });
+});
+
+describe('getHasOverdueLoanForLocation', () => {
+  const mockGameStateLoans = {
+    ...mockGameState,
+    location: 'oskah',
+    numTurns: 80,
+    loans: mockLoans,
+  };
+  const mockGameStateLoansOverdue = {
+    ...mockGameStateLoans,
+    numTurns: 110,
+  };
+
+  it('returns false when user has loan that is not overdue for this location', () => {
+    const result = getHasOverdueLoanForLocation(mockGameStateLoans, 'oskah');
+    expect(result).toBe(false);
+  });
+  it('returns false when user has loan that is overdue for another location', () => {
+    const result = getHasOverdueLoanForLocation(mockGameStateLoansOverdue, 'tabbith');
+    expect(result).toBe(false);
+  });
+  it('returns false when user has loan that is overdue for this location', () => {
+    const result = getHasOverdueLoanForLocation(mockGameStateLoansOverdue, 'oskah');
+    expect(result).toBe(true);
   });
 });
