@@ -58,6 +58,7 @@ export const gameSlice = createSlice({
       state.appStatus = AppStatuses.Game;
       state.gameState = action.payload;
       state.gamePanel = GameTabSlugs.Market;
+      state.subPanelStatus = 'buy';
       state.modalStatus = 'closed';
     },
     setGamePanel: (state, action: PayloadAction<string>) => {

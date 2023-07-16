@@ -92,8 +92,16 @@ const GameHeader = () => {
           <div className="text-gray-200 text-base lg:text-[1.5rem] font-bold leading-none pb-2 drop-shadow-txtlinrev">
             <InGameDateDisplay numTurns={gameState?.numTurns} />
           </div>
-          <div className="text-gray-200 font-bold text-[2rem] leading-none drop-shadow-txtlinrev">
-            <CurrencyDisplay value={gameState?.cash} />
+          <div className="text-gray-200 font-bold text-[2rem] leading-none drop-shadow-txtlinrev mb-2">
+            <FormattedMessage id="game_header__cash" />: <CurrencyDisplay value={gameState?.cash} />
+          </div>
+          <div className="text-gray-200 text-[1rem] leading-none drop-shadow-txtlinrev">
+            <span className="pl-1">
+              <span className="mr-2">
+                <FormattedMessage id="game_header__net_wealth" />:
+              </span>
+              <CurrencyDisplay value={gameState?.netWealth} />
+            </span>
           </div>
         </div>
       </div>

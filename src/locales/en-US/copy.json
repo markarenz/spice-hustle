@@ -13,6 +13,8 @@
   "title_page__saved_game_modal__btn_load": "Load",
   "title_page__saved_game_modal__btn_delete": "Delete",
 
+  "game_header__cash": "Cash",
+  "game_header__net_wealth": "Net Wealth",
   "game_date_display__ordinal__st": "st",
   "game_date_display__ordinal__nd": "nd",
   "game_date_display__ordinal__rd": "rd",
