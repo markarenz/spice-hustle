@@ -14,7 +14,6 @@ const Table: React.FC<Props> = ({ data, fieldLabels, actions }) => {
     if (['price', 'priceValue', 'principal'].includes(field.slug)) {
       return `⌾${val}`;
     }
-
     if (field.slug === 'guildDependentTitle') {
       return (
         <span className="flex items-center">
