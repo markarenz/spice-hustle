@@ -1,5 +1,6 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import { TableFieldLabel } from 'types';
+import IconGuild from 'components/icons/IconGuild';
 
 type Props = {
   data: any[]; // data item type should have a shape that includes an `id` property
@@ -12,6 +13,32 @@ const Table: React.FC<Props> = ({ data, fieldLabels, actions }) => {
     const val = item[field.slug];
     if (['price', 'priceValue', 'principal'].includes(field.slug)) {
       return `⌾${val}`;
+    }
+
+    if (field.slug === 'guildDependentTitle') {
+      return (
+        <span className="flex items-center">
+          <span>{val}</span>
+          {(item.guildDiscount > 0 || item.guildOnly) && (
+            <span className="inline-block w-6 h-6 ml-2">
+              <IconGuild isActive={item.hasGuildMembership} aria-label="Has Guild Discount" />
+            </span>
+          )}
+        </span>
+      );
+    }
+    if (field.slug === 'discountablePrice') {
+      return (
+        <span className="flex items-center">
+          <span>⌾{val}</span>
+          {item.hasGuildMembership && item.guildDiscount > 0 && (
+            <>
+              {' '}
+              <span className="ml-2">(-{item.guildDiscount}) </span>
+            </>
+          )}
+        </span>
+      );
     }
     if (typeof val === 'boolean') {
       return formatMessage({ id: val ? 'yes' : 'no' });

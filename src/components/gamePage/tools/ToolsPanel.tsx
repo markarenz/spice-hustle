@@ -17,6 +17,7 @@ const ToolsPanel = () => {
   const dispatch = useGameSliceDispatch();
   const { formatMessage } = useIntl();
   const { location, flags } = gameState;
+  const hasGuildMembership = flags[`guild__${location}`];
   const flagsArr = Object.keys(flags);
   const upgradesOnOffer = Object.values(upgradesData)
     .filter((item) =>
@@ -26,14 +27,22 @@ const ToolsPanel = () => {
           item.dependencies.every((dep) => flagsArr.includes(dep)),
       ),
     )
-    .map((item) => ({
-      id: item.slug,
-      title: formatMessage({ id: `upgrades__${item.slug}__title` }),
-      price: item.prices.find((price) => price.locations.includes(location))?.price,
-      owned: Object.keys(gameState.flags).includes(`upgrade__${item.slug}`),
-    }));
+    .map((item) => {
+      const thisPrice = item.prices.find((price) => price.locations.includes(location));
+      return {
+        id: item.slug,
+        guildDependentTitle: formatMessage({ id: `upgrades__${item.slug}__title` }),
+        price: thisPrice?.price,
+        guildOnly: thisPrice?.guildOnly,
+        hasGuildMembership: hasGuildMembership,
+        owned: Object.keys(gameState.flags).includes(`upgrade__${item.slug}`),
+      };
+    });
+  const getUpgradeGuildOnly = (id: string) =>
+    upgradesOnOffer.find((item) => item.id === id)?.guildOnly;
+
   const getUpgradePrice = (id: string) =>
-    upgradesOnOffer.find((item) => item.id === id)?.price ?? 0;
+    upgradesOnOffer.find((item) => item.id === id)?.price || 0;
   const handleBuyUpgrade = (itemId: string, price: number) => {
     if (gameState.cash >= price) {
       const transaction: Transaction = {
@@ -78,13 +87,14 @@ const ToolsPanel = () => {
             labelKey="market__buy__table___btn_buy"
             variant="primary"
             testId={`upgrade-btn-buy-${id}`}
+            disabled={getUpgradeGuildOnly(id) && !hasGuildMembership}
           />
         )}
       </span>
     </div>
   );
   const fieldLabels: TableFieldLabel[] = [
-    { slug: 'title', titleKey: 'upgrades__buy__table_field__itemName' },
+    { slug: 'guildDependentTitle', titleKey: 'upgrades__buy__table_field__itemName' },
     { slug: 'price', titleKey: 'upgrades__buy__table_field__price' },
     { slug: 'owned', titleKey: 'upgrades__buy__table_field__owned' },
   ];

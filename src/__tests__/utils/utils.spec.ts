@@ -9,6 +9,7 @@ import {
   getHasLocalLoan,
   getLoanByLocation,
   getHasOverdueLoanForLocation,
+  getGuildBenefitsByLocation,
 } from 'utils/utils';
 import mockGameState from '__tests__/__fixtures__/mockGameState';
 import itemsData from 'data/itemsData';
@@ -204,5 +205,36 @@ describe('getHasOverdueLoanForLocation', () => {
   it('returns false when user has loan that is overdue for this location', () => {
     const result = getHasOverdueLoanForLocation(mockGameStateLoansOverdue, 'oskah');
     expect(result).toBe(true);
+  });
+});
+
+describe('getGuildBenefitsByLocation', () => {
+  it('returns guild benefits for location: oskah (exclusive item)', () => {
+    const result = getGuildBenefitsByLocation('oskah');
+    const expected = {
+      exclusiveItems: ['potat'],
+      exclusiveUpgrades: [],
+      exclusiveLoan: false,
+    };
+    expect(result).toEqual(expected);
+  });
+  it('returns guild benefits for location: tabbith (exclusive loan)', () => {
+    const result = getGuildBenefitsByLocation('tabbith');
+    const expected = {
+      exclusiveItems: [],
+      exclusiveUpgrades: [],
+      exclusiveLoan: true,
+    };
+    expect(result).toEqual(expected);
+  });
+
+  it('returns guild benefits for location: butre (exclusive upgrade)', () => {
+    const result = getGuildBenefitsByLocation('butre');
+    const expected = {
+      exclusiveItems: ['potat'],
+      exclusiveUpgrades: ['capacity_1'],
+      exclusiveLoan: false,
+    };
+    expect(result).toEqual(expected);
   });
 });

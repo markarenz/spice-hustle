@@ -74,9 +74,14 @@ const LoansPanel = () => {
           <div className="text-center text-xl px-12 py-4 bg-gray-800 rounded-lg border-2 border-gray-500 mb-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
               <div>
-                <h2 className="text-3xl uppercase mb-2">Exclusive Oskah Loan Offer</h2>
+                <h2 className="text-3xl uppercase mb-2">
+                  <FormattedMessage id="bank__loans__offer__headline" values={{ location }} />
+                </h2>
                 {!localLoan.guildOnly && (
-                  <h3 className="italic text-lg">(ONLY available for guild members)</h3>
+                  <h3 className="italic text-lg">
+                    (
+                    <FormattedMessage id="bank__loans__offer__guild_only" />)
+                  </h3>
                 )}
                 <div>
                   <FormattedMessage id="bank__loans__offer__text1" />

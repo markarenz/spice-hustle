@@ -10,6 +10,8 @@ import {
   ItemsInfo,
 } from 'types';
 import itemsData from 'data/itemsData';
+import loansData from 'data/loansData';
+import upgradesData from 'data/upgrades';
 import { dateConfig, capacityData } from 'data/constants';
 
 export const getInGameDate = (numTurns: number): InGameDate => {
@@ -42,6 +44,7 @@ export const getLocalPrices = (location: string, numTurns: number) => {
         qty,
         volume,
         weight,
+        guildDiscount: price.guildDiscount,
       };
       prices[priceListItem.id] = { ...priceListItem };
     }
@@ -107,3 +110,31 @@ export const getLoanByLocation = (loans: Loan[], location: string) =>
 
 export const getHasOverdueLoanForLocation = (gameState: GameState, location: string): boolean =>
   gameState.loans.some((loan) => loan.location === location && loan.dueDate < gameState.numTurns);
+
+export const getGuildBenefitsByLocation = (location: string) => {
+  const exclusiveItems: string[] = [];
+  const exclusiveUpgrades: string[] = [];
+  let exclusiveLoan = false;
+  Object.values(itemsData).forEach((item) => {
+    if (
+      item.prices.some((price) => price.locations.includes(location) && price.guildDiscount > 0)
+    ) {
+      exclusiveItems.push(item.itemId);
+    }
+  });
+  Object.values(upgradesData).forEach((upgrade) => {
+    if (upgrade.prices.some((price) => price.locations.includes(location) && price.guildOnly)) {
+      exclusiveUpgrades.push(upgrade.slug);
+    }
+  });
+  Object.values(loansData).forEach((loan) => {
+    if (loan.location === location && loan.guildOnly) {
+      exclusiveLoan = true;
+    }
+  });
+  return {
+    exclusiveItems,
+    exclusiveUpgrades,
+    exclusiveLoan,
+  };
+};

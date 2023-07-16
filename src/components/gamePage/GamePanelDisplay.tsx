@@ -6,6 +6,7 @@ import MarketPanel from './market/MarketPanel';
 import BankPanel from './bank/BankPanel';
 import TravelPanel from './travel/TravelPanel';
 import ToolsPanel from './tools/ToolsPanel';
+import GuildPanel from './guild/GuildPanel';
 
 const GamePanelDisplay = () => {
   const { gamePanel } = useGameSliceSelector((state: Slices) => state.game);
@@ -15,16 +16,17 @@ const GamePanelDisplay = () => {
   }, [gamePanel]);
 
   switch (gamePanel) {
-    case GameTabSlugs.Market.toLowerCase():
-      return <MarketPanel />;
     case GameTabSlugs.Bank.toLowerCase():
       return <BankPanel />;
     case GameTabSlugs.Tools.toLowerCase():
       return <ToolsPanel />;
     case GameTabSlugs.Travel.toLowerCase():
       return <TravelPanel />;
+    case GameTabSlugs.Guild.toLowerCase():
+      return <GuildPanel />;
     default:
-      return <div data-testid="default-panel">DEFAULT PANEL</div>;
+    case GameTabSlugs.Market.toLowerCase():
+      return <MarketPanel />;
   }
 };
 

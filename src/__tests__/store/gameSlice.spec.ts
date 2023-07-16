@@ -20,6 +20,7 @@ import {
   processBankDepositWithdrawal,
   acceptLoanOffer,
   makeLoanPayment,
+  purchaseGuildMembership,
 } from 'store/gameSlice';
 import mockGameState from '__tests__/__fixtures__/mockGameState';
 import mockDanger from '__tests__/__fixtures__/travel/mockDanger';
@@ -377,5 +378,14 @@ describe('makeLoanPayment', () => {
     const result = store.getState().game.gameState;
     expect(result.cash).toEqual(1700);
     expect(result.loans.length).toEqual(2);
+  });
+});
+
+describe('purchaseGuildMembership', () => {
+  it('handle purchase of guild membership', () => {
+    store.dispatch(startNewGame());
+    store.dispatch(purchaseGuildMembership('oskah'));
+    const result = store.getState().game.gameState;
+    expect(result.flags.guild__oskah).toBe(true);
   });
 });

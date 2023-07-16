@@ -49,6 +49,7 @@ export type Price = {
   actions: string[];
   volume: number;
   weight: number;
+  guildDiscount: number;
 };
 
 export type InventoryItem = {

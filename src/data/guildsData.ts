@@ -1,9 +1,9 @@
-import { Locations } from 'types';
+import { Locations, GuildItemData } from 'types';
 
-const guildsData = {
+const guildsData: GuildItemData = {
   oskah: {
     location: Locations.Oskah,
-    price: 1000,
+    price: 10,
   },
   tabbith: {
     location: Locations.Tabbith,
