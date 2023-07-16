@@ -38,7 +38,7 @@ const Modal: React.FC<Props> = ({ children, titleKey }) => {
       />
       <div
         data-testid="modal-card"
-        className={`relative max-w-full lg:max-w-[70vw] mx-auto bg-gray-200 rounded-md ring-4 ring-orange-700 drop-shadow-[2px_2px_10px_rgba(0,0,0,.9)] min-w-[20rem] max-h-[calc(100vh_-_2rem)] max-w-[calc(100vw_-_2rem)] overflow-y-scroll transition-all duration-500 overflow-x-hidden ${
+        className={`relative max-w-full md:max-w-[90vw]  xl:max-w-[70vw] mx-auto bg-gray-200 rounded-md ring-4 ring-orange-700 drop-shadow-[2px_2px_10px_rgba(0,0,0,.9)] min-w-[20rem] max-h-[calc(100vh_-_2rem)] max-w-[calc(100vw_-_2rem)] overflow-y-scroll transition-all duration-500 overflow-x-hidden ${
           isOpening ? 'opacity-100 scale-100' : 'opacity-0 scale-50'
         }`}
       >

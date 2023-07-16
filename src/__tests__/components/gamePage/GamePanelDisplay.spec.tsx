@@ -20,31 +20,6 @@ const initialState: GameSliceState = {
 jest.useFakeTimers();
 
 describe('GamePanelDisplay', () => {
-  it('renders component: default panel', async () => {
-    const mockGameSlice = createSlice({
-      name: 'game',
-      initialState: { ...initialState, gamePanel: 'test' },
-      reducers: {},
-    });
-    const mockStore = configureStore({
-      reducer: {
-        game: mockGameSlice.reducer,
-      },
-    });
-    render(
-      <Provider store={mockStore}>
-        <IntlProvider messages={messages} locale="en" defaultLocale="en">
-          <GamePanelDisplay />
-        </IntlProvider>
-      </Provider>,
-    );
-    act(() => {
-      jest.advanceTimersByTime(550);
-    });
-    const element = screen.getByTestId('default-panel');
-    expect(element).toBeInTheDocument();
-  });
-
   it('renders component: market panel', async () => {
     const mockGameSlice = createSlice({
       name: 'game',
@@ -142,6 +117,56 @@ describe('GamePanelDisplay', () => {
       jest.advanceTimersByTime(550);
     });
     const element = screen.getByTestId('tools-panel');
+    expect(element).toBeInTheDocument();
+  });
+
+  it('renders component: guild panel', async () => {
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState: { ...initialState, gamePanel: 'guild' },
+      reducers: {},
+    });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <GamePanelDisplay />
+        </IntlProvider>
+      </Provider>,
+    );
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+    const element = screen.getByTestId('guild-panel');
+    expect(element).toBeInTheDocument();
+  });
+
+  it('renders component: default panel', async () => {
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState: { ...initialState, gamePanel: 'test' },
+      reducers: {},
+    });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <GamePanelDisplay />
+        </IntlProvider>
+      </Provider>,
+    );
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+    const element = screen.getByTestId('market-panel');
     expect(element).toBeInTheDocument();
   });
 });

@@ -12,7 +12,7 @@ const upgradesData: UpgradeData = {
       {
         price: 80,
         locations: ['butre'],
-        guildOnly: false,
+        guildOnly: true,
       },
     ],
   },

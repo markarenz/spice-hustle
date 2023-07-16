@@ -18,13 +18,16 @@ const BuySubPanel = () => {
   const hasOverdueLoan = getHasOverdueLoanForLocation(gameState, gameState.location);
   const isModalOpen = modalStatus !== 'closed';
   const prices = gameState.prices;
+  const hasGuildMembership = gameState.flags[`guild__${gameState.location.toLowerCase()}`];
   const itemsForSale = Object.keys(gameState.prices)
     .filter((key) => prices[key].actions.includes('buy'))
     .map((key) => ({
       ...prices[key],
-      title: formatMessage({ id: `items__${prices[key].id}__title` }),
-      priceValue: prices[key].value,
+      guildDependentTitle: formatMessage({ id: `items__${prices[key].id}__title` }),
+      discountablePrice: prices[key].value,
+      hasGuildMembership: hasGuildMembership,
     }));
+
   const openModal = (modalSlug: string) => {
     dispatch(setCurrentModal(modalSlug));
     dispatch(setModalStatus('opening'));
@@ -48,11 +51,14 @@ const BuySubPanel = () => {
     closeModal();
   };
   const handleBuyConfirm = (buyQty: number) => {
+    const price = hasGuildMembership
+      ? selectedItem.value - selectedItem.guildDiscount
+      : selectedItem.value;
     dispatch(
       buyItem({
         qty: buyQty,
         itemId: selectedItem.id,
-        price: selectedItem.value,
+        price,
         action: 'buy',
       }),
     );
@@ -82,8 +88,8 @@ const BuySubPanel = () => {
     </div>
   );
   const fieldLabels: TableFieldLabel[] = [
-    { slug: 'title', titleKey: 'market__buy__table_field__itemName' },
-    { slug: 'priceValue', titleKey: 'market__buy__table_field__price' },
+    { slug: 'guildDependentTitle', titleKey: 'market__buy__table_field__itemName' },
+    { slug: 'discountablePrice', titleKey: 'market__buy__table_field__price' },
     { slug: 'qty', titleKey: 'market__buy__table_field__qty' },
   ];
 

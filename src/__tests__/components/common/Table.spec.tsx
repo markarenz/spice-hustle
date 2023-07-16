@@ -48,4 +48,96 @@ describe('Table', () => {
     const element = screen.getByTestId('table');
     expect(element).toBeInTheDocument();
   });
+
+  it('renders component with guild-specific data - no membership', () => {
+    const fieldLabelsGuild: TableFieldLabel[] = [
+      {
+        slug: 'guildDependentTitle',
+        titleKey: 'title_page__saved_game_modal__table_field__dateModified',
+      },
+      { slug: 'isOwned', titleKey: 'title_page__saved_game_modal__table_field__location' },
+      {
+        slug: 'discountablePrice',
+        titleKey: 'title_page__saved_game_modal__table_field__netWealth',
+      },
+    ];
+    const mockUpgradesGuild = [
+      {
+        id: 1,
+        guildDependentTitle: 'Item 1',
+        isOwned: true,
+        discountablePrice: 10,
+        hasGuildMembership: false,
+        guildOnly: true,
+        guildDiscount: 0,
+      },
+      {
+        id: 2,
+        guildDependentTitle: 'Item 2',
+        isOwned: true,
+        discountablePrice: 10,
+        hasGuildMembership: false,
+        guildOnly: true,
+        guildDiscount: 1,
+      },
+    ];
+    const mockPropsGuild = {
+      data: mockUpgradesGuild,
+      fieldLabels: fieldLabelsGuild,
+      actions: saveListTableActions,
+    };
+    render(
+      <IntlProvider messages={messages} locale="en" defaultLocale="en">
+        <Table {...mockPropsGuild} />
+      </IntlProvider>,
+    );
+    const element = screen.queryByText('(-1)');
+    expect(element).not.toBeInTheDocument();
+  });
+
+  it('renders component with guild-specific data - has membership', () => {
+    const fieldLabelsGuild: TableFieldLabel[] = [
+      {
+        slug: 'guildDependentTitle',
+        titleKey: 'title_page__saved_game_modal__table_field__dateModified',
+      },
+      { slug: 'isOwned', titleKey: 'title_page__saved_game_modal__table_field__location' },
+      {
+        slug: 'discountablePrice',
+        titleKey: 'title_page__saved_game_modal__table_field__netWealth',
+      },
+    ];
+    const mockUpgradesGuild = [
+      {
+        id: 1,
+        guildDependentTitle: 'Item 1',
+        isOwned: true,
+        discountablePrice: 10,
+        hasGuildMembership: true,
+        guildOnly: true,
+        guildDiscount: 0,
+      },
+      {
+        id: 2,
+        guildDependentTitle: 'Item 2',
+        isOwned: true,
+        discountablePrice: 10,
+        hasGuildMembership: true,
+        guildOnly: true,
+        guildDiscount: 1,
+      },
+    ];
+    const mockPropsGuild = {
+      data: mockUpgradesGuild,
+      fieldLabels: fieldLabelsGuild,
+      actions: saveListTableActions,
+    };
+    render(
+      <IntlProvider messages={messages} locale="en" defaultLocale="en">
+        <Table {...mockPropsGuild} />
+      </IntlProvider>,
+    );
+    const element = screen.getByText('(-1)');
+    expect(element).toBeInTheDocument();
+  });
 });

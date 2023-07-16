@@ -12,6 +12,7 @@ import { getInitialState } from './storeUtils';
 import initGameState from 'data/initGameState';
 import { saveGameLocal } from 'utils/saveLoadUtils';
 import loansData from 'data/loansData';
+import guildsData from 'data/guildsData';
 
 export type Slices = {
   game: GameSliceState;
@@ -93,6 +94,25 @@ export const gameSlice = createSlice({
         cash: newCash,
         netWealth: newNetWealth,
         savings: newSavings,
+      };
+      state.gameState = {
+        ...newGameState,
+      };
+      saveGameLocal({ ...newGameState });
+    },
+    purchaseGuildMembership: (state, action: PayloadAction<string>) => {
+      const location = action.payload;
+      const amt = guildsData[location].price;
+      const newCash = state.gameState.cash - amt;
+      const newNetWealth = getNetWealth(newCash, state.gameState.savings, state.gameState.loans);
+      const newFlags = { ...state.gameState.flags, [`guild__${location}`]: true };
+      const newGameState = {
+        ...state.gameState,
+        numTurns: state.gameState.numTurns + 1,
+        cash: newCash,
+        netWealth: newNetWealth,
+        flags: newFlags,
+        // new prices?
       };
       state.gameState = {
         ...newGameState,
@@ -342,6 +362,7 @@ export const {
   processBankDepositWithdrawal,
   acceptLoanOffer,
   makeLoanPayment,
+  purchaseGuildMembership,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

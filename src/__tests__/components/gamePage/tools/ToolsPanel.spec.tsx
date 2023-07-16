@@ -186,4 +186,103 @@ describe('ToolsPanel', () => {
     ];
     expect(args).toEqual(expected);
   });
+
+  it('renders component - guild only upgrade - no membership', () => {
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState: {
+        ...initialState,
+        gameState: {
+          ...initialState.gameState,
+          location: 'butre',
+          flags: [],
+        },
+      },
+      reducers: {},
+    });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <ToolsPanel />
+        </IntlProvider>
+      </Provider>,
+    );
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+    const element = screen.getByTestId('icon-guild');
+    expect(element).toBeInTheDocument();
+    const bg = screen.getByTestId('icon-guild-bg');
+    expect(bg.getAttribute('fill')).toEqual('#888');
+  });
+
+  it('renders component - guild only upgrade - has membership', () => {
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState: {
+        ...initialState,
+        gameState: {
+          ...initialState.gameState,
+          location: 'butre',
+          flags: { guild__butre: true },
+        },
+      },
+      reducers: {},
+    });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <ToolsPanel />
+        </IntlProvider>
+      </Provider>,
+    );
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+    const element = screen.getByTestId('icon-guild');
+    expect(element).toBeInTheDocument();
+    const bg = screen.getByTestId('icon-guild-bg');
+    expect(bg.getAttribute('fill')).toEqual('#fa7316');
+  });
+
+  it('renders component - invalid location', () => {
+    const mockGameSlice = createSlice({
+      name: 'game',
+      initialState: {
+        ...initialState,
+        gameState: {
+          ...initialState.gameState,
+          location: 'test',
+        },
+      },
+      reducers: {},
+    });
+    const mockStore = configureStore({
+      reducer: {
+        game: mockGameSlice.reducer,
+      },
+    });
+    render(
+      <Provider store={mockStore}>
+        <IntlProvider messages={messages} locale="en" defaultLocale="en">
+          <ToolsPanel />
+        </IntlProvider>
+      </Provider>,
+    );
+    act(() => {
+      jest.advanceTimersByTime(550);
+    });
+    const element = screen.getByTestId('tools-panel');
+    expect(element).toBeInTheDocument();
+  });
 });

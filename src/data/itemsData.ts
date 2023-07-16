@@ -14,7 +14,7 @@ const itemsData: ItemsInfo = {
         qtyMax: 10,
         priceMin: 10,
         priceMax: 17,
-        guildDiscount: 0,
+        guildDiscount: 1,
       },
       {
         locations: [Locations.Oskah, Locations.Butre],
