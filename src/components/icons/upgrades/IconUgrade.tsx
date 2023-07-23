@@ -7,6 +7,7 @@ import IconUpgradeCounterDangerFlood from './IconUpgradeCounterDangerFlood';
 import IconUpgradeCounterDangerRockSlide from './IconUpgradeCounterDangerRockSlide';
 import IconUpgradeCounterDangerTricksters from './IconUpgradeCounterDangerTricksters';
 import IconUpgradeCounterDangerWolves from './IconUpgradeCounterDangerWolves';
+import IconDummy from 'components/icons/IconDummy';
 
 type Props = {
   type: string;
@@ -30,8 +31,9 @@ const IconUpgrade: React.FC<Props> = ({ type }) => {
     case 'counterDanger__tricksters':
       return <IconUpgradeCounterDangerTricksters />;
     case 'counterDanger__wolves':
-    default:
       return <IconUpgradeCounterDangerWolves />;
+    default:
+      return <IconDummy />;
   }
 };
 

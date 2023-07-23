@@ -1,5 +1,6 @@
 import IconItemApple from './IconItemApple';
 import IconItemPotat from './IconItemPotat';
+import IconDummy from 'components/icons/IconDummy';
 
 type Props = {
   type: string;
@@ -9,8 +10,9 @@ const IconItem: React.FC<Props> = ({ type }) => {
     case 'apple':
       return <IconItemApple />;
     case 'potat':
-    default:
       return <IconItemPotat />;
+    default:
+      return <IconDummy />;
   }
 };
 

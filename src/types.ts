@@ -200,7 +200,7 @@ export type RouteDanger = {
   type: DangerTypes;
   chance: number;
   effects: RouteDangerEffect[];
-  position: Position;
+  positions: { [key: number]: Position };
 };
 export type TravelTurnDangerResult = {
   danger: RouteDanger | null;

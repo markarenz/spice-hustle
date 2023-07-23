@@ -25,7 +25,7 @@ const guildsData: GuildItemData = {
     location: Locations.Winnie,
     price: 50000,
   },
-  tiggi: {
+  tigi: {
     location: Locations.Tigi,
     price: 75000,
   },

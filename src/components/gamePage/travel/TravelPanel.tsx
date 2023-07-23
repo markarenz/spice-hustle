@@ -3,7 +3,7 @@ import { Map, RouteDanger, TravelState } from 'types';
 import { FormattedMessage } from 'react-intl';
 import { Slices, processTravelDay, relocate } from 'store/gameSlice';
 import { useGameSliceSelector, useGameSliceDispatch } from 'store/reduxHooks';
-import Map01 from './maps/Map01';
+import MapDisplay from './maps/MapDisplay';
 import { getRnd1d6 } from 'utils/utils';
 import { maps } from 'data/maps';
 import TravelModal from './TravelModal';
@@ -141,7 +141,8 @@ const TravelPanel = () => {
           <div className="text-center italic">
             <FormattedMessage id="travel__explainer" />
           </div>
-          <Map01
+          <MapDisplay
+            mapVersion={gameState.mapVersion}
             location={location}
             availableLocations={availableLocations}
             handleLocationSelect={handleTravelStart}

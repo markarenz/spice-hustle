@@ -4,6 +4,7 @@ import IconDangerFlood from './IconDangerFlood';
 import IconDangerRockSlide from './IconDangerRockSlide';
 import IconDangerTricksters from './IconDangerTricksters';
 import IconDangerWolves from './IconDangerWolves';
+import IconDummy from 'components/icons/IconDummy';
 
 type Props = {
   type: string;
@@ -19,8 +20,9 @@ const IconDanger: React.FC<Props> = ({ type }) => {
     case DangerTypes.Tricksters:
       return <IconDangerTricksters />;
     case DangerTypes.Wolves:
-    default:
       return <IconDangerWolves />;
+    default:
+      return <IconDummy />;
   }
 };
 
