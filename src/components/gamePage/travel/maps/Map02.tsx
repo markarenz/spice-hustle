@@ -1,7 +1,7 @@
 import React from 'react';
 import { maps } from 'data/maps';
 import { RouteDanger } from 'types';
-import IconDanger from 'components/icons/dangers/IconDanger';
+import MapDangers from './MapDangers';
 
 type Props = {
   location: string;
@@ -805,17 +805,7 @@ const Map02: React.FC<Props> = ({ location, availableLocations, handleLocationSe
           </g>
         </g>
       </svg>
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        {dangerIcons.map((icon, idx) => (
-          <div
-            key={`dangerIcon-${idx}`}
-            className="w-[4%] absolute rounded-full bg-gray-200 border-2 border-gray-400 p-[0.25%]"
-            style={{ top: `${icon.positions[1].y}%`, left: `${icon.positions[1].x}%` }}
-          >
-            <IconDanger type={icon.type} />
-          </div>
-        ))}
-      </div>
+      <MapDangers dangerIcons={dangerIcons} mapVersion={1} />
     </div>
   );
 };

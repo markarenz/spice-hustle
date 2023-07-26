@@ -3,7 +3,7 @@ import { GameState, Locations } from '../types';
 const initGameState: GameState = {
   id: `${new Date().getTime()}`,
   location: Locations.Oskah,
-  mapVersion: 2,
+  mapVersion: 0,
   numTurns: 0,
   cash: 100,
   savings: 0,
