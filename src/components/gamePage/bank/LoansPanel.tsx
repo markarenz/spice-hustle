@@ -141,7 +141,13 @@ const LoansPanel = () => {
           </h2>
           {shouldShowLoansList ? (
             <div className="text-gray-800 bg-gray-100 mb-12">
-              <Table data={currentLoans} fieldLabels={fieldLabels} actions={loansTableActions} />
+              <Table
+                data={currentLoans}
+                fieldLabels={fieldLabels}
+                actions={loansTableActions}
+                sortField="id"
+                sortDir="asc"
+              />
             </div>
           ) : (
             <div>

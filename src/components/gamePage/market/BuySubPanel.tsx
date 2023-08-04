@@ -99,7 +99,13 @@ const BuySubPanel = () => {
         <FormattedMessage id="market__buy_title" />
       </h2>
       <div className="text-gray-800 bg-gray-100">
-        <Table data={itemsForSale} fieldLabels={fieldLabels} actions={buyTableActions} />
+        <Table
+          data={itemsForSale}
+          fieldLabels={fieldLabels}
+          actions={buyTableActions}
+          sortField="guildDependentTitle"
+          sortDir="asc"
+        />
       </div>
       <div className="text-right py-2">
         <CapacityDisplay />

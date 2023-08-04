@@ -58,6 +58,8 @@ const SavedGameModal = () => {
             data={savesList}
             fieldLabels={savedGameFieldLabels}
             actions={saveListTableActions}
+            sortField="modifiedAt"
+            sortDir="desc"
           />
         ) : (
           <h2 className="text-lg italic bold py-6">
