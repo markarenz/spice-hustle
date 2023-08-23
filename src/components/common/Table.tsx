@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { TableFieldLabel } from 'types';
 import IconGuild from 'components/icons/IconGuild';
@@ -11,17 +11,15 @@ type Props = {
   sortDir: string;
 };
 const Table: React.FC<Props> = ({ data, fieldLabels, actions, sortField, sortDir }) => {
-  const [dataSorted] = useState(
-    data.sort((a: any, b: any) => {
-      if (a[sortField] > b[sortField]) {
-        return sortDir === 'asc' ? 1 : -1;
-      }
-      if (a[sortField] < b[sortField]) {
-        return sortDir === 'asc' ? -1 : 1;
-      }
-      return 0;
-    }),
-  );
+  const dataSorted = data.sort((a: any, b: any) => {
+    if (a[sortField] > b[sortField]) {
+      return sortDir === 'asc' ? 1 : -1;
+    }
+    if (a[sortField] < b[sortField]) {
+      return sortDir === 'asc' ? -1 : 1;
+    }
+    return 0;
+  });
   const { formatMessage } = useIntl();
   const getProcessedFieldValue = (item: any, field: TableFieldLabel) => {
     const val = item[field.slug];
