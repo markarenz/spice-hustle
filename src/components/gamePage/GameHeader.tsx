@@ -1,7 +1,16 @@
 import { useState, useEffect, useCallback } from 'react';
 import CloseButton from 'components/common/CloseButton';
+import QuickSaveButton from 'components/common/QuickSaveButton';
+import QuickLoadButton from 'components/common/QuickLoadButton';
 import { useGameSliceSelector, useGameSliceDispatch } from 'store/reduxHooks';
-import { closeGame, setModalStatus, setCurrentModal } from 'store/gameSlice';
+import {
+  closeGame,
+  setModalStatus,
+  setCurrentModal,
+  quickSave,
+  loadSavedGame,
+} from 'store/gameSlice';
+import { getQuickSave } from 'utils/saveLoadUtils';
 import { GameTabSlugs } from 'types';
 import { FormattedMessage } from 'react-intl';
 import TabButton from './TabButton';
@@ -11,10 +20,13 @@ import Modal from 'components/common/Modal';
 import IconInfo from 'components/icons/IconInfo';
 import { getBgImg } from './headerUtils';
 import LoanExpirationWarning from './LoanExpirationWarning';
+import { localStorageKeys } from 'data/constants';
 import { getHasOverdueLoanForLocation } from 'utils/utils';
 
 const GameHeader = () => {
+  const qsCheck = localStorage.getItem(localStorageKeys.quickSaveKey);
   const [bgImgs, setBgImgs] = useState<string[]>([]);
+  const [hasQuickSave, setHasQuickSave] = useState(!!qsCheck);
   const [isShowingBg, setIsShowingBg] = useState<boolean>(false);
   const dispatch = useGameSliceDispatch();
   const { gameState, gamePanel, modalStatus, currentModal } = useGameSliceSelector(
@@ -43,6 +55,14 @@ const GameHeader = () => {
     dispatch(closeGame());
   };
 
+  const handleQuickSave = () => {
+    dispatch(quickSave());
+    setHasQuickSave(true);
+  };
+  const handleQuickLoad = async () => {
+    const gs = await getQuickSave();
+    dispatch(loadSavedGame(gs));
+  };
   const isThisModalOpen = isModalOpen && currentModal === 'location';
   return (
     <header className="w-full" data-testid="game-header">
@@ -84,6 +104,11 @@ const GameHeader = () => {
             isShowingBg ? 'opacity-0' : 'opacity-100'
           }`}
         />
+
+        <div className="absolute left-[1rem] top-[1rem] flex gap-2" data-testid="quicksave-buttons">
+          <QuickSaveButton handleClick={() => handleQuickSave()} />
+          {hasQuickSave && <QuickLoadButton handleClick={() => handleQuickLoad()} />}
+        </div>
 
         <div className="absolute right-[1rem] top-[1rem]" data-testid="close-game">
           <CloseButton handleClose={() => handleCloseGame()} />

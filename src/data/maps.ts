@@ -64,7 +64,7 @@ const mapDefault: Map = {
             },
             {
               type: DangerTypes.Bandits,
-              chance: 0.2,
+              chance: 0.1,
               effects: [effects.cashSm, effects.inventorySm],
               positions: {
                 0: { x: 40, y: 26 },
@@ -78,7 +78,7 @@ const mapDefault: Map = {
           dangers: [
             {
               type: DangerTypes.Bandits,
-              chance: 0.4,
+              chance: 0.3,
               effects: [effects.cashSm, effects.inventorySm],
               positions: {
                 0: { x: 64, y: 28.5 },
@@ -97,7 +97,7 @@ const mapDefault: Map = {
           dangers: [
             {
               type: DangerTypes.Wolves,
-              chance: 0.3,
+              chance: 0.2,
               effects: [effects.inventoryMd],
               positions: {
                 0: { x: 43, y: 62 },
@@ -111,7 +111,7 @@ const mapDefault: Map = {
           dangers: [
             {
               type: DangerTypes.Bandits,
-              chance: 0.2,
+              chance: 0.1,
               effects: [effects.cashSm, effects.inventorySm],
               positions: {
                 0: { x: 70, y: 52.5 },
@@ -130,7 +130,7 @@ const mapDefault: Map = {
           dangers: [
             {
               type: DangerTypes.Flood,
-              chance: 0.3,
+              chance: 0.2,
               effects: [effects.delaySm, effects.inventorySm],
               positions: {
                 0: { x: 23.5, y: 53 },
@@ -163,7 +163,7 @@ const mapTwo: Map = {
           dangers: [
             {
               type: DangerTypes.Bandits,
-              chance: 0.4,
+              chance: 0.3,
               effects: [effects.cashSm, effects.inventoryMd],
               positions: {
                 0: { x: 0, y: 0 },
@@ -182,7 +182,7 @@ const mapTwo: Map = {
           dangers: [
             {
               type: DangerTypes.Bandits,
-              chance: 0.3,
+              chance: 0.2,
               effects: [effects.cashSm, effects.inventoryMd],
               positions: {
                 0: { x: 0, y: 0 },
@@ -196,7 +196,7 @@ const mapTwo: Map = {
           dangers: [
             {
               type: DangerTypes.Tricksters,
-              chance: 0.3,
+              chance: 0.2,
               effects: [effects.cashSm, effects.inventoryMd],
               positions: {
                 0: { x: 0, y: 0 },
@@ -215,7 +215,7 @@ const mapTwo: Map = {
           dangers: [
             {
               type: DangerTypes.Wolves,
-              chance: 0.3,
+              chance: 0.2,
               effects: [effects.inventoryMd],
               positions: {
                 0: { x: 0, y: 0 },
@@ -229,7 +229,7 @@ const mapTwo: Map = {
           dangers: [
             {
               type: DangerTypes.RockSlide,
-              chance: 0.3,
+              chance: 0.2,
               effects: [effects.delayMd, effects.inventoryMd],
               positions: {
                 0: { x: 0, y: 0 },
@@ -290,7 +290,7 @@ const mapThree: Map = {
           dangers: [
             {
               type: DangerTypes.Wolves,
-              chance: 0.3,
+              chance: 0.2,
               effects: [effects.inventoryMd],
               positions: {
                 0: { x: 0, y: 0 },
@@ -304,7 +304,7 @@ const mapThree: Map = {
           dangers: [
             {
               type: DangerTypes.RockSlide,
-              chance: 0.3,
+              chance: 0.2,
               effects: [effects.delayMd, effects.inventoryMd],
               positions: {
                 0: { x: 0, y: 0 },
@@ -318,7 +318,7 @@ const mapThree: Map = {
           dangers: [
             {
               type: DangerTypes.Bandits,
-              chance: 0.3,
+              chance: 0.2,
               effects: [effects.cashLg, effects.inventoryLg],
               positions: {
                 0: { x: 0, y: 0 },
@@ -332,7 +332,7 @@ const mapThree: Map = {
           dangers: [
             {
               type: DangerTypes.Tricksters,
-              chance: 0.3,
+              chance: 0.2,
               effects: [effects.cashSm, effects.inventoryMd],
               positions: {
                 0: { x: 0, y: 0 },
@@ -366,7 +366,7 @@ const mapThree: Map = {
           dangers: [
             {
               type: DangerTypes.RockSlide,
-              chance: 0.3,
+              chance: 0.2,
               effects: [effects.delayMd, effects.inventoryMd],
               positions: {
                 0: { x: 0, y: 0 },
@@ -380,7 +380,7 @@ const mapThree: Map = {
           dangers: [
             {
               type: DangerTypes.Bandits,
-              chance: 0.3,
+              chance: 0.2,
               effects: [effects.cashLg, effects.inventoryLg],
               positions: {
                 0: { x: 0, y: 0 },

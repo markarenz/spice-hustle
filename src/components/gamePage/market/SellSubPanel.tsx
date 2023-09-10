@@ -7,6 +7,7 @@ import CapacityDisplay from './CapacityDisplay';
 import { setModalStatus, sellItem, setCurrentModal } from 'store/gameSlice';
 import Table from 'components/common/Table';
 import QtyModal from './QtyModal';
+import itemsData from 'data/itemsData';
 import ItemInfoModal from './ItemInfoModal';
 import { getHasOverdueLoanForLocation } from 'utils/utils';
 
@@ -18,15 +19,15 @@ const SellSubPanel = () => {
   const hasOverdueLoan = getHasOverdueLoanForLocation(gameState, gameState.location);
   const isModalOpen = modalStatus !== 'closed' && ['sellQty', 'info'].includes(currentModal);
   const { inventory, prices } = gameState;
+
   const hasGuildMembership = gameState.flags[`guild__${gameState.location.toLowerCase()}`];
-  const inventoryItems = Object.keys(gameState.prices)
-    .filter(
-      (key) => prices[key].actions.includes('sell') && !!inventory[key] && inventory[key]?.qty > 0,
-    )
+  const inventoryItems = Object.keys(itemsData)
+    .filter((key) => !!inventory[key] && inventory[key]?.qty > 0)
     .map((key) => ({
       ...prices[key],
-      guildDependentTitle: formatMessage({ id: `items__${prices[key].id}__title` }),
-      discountablePrice: prices[key].value,
+      id: key,
+      guildDependentTitle: formatMessage({ id: `items__${key}__title` }),
+      discountablePrice: prices[key]?.value || 0,
       hasGuildMembership: hasGuildMembership,
       qty: inventory[key]?.qty,
     }));
@@ -75,15 +76,17 @@ const SellSubPanel = () => {
           testId={`btn-info-${id}`}
         />
       </span>
-      <span className="mr-4 mb-2 block lg:inline w-full lg:w-auto">
-        <Button
-          onClick={() => handleItemClick(id, 'sellQty')}
-          labelKey="market__sell__table___btn_sell"
-          variant="secondary"
-          testId={`btn-sell-${id}`}
-          disabled={hasOverdueLoan}
-        />
-      </span>
+      {prices[id]?.actions.includes('sell') && (
+        <span className="mr-4 mb-2 block lg:inline w-full lg:w-auto">
+          <Button
+            onClick={() => handleItemClick(id, 'sellQty')}
+            labelKey="market__sell__table___btn_sell"
+            variant="secondary"
+            testId={`btn-sell-${id}`}
+            disabled={hasOverdueLoan}
+          />
+        </span>
+      )}
     </div>
   );
   const fieldLabels: TableFieldLabel[] = [

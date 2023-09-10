@@ -101,7 +101,7 @@ describe('GuildPanel', () => {
       </Provider>,
     );
     const element = screen.getByTestId('guild-exclusive-items');
-    expect(element.childNodes.length).toEqual(0);
+    expect(element.childNodes.length).toEqual(3);
   });
 
   it('handles guild purchase', async () => {

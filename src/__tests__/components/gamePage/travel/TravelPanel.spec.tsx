@@ -17,7 +17,7 @@ const initialState: GameSliceState = {
     ...initGameState,
     prices: getLocalPrices(initGameState.location, 1),
     capacity: { used: { weight: 0, volume: 0 }, max: { weight: 10, volume: 10 } },
-    mapVersion: 1,
+    mapVersion: 0,
   },
   subPanelStatus: 'buy',
   currentModal: '',
@@ -72,8 +72,9 @@ describe('TravelPanel', () => {
     act(() => {
       jest.advanceTimersByTime(550);
     });
+    const btnButre = screen.getByTestId('btn-butre');
     await waitFor(async () => {
-      fireEvent.click(screen.getByTestId('btn-butre'));
+      fireEvent.click(btnButre);
     });
     act(() => {
       jest.advanceTimersByTime(550);
@@ -211,13 +212,17 @@ describe('TravelPanel', () => {
         type: 'game/processTravelDay',
         payload: {
           danger: {
-            type: 'bandits',
-            chance: 0.1,
+            type: 'flood',
+            chance: 0.2,
             effects: [
-              { type: 'cash', severity: 'sm' },
+              { type: 'delay', severity: 'sm' },
               { type: 'inventory', severity: 'sm' },
             ],
-            position: { x: 17, y: 50 },
+            positions: {
+              0: { x: 23.5, y: 53 },
+              1: { x: 28, y: 51.5 },
+              2: { x: 35.5, y: 51 },
+            },
           },
           upgradeUsed: false,
         },

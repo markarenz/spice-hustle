@@ -138,3 +138,13 @@ export const getGuildBenefitsByLocation = (location: string) => {
     exclusiveLoan,
   };
 };
+
+export const getMapVersion = (gameState: GameState) => {
+  if (gameState.flags['upgrade__map_2']) {
+    return 2;
+  }
+  if (gameState.flags['upgrade__map_1']) {
+    return 1;
+  }
+  return 0;
+};

@@ -212,7 +212,7 @@ describe('getGuildBenefitsByLocation', () => {
   it('returns guild benefits for location: oskah (exclusive item)', () => {
     const result = getGuildBenefitsByLocation('oskah');
     const expected = {
-      exclusiveItems: ['potat'],
+      exclusiveItems: ['potat', 'oskahtea', 'tunic'],
       exclusiveUpgrades: [],
       exclusiveLoan: false,
     };
@@ -221,8 +221,8 @@ describe('getGuildBenefitsByLocation', () => {
   it('returns guild benefits for location: tabbith (exclusive loan)', () => {
     const result = getGuildBenefitsByLocation('tabbith');
     const expected = {
-      exclusiveItems: [],
-      exclusiveUpgrades: [],
+      exclusiveItems: ['wool', 'cinnamon'],
+      exclusiveUpgrades: ['map_1', 'counterDanger__bandits'],
       exclusiveLoan: true,
     };
     expect(result).toEqual(expected);
@@ -231,7 +231,7 @@ describe('getGuildBenefitsByLocation', () => {
   it('returns guild benefits for location: butre (exclusive upgrade)', () => {
     const result = getGuildBenefitsByLocation('butre');
     const expected = {
-      exclusiveItems: ['potat'],
+      exclusiveItems: ['potat', 'rings', 'nutmeg'],
       exclusiveUpgrades: ['capacity_1'],
       exclusiveLoan: false,
     };

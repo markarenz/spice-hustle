@@ -2,6 +2,7 @@ import { UpgradeData, Locations } from 'types';
 const upgradesData: UpgradeData = {
   // CAPACITY
   capacity_1: {
+    // Small Pack
     slug: 'capacity_1',
     dependencies: [],
     prices: [
@@ -18,24 +19,38 @@ const upgradesData: UpgradeData = {
     ],
   },
   capacity_2: {
+    // Large Pack
     slug: 'capacity_2',
-    dependencies: ['capacity_1'],
+    dependencies: ['upgrade__capacity_1'],
     prices: [
       {
-        price: 1500,
+        price: 2500,
         locations: [Locations.Luci, Locations.Winnie],
         guildOnly: false,
       },
       {
-        price: 1000,
+        price: 2000,
         locations: [Locations.Clionne],
         guildOnly: true,
       },
     ],
   },
   capacity_3: {
+    // Small Cart
     slug: 'capacity_3',
-    dependencies: ['capacity_2'],
+    dependencies: ['upgrade__capacity_2'],
+    prices: [
+      {
+        price: 12000,
+        locations: [Locations.Luci, Locations.Winnie],
+        guildOnly: true,
+      },
+    ],
+  },
+  capacity_4: {
+    // Large Cart
+    slug: 'capacity_4',
+    dependencies: ['upgrade__capacity_3'],
     prices: [
       {
         price: 12000,
@@ -64,7 +79,7 @@ const upgradesData: UpgradeData = {
   },
   map_2: {
     slug: 'map_2',
-    dependencies: ['map_1'],
+    dependencies: ['upgrade__map_1'],
     prices: [
       {
         price: 25000,

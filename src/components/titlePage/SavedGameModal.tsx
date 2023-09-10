@@ -7,11 +7,11 @@ import { loadSavedGame } from 'store/gameSlice';
 import Modal from 'components/common/Modal';
 import Table from 'components/common/Table';
 import Button from 'components/common/Button';
-import { GameSaveListItemDisplay, TableFieldLabel } from 'types';
+import { GameSaveListItem, TableFieldLabel } from 'types';
 
 const SavedGameModal = () => {
   const dispatch = useGameSliceDispatch();
-  const [savesList, setSavesList] = useState<GameSaveListItemDisplay[]>([]);
+  const [savesList, setSavesList] = useState<GameSaveListItem[]>([]);
   const initLocalSaves = async () => {
     const newSavesList = await getLocalSavesList();
     setSavesList(newSavesList);

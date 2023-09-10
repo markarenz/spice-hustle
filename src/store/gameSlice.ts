@@ -7,7 +7,13 @@ import {
   Transaction,
   TravelTurnDangerResult,
 } from 'types';
-import { getLocalPrices, getNetWealth, getCapacity, getRandRange } from 'utils/utils';
+import {
+  getLocalPrices,
+  getNetWealth,
+  getCapacity,
+  getRandRange,
+  getMapVersion,
+} from 'utils/utils';
 import { getInitialState } from './storeUtils';
 import initGameState from 'data/initGameState';
 import { saveGameLocal } from 'utils/saveLoadUtils';
@@ -39,7 +45,7 @@ export const gameSlice = createSlice({
       state.subPanelStatus = 'buy';
       state.appStatus = AppStatuses.Game;
       state.gameState = { ...newGameData };
-      saveGameLocal({ ...newGameData });
+      saveGameLocal({ ...newGameData }, false);
       state.gamePanel = GameTabSlugs.Market;
     },
     setAppStatus: (state, action: PayloadAction<AppStatuses>) => {
@@ -60,6 +66,9 @@ export const gameSlice = createSlice({
       state.gamePanel = GameTabSlugs.Market;
       state.subPanelStatus = 'buy';
       state.modalStatus = 'closed';
+    },
+    quickSave: (state) => {
+      saveGameLocal(state.gameState, true);
     },
     setGamePanel: (state, action: PayloadAction<string>) => {
       state.gamePanel = action.payload;
@@ -91,7 +100,7 @@ export const gameSlice = createSlice({
       const newNetWealth = getNetWealth(newCash, newSavings, state.gameState.loans);
       const newGameState = {
         ...state.gameState,
-        numTurns: state.gameState.numTurns + 1,
+        // numTurns: state.gameState.numTurns + 1,
         cash: newCash,
         netWealth: newNetWealth,
         savings: newSavings,
@@ -99,7 +108,7 @@ export const gameSlice = createSlice({
       state.gameState = {
         ...newGameState,
       };
-      saveGameLocal({ ...newGameState });
+      saveGameLocal({ ...newGameState }, false);
     },
     purchaseGuildMembership: (state, action: PayloadAction<string>) => {
       const location = action.payload;
@@ -118,7 +127,7 @@ export const gameSlice = createSlice({
       state.gameState = {
         ...newGameState,
       };
-      saveGameLocal({ ...newGameState });
+      saveGameLocal({ ...newGameState }, false);
     },
     acceptLoanOffer: (state, action: PayloadAction<string>) => {
       const location = action.payload;
@@ -136,7 +145,7 @@ export const gameSlice = createSlice({
       const newNetWealth = getNetWealth(newCash, state.gameState.savings, newLoans);
       const newGameState = {
         ...state.gameState,
-        numTurns: state.gameState.numTurns + 1,
+        // numTurns: state.gameState.numTurns + 1,
         cash: newCash,
         netWealth: newNetWealth,
         loans: newLoans,
@@ -144,7 +153,7 @@ export const gameSlice = createSlice({
       state.gameState = {
         ...newGameState,
       };
-      saveGameLocal({ ...newGameState });
+      saveGameLocal({ ...newGameState }, false);
     },
     makeLoanPayment: (state, action: PayloadAction<number>) => {
       const amt = action.payload;
@@ -167,7 +176,7 @@ export const gameSlice = createSlice({
         const newNetWealth = getNetWealth(newCash, state.gameState.savings, newLoans);
         const newGameState = {
           ...state.gameState,
-          numTurns: state.gameState.numTurns + 1,
+          // numTurns: state.gameState.numTurns + 1,
           cash: newCash,
           netWealth: newNetWealth,
           loans: newLoans,
@@ -175,7 +184,7 @@ export const gameSlice = createSlice({
         state.gameState = {
           ...newGameState,
         };
-        saveGameLocal({ ...newGameState });
+        saveGameLocal({ ...newGameState }, false);
       }
     },
     buyUpgrade: (state, action: PayloadAction<Transaction>) => {
@@ -191,11 +200,12 @@ export const gameSlice = createSlice({
         flags: newFlags,
         // other attributes affected by flags?
         capacity: getCapacity(state.gameState.inventory, newFlags),
+        mapVersion: getMapVersion({ ...state.gameState, flags: newFlags }),
       };
       state.gameState = {
         ...newGameState,
       };
-      saveGameLocal({ ...newGameState });
+      saveGameLocal({ ...newGameState }, false);
     },
     buyItem: (state, action: PayloadAction<Transaction>) => {
       const { qty, itemId, price } = action.payload;
@@ -225,7 +235,7 @@ export const gameSlice = createSlice({
       state.gameState = {
         ...newGameState,
       };
-      saveGameLocal({ ...newGameState });
+      saveGameLocal({ ...newGameState }, false);
     },
     sellItem: (state, action: PayloadAction<Transaction>) => {
       const { qty, itemId, price } = action.payload;
@@ -255,7 +265,7 @@ export const gameSlice = createSlice({
       state.gameState = {
         ...newGameState,
       };
-      saveGameLocal({ ...newGameState });
+      saveGameLocal({ ...newGameState }, false);
     },
     processTravelDay: (state, action: PayloadAction<TravelTurnDangerResult>) => {
       const travelTurnDangerResult = action.payload;
@@ -275,14 +285,14 @@ export const gameSlice = createSlice({
               Object.keys(newInventory).forEach((itemId) => {
                 const qty = newInventory[itemId].qty;
                 let newQty = qty;
-                Math.floor(currentCash * getRandRange(0.05, 0.1));
+                // Math.floor(currentCash * getRandRange(0.05, 0.1));
                 if (effect.severity === 'sm') {
-                  newQty = Math.floor(qty * getRandRange(0.85, 0.99));
+                  newQty = Math.floor(qty * getRandRange(0.92, 0.999));
                 } else if (effect.severity === 'md') {
-                  newQty = Math.floor(qty * getRandRange(0.5, 0.84));
+                  newQty = Math.floor(qty * getRandRange(0.7, 0.9));
                 } else {
                   // lg
-                  newQty = Math.floor(qty * getRandRange(0.1, 0.49));
+                  newQty = Math.floor(qty * getRandRange(0.5, 0.7));
                 }
                 newInventory[itemId].qty = newQty;
               });
@@ -300,12 +310,12 @@ export const gameSlice = createSlice({
             case 'cash':
             default:
               if (effect.severity === 'sm') {
-                cashLost = Math.floor(currentCash * getRandRange(0.05, 0.1));
+                cashLost = Math.floor(currentCash * getRandRange(0.01, 0.1));
               } else if (effect.severity === 'md') {
-                cashLost = Math.floor(currentCash * getRandRange(0.11, 0.4));
+                cashLost = Math.floor(currentCash * getRandRange(0.1, 0.25));
               } else {
                 // lg
-                cashLost = Math.floor(currentCash * getRandRange(0.41, 0.6));
+                cashLost = Math.floor(currentCash * getRandRange(0.25, 0.4));
               }
               break;
           }
@@ -319,11 +329,12 @@ export const gameSlice = createSlice({
         flags: newFlags,
         inventory: newInventory,
         netWealth: getNetWealth(newCash, 0, []),
+        capacity: getCapacity(newInventory, state.gameState.flags),
       };
       state.gameState = {
         ...newGameState,
       };
-      saveGameLocal({ ...newGameState });
+      saveGameLocal({ ...newGameState }, false);
     },
     relocate: (state, action: PayloadAction<string>) => {
       // TODO: add bandits
@@ -340,7 +351,7 @@ export const gameSlice = createSlice({
         ...newGameState,
       };
       state.subPanelStatus = 'buy';
-      saveGameLocal({ ...newGameState });
+      saveGameLocal({ ...newGameState }, false);
     },
   },
 });
@@ -364,6 +375,7 @@ export const {
   acceptLoanOffer,
   makeLoanPayment,
   purchaseGuildMembership,
+  quickSave,
 } = gameSlice.actions;
 
 export default gameSlice.reducer;

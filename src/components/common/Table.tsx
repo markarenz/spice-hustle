@@ -23,8 +23,8 @@ const Table: React.FC<Props> = ({ data, fieldLabels, actions, sortField, sortDir
   const { formatMessage } = useIntl();
   const getProcessedFieldValue = (item: any, field: TableFieldLabel) => {
     const val = item[field.slug];
-    if (['price', 'priceValue', 'principal'].includes(field.slug)) {
-      return `⌾${val}`;
+    if (['price', 'priceValue', 'principal', 'netWealth'].includes(field.slug)) {
+      return `⌾${val.toLocaleString('en-US')}`;
     }
     if (field.slug === 'guildDependentTitle') {
       return (

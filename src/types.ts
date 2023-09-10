@@ -97,13 +97,6 @@ export type GameSaveListItem = {
   netWealth: number;
   modifiedAt: string;
 };
-export type GameSaveListItemDisplay = {
-  id: string;
-  location: string;
-  numTurns: number;
-  netWealth: string;
-  modifiedAt: string;
-};
 
 export type TableFieldLabel = {
   slug: string;

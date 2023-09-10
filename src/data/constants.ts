@@ -2,6 +2,7 @@ import { CapacityData } from 'types';
 export const localStorageKeys = {
   savesIndex: 'sh_saves_index',
   savePrefix: 'sh_save__',
+  quickSaveKey: 'sh_quicksave',
 };
 
 export const dateConfig = {

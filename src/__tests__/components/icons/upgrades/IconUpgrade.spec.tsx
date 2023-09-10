@@ -6,6 +6,7 @@ describe('IconUpgrade', () => {
     'capacity_1',
     'capacity_2',
     'capacity_3',
+    'capacity_4',
     'counterDanger__bandits',
     'counterDanger__flood',
     'counterDanger__rockSlide',

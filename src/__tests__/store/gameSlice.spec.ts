@@ -244,8 +244,8 @@ describe('processTravelDay', () => {
       }),
     );
     const result = store.getState().game.gameState;
-    expect(result.cash).toEqual(86);
-    expect(result.inventory.apple.qty).toEqual(8);
+    expect(result.cash).toEqual(90);
+    expect(result.inventory.apple.qty).toEqual(9);
     expect(result.numTurns).toEqual(5);
   });
   it('updates state for a travel day: danger md', () => {
@@ -271,8 +271,8 @@ describe('processTravelDay', () => {
       }),
     );
     const result = store.getState().game.gameState;
-    expect(result.cash).toEqual(76);
-    expect(result.inventory.apple.qty).toEqual(7);
+    expect(result.cash).toEqual(77);
+    expect(result.inventory.apple.qty).toEqual(10);
     expect(result.numTurns).toEqual(11);
   });
   it('updates state for a travel day: danger lg', () => {
@@ -298,8 +298,8 @@ describe('processTravelDay', () => {
       }),
     );
     const result = store.getState().game.gameState;
-    expect(result.cash).toEqual(48);
-    expect(result.inventory.apple.qty).toEqual(2);
+    expect(result.cash).toEqual(60);
+    expect(result.inventory.apple.qty).toEqual(10);
     expect(result.numTurns).toEqual(28);
   });
 });
