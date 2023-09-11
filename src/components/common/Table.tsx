@@ -1,3 +1,4 @@
+import React from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { TableFieldLabel } from 'types';
 import IconGuild from 'components/icons/IconGuild';
@@ -6,13 +7,24 @@ type Props = {
   data: any[]; // data item type should have a shape that includes an `id` property
   fieldLabels: TableFieldLabel[];
   actions?: (id: string) => JSX.Element;
+  sortField: string;
+  sortDir: string;
 };
-const Table: React.FC<Props> = ({ data, fieldLabels, actions }) => {
+const Table: React.FC<Props> = ({ data, fieldLabels, actions, sortField, sortDir }) => {
+  const dataSorted = data.sort((a: any, b: any) => {
+    if (a[sortField] > b[sortField]) {
+      return sortDir === 'asc' ? 1 : -1;
+    }
+    if (a[sortField] < b[sortField]) {
+      return sortDir === 'asc' ? -1 : 1;
+    }
+    return 0;
+  });
   const { formatMessage } = useIntl();
   const getProcessedFieldValue = (item: any, field: TableFieldLabel) => {
     const val = item[field.slug];
-    if (['price', 'priceValue', 'principal'].includes(field.slug)) {
-      return `⌾${val}`;
+    if (['price', 'priceValue', 'principal', 'netWealth'].includes(field.slug)) {
+      return `⌾${val.toLocaleString('en-US')}`;
     }
     if (field.slug === 'guildDependentTitle') {
       return (
@@ -67,7 +79,7 @@ const Table: React.FC<Props> = ({ data, fieldLabels, actions }) => {
         </tr>
       </thead>
       <tbody>
-        {data.map((item: any) => (
+        {dataSorted.map((item: any) => (
           <tr key={item.id} id={`lmftft-${item.id}`} className="even:bg-gray-300">
             {fieldLabels.map((field: TableFieldLabel) => (
               <td className="p-4 block sm:table-cell" key={field.slug}>

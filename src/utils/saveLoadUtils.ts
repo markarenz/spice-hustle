@@ -9,37 +9,40 @@ const getSaveListItemFromGameState = (gameState: GameState): GameSaveListItem =>
   modifiedAt: `${new Date().getTime()}`,
 });
 
-export const saveGameLocal = async (gameState: GameState) => {
+export const saveGameLocal = async (gameState: GameState, isQuickSave: boolean) => {
   const gameStateNow: GameState = {
     ...gameState,
     modifiedAt: `${new Date().getTime()}`,
   };
   try {
-    localStorage.setItem(
-      `${localStorageKeys.savePrefix}${gameState.id}`,
-      JSON.stringify(gameStateNow),
-    );
-    const savesListRaw = await localStorage.getItem(localStorageKeys.savesIndex);
-    let savesList = [];
-    if (savesListRaw && savesListRaw.length > 1) {
-      savesList = await JSON.parse(savesListRaw);
+    const saveKey = isQuickSave
+      ? localStorageKeys.quickSaveKey
+      : `${localStorageKeys.savePrefix}${gameState.id}`;
+    localStorage.setItem(saveKey, JSON.stringify(gameStateNow));
+
+    if (!isQuickSave) {
+      const savesListRaw = localStorage.getItem(localStorageKeys.savesIndex);
+      let savesList = [];
+      if (savesListRaw && savesListRaw.length > 1) {
+        savesList = await JSON.parse(savesListRaw);
+      }
+      const saveListItem = getSaveListItemFromGameState(gameStateNow);
+      const isNew = !savesList.some((item: GameSaveListItem) => item.id === gameState.id);
+      const newSavesList = isNew
+        ? [getSaveListItemFromGameState(gameStateNow), ...savesList]
+        : savesList
+            .map((item: GameSaveListItem) => (item.id === gameState.id ? saveListItem : item))
+            .sort((a: GameSaveListItem, b: GameSaveListItem) => {
+              if (a.modifiedAt > b.modifiedAt) {
+                return 1;
+              }
+              if (a.modifiedAt < b.modifiedAt) {
+                return -1;
+              }
+              return 0;
+            });
+      localStorage.setItem(localStorageKeys.savesIndex, JSON.stringify(newSavesList));
     }
-    const saveListItem = getSaveListItemFromGameState(gameStateNow);
-    const isNew = !savesList.some((item: GameSaveListItem) => item.id === gameState.id);
-    const newSavesList = isNew
-      ? [getSaveListItemFromGameState(gameStateNow), ...savesList]
-      : savesList
-          .map((item: GameSaveListItem) => (item.id === gameState.id ? saveListItem : item))
-          .sort((a: GameSaveListItem, b: GameSaveListItem) => {
-            if (a.modifiedAt > b.modifiedAt) {
-              return 1;
-            }
-            if (a.modifiedAt < b.modifiedAt) {
-              return -1;
-            }
-            return 0;
-          });
-    localStorage.setItem(localStorageKeys.savesIndex, JSON.stringify(newSavesList));
   } catch (err) {
     console.error('Save Game Error', err);
   }
@@ -72,7 +75,7 @@ const localSavesListAdapter = (localSavesList: GameSaveListItem[]) =>
   localSavesList.map((item) => ({
     ...item,
     location: `${item.location.charAt(0).toUpperCase()}${item.location.substring(1)}`,
-    netWealth: `⌾${item.netWealth}`,
+    netWealth: item.netWealth,
     modifiedAt: getShortRealDate(item.modifiedAt),
   }));
 
@@ -90,9 +93,20 @@ export const getLocalSavesList = async () => {
   }
 };
 
+export const getQuickSave = async () => {
+  try {
+    const gameSaveRaw = localStorage.getItem(localStorageKeys.quickSaveKey);
+    const gameState = await JSON.parse(`${gameSaveRaw}`);
+    return gameState;
+  } catch (err) {
+    console.error('Load QuickSave Error', err);
+    return null;
+  }
+};
+
 export const getLocalGameSave = async (gameId: string) => {
   try {
-    const gameSaveRaw = await localStorage.getItem(`${localStorageKeys.savePrefix}${gameId}`);
+    const gameSaveRaw = localStorage.getItem(`${localStorageKeys.savePrefix}${gameId}`);
     const gameState = await JSON.parse(`${gameSaveRaw}`);
     return gameState;
   } catch (err) {

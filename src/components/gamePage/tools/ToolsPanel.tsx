@@ -108,7 +108,13 @@ const ToolsPanel = () => {
             <FormattedMessage id="upgrades__buy_title" />
           </h2>
           <div className="text-gray-800 bg-gray-100">
-            <Table data={upgradesOnOffer} fieldLabels={fieldLabels} actions={buyTableActions} />
+            <Table
+              data={upgradesOnOffer}
+              fieldLabels={fieldLabels}
+              actions={buyTableActions}
+              sortField="guildDependentTitle"
+              sortDir="asc"
+            />
           </div>
         </div>
       </div>

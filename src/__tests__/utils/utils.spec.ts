@@ -10,6 +10,7 @@ import {
   getLoanByLocation,
   getHasOverdueLoanForLocation,
   getGuildBenefitsByLocation,
+  getMapVersion,
 } from 'utils/utils';
 import mockGameState from '__tests__/__fixtures__/mockGameState';
 import itemsData from 'data/itemsData';
@@ -212,7 +213,7 @@ describe('getGuildBenefitsByLocation', () => {
   it('returns guild benefits for location: oskah (exclusive item)', () => {
     const result = getGuildBenefitsByLocation('oskah');
     const expected = {
-      exclusiveItems: ['potat'],
+      exclusiveItems: ['potat', 'oskahtea', 'tunic'],
       exclusiveUpgrades: [],
       exclusiveLoan: false,
     };
@@ -221,8 +222,8 @@ describe('getGuildBenefitsByLocation', () => {
   it('returns guild benefits for location: tabbith (exclusive loan)', () => {
     const result = getGuildBenefitsByLocation('tabbith');
     const expected = {
-      exclusiveItems: [],
-      exclusiveUpgrades: [],
+      exclusiveItems: ['wool', 'cinnamon'],
+      exclusiveUpgrades: ['map_1', 'counterDanger__bandits'],
       exclusiveLoan: true,
     };
     expect(result).toEqual(expected);
@@ -231,10 +232,40 @@ describe('getGuildBenefitsByLocation', () => {
   it('returns guild benefits for location: butre (exclusive upgrade)', () => {
     const result = getGuildBenefitsByLocation('butre');
     const expected = {
-      exclusiveItems: ['potat'],
+      exclusiveItems: ['potat', 'rings', 'nutmeg'],
       exclusiveUpgrades: ['capacity_1'],
       exclusiveLoan: false,
     };
     expect(result).toEqual(expected);
+  });
+});
+
+describe('getMapVersion', () => {
+  it('returns map version for 0', () => {
+    const result = getMapVersion({
+      ...mockGameState,
+    });
+    expect(result).toEqual(0);
+  });
+
+  it('returns map version for 1', () => {
+    const result = getMapVersion({
+      ...mockGameState,
+      flags: {
+        upgrade__map_1: true,
+      },
+    });
+    expect(result).toEqual(1);
+  });
+
+  it('returns map version for 2', () => {
+    const result = getMapVersion({
+      ...mockGameState,
+      flags: {
+        upgrade__map_1: true,
+        upgrade__map_2: true,
+      },
+    });
+    expect(result).toEqual(2);
   });
 });

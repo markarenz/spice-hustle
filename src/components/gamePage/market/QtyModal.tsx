@@ -52,7 +52,7 @@ const QtyModal: React.FC<Props> = ({ action, selectedItem, handleConfirm, handle
           <span className="mr-4">
             <Button variant="secondary" labelKey="cancel" onClick={handleQtyClose} />
           </span>
-          {maxQty > 1 && (
+          {maxQty > 0 && (
             <span className="mr-4">
               <Button
                 variant="primary"

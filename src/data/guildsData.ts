@@ -3,7 +3,7 @@ import { Locations, GuildItemData } from 'types';
 const guildsData: GuildItemData = {
   oskah: {
     location: Locations.Oskah,
-    price: 10,
+    price: 750,
   },
   tabbith: {
     location: Locations.Tabbith,
@@ -25,7 +25,7 @@ const guildsData: GuildItemData = {
     location: Locations.Winnie,
     price: 50000,
   },
-  tiggi: {
+  tigi: {
     location: Locations.Tigi,
     price: 75000,
   },
