@@ -21,9 +21,16 @@ import {
   acceptLoanOffer,
   makeLoanPayment,
   purchaseGuildMembership,
+  quickSave,
 } from 'store/gameSlice';
+import { saveGameLocal } from 'utils/saveLoadUtils';
 import mockGameState from '__tests__/__fixtures__/mockGameState';
 import mockDanger from '__tests__/__fixtures__/travel/mockDanger';
+
+jest.mock('utils/saveLoadUtils', () => ({
+  ...jest.requireActual('utils/saveLoadUtils'),
+  saveGameLocal: jest.fn(),
+}));
 
 const mockInitialState: GameSliceState = {
   appStatus: AppStatuses.StartPage,
@@ -212,6 +219,7 @@ describe('processTravelDay', () => {
             { type: 'inventory', severity: 'sm' },
             { type: 'delay', severity: 'sm' },
           ],
+          positions: {},
         },
         upgradeUsed: true,
       }),
@@ -239,6 +247,7 @@ describe('processTravelDay', () => {
             { type: 'inventory', severity: 'sm' },
             { type: 'delay', severity: 'sm' },
           ],
+          positions: {},
         },
         upgradeUsed: false,
       }),
@@ -266,6 +275,7 @@ describe('processTravelDay', () => {
             { type: 'inventory', severity: 'md' },
             { type: 'delay', severity: 'md' },
           ],
+          positions: {},
         },
         upgradeUsed: false,
       }),
@@ -293,6 +303,7 @@ describe('processTravelDay', () => {
             { type: 'inventory', severity: 'lg' },
             { type: 'delay', severity: 'lg' },
           ],
+          positions: {},
         },
         upgradeUsed: false,
       }),
@@ -387,5 +398,12 @@ describe('purchaseGuildMembership', () => {
     store.dispatch(purchaseGuildMembership('oskah'));
     const result = store.getState().game.gameState;
     expect(result.flags.guild__oskah).toBe(true);
+  });
+});
+
+describe('quickSave', () => {
+  it('handles quickSave', () => {
+    store.dispatch(quickSave());
+    expect(saveGameLocal).toHaveBeenCalled();
   });
 });

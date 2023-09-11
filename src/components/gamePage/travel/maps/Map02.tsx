@@ -40,7 +40,8 @@ const Map02: React.FC<Props> = ({ location, availableLocations, handleLocationSe
         xmlnsXlink="http://www.w3.org/1999/xlink"
         version="1.1"
         viewBox="0 0 100 100"
-        data-testid="map-01"
+        data-testid="map-02"
+        data-check={location}
       >
         <defs>
           <linearGradient id="linearGradient10425">
@@ -550,6 +551,7 @@ const Map02: React.FC<Props> = ({ location, availableLocations, handleLocationSe
               strokeDasharray="none"
               strokeOpacity="1"
               strokeWidth="0.485"
+              data-testid="btn-butre"
               {...getDotProps('butre')}
             ></circle>
             {location === 'butre' && (
@@ -563,6 +565,7 @@ const Map02: React.FC<Props> = ({ location, availableLocations, handleLocationSe
                 strokeWidth="0.485"
                 d="M30.666 54.419c-6.987.09.168 9.371.168 9.371s7.268-9.427 0-9.371h-.168z"
                 paintOrder="normal"
+                data-testid="marker-butre"
               ></path>
             )}
           </g>
@@ -614,6 +617,7 @@ const Map02: React.FC<Props> = ({ location, availableLocations, handleLocationSe
               strokeDasharray="none"
               strokeOpacity="1"
               strokeWidth="0.485"
+              data-testid="btn-tabbith"
               {...getDotProps('tabbith')}
             ></circle>
             {location === 'tabbith' && (
@@ -628,6 +632,7 @@ const Map02: React.FC<Props> = ({ location, availableLocations, handleLocationSe
                 strokeWidth="0.485"
                 d="M80.264 27.957c-6.987.088.167 9.18.167 9.18s7.268-9.235 0-9.18a8.3 8.3 0 00-.167 0z"
                 paintOrder="normal"
+                data-testid="marker-tabbith"
               ></path>
             )}
           </g>
@@ -671,6 +676,7 @@ const Map02: React.FC<Props> = ({ location, availableLocations, handleLocationSe
               strokeDasharray="none"
               strokeOpacity="1"
               strokeWidth="0.485"
+              data-testid="btn-oskah"
               {...getDotProps('oskah')}
             ></circle>
             {location === 'oskah' && (
@@ -684,6 +690,7 @@ const Map02: React.FC<Props> = ({ location, availableLocations, handleLocationSe
                 strokeWidth="0.485"
                 d="M23.757 25.213c-6.987.09.167 9.371.167 9.371s7.268-9.427 0-9.37c-.056-.001-.112-.002-.167 0z"
                 paintOrder="normal"
+                data-testid="marker-oskah"
               ></path>
             )}
           </g>
@@ -723,6 +730,7 @@ const Map02: React.FC<Props> = ({ location, availableLocations, handleLocationSe
               strokeDasharray="none"
               strokeOpacity="1"
               strokeWidth="0.485"
+              data-testid="btn-luci"
               {...getDotProps('luci')}
             ></circle>
             {location === 'luci' && (
@@ -736,6 +744,7 @@ const Map02: React.FC<Props> = ({ location, availableLocations, handleLocationSe
                 strokeWidth="0.485"
                 d="M23.757 25.213c-6.987.09.167 9.371.167 9.371s7.268-9.427 0-9.37c-.056-.001-.112-.002-.167 0z"
                 paintOrder="normal"
+                data-testid="marker-luci"
               ></path>
             )}
           </g>
@@ -787,6 +796,7 @@ const Map02: React.FC<Props> = ({ location, availableLocations, handleLocationSe
               strokeDasharray="none"
               strokeOpacity="1"
               strokeWidth="0.485"
+              data-testid="btn-clionne"
               {...getDotProps('clionne')}
             ></circle>
             {location === 'clionne' && (
@@ -800,6 +810,7 @@ const Map02: React.FC<Props> = ({ location, availableLocations, handleLocationSe
                 strokeWidth="0.485"
                 d="M23.757 25.213c-6.987.09.167 9.371.167 9.371s7.268-9.427 0-9.37c-.056-.001-.112-.002-.167 0z"
                 paintOrder="normal"
+                data-testid="marker-clionne"
               ></path>
             )}
           </g>

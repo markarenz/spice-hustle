@@ -10,6 +10,7 @@ import {
   getLoanByLocation,
   getHasOverdueLoanForLocation,
   getGuildBenefitsByLocation,
+  getMapVersion,
 } from 'utils/utils';
 import mockGameState from '__tests__/__fixtures__/mockGameState';
 import itemsData from 'data/itemsData';
@@ -236,5 +237,35 @@ describe('getGuildBenefitsByLocation', () => {
       exclusiveLoan: false,
     };
     expect(result).toEqual(expected);
+  });
+});
+
+describe('getMapVersion', () => {
+  it('returns map version for 0', () => {
+    const result = getMapVersion({
+      ...mockGameState,
+    });
+    expect(result).toEqual(0);
+  });
+
+  it('returns map version for 1', () => {
+    const result = getMapVersion({
+      ...mockGameState,
+      flags: {
+        upgrade__map_1: true,
+      },
+    });
+    expect(result).toEqual(1);
+  });
+
+  it('returns map version for 2', () => {
+    const result = getMapVersion({
+      ...mockGameState,
+      flags: {
+        upgrade__map_1: true,
+        upgrade__map_2: true,
+      },
+    });
+    expect(result).toEqual(2);
   });
 });
