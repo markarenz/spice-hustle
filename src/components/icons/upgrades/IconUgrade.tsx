@@ -8,6 +8,8 @@ import IconUpgradeCounterDangerFlood from './IconUpgradeCounterDangerFlood';
 import IconUpgradeCounterDangerRockSlide from './IconUpgradeCounterDangerRockSlide';
 import IconUpgradeCounterDangerTricksters from './IconUpgradeCounterDangerTricksters';
 import IconUpgradeCounterDangerWolves from './IconUpgradeCounterDangerWolves';
+import IconUpgradeMap1 from './IconUpgradeMap1';
+import IconUpgradeMap2 from './IconUpgradeMap2';
 import IconDummy from 'components/icons/IconDummy';
 
 type Props = {
@@ -25,6 +27,10 @@ const IconUpgrade: React.FC<Props> = ({ type }) => {
       return <IconUpgradeCapacity3 />;
     case 'capacity_4':
       return <IconUpgradeCapacity4 />;
+    case 'map_1':
+      return <IconUpgradeMap1 />;
+    case 'map_2':
+      return <IconUpgradeMap2 />;
     case 'counterDanger__bandits':
       return <IconUpgradeCounterDangerBandits />;
     case 'counterDanger__flood':
