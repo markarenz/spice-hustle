@@ -86,19 +86,26 @@ export const getCapacity = (inventory: Inventory, flags: Flags): Capacity => {
   };
 };
 
-export const getMaxQty = (gameState: GameState, selectedItem: any, itemsData: ItemsInfo): number =>
-  Math.min(
+export const getMaxQty = (
+  gameState: GameState,
+  selectedItem: any,
+  itemsData: ItemsInfo,
+): number => {
+  const itemData = itemsData[selectedItem.id];
+  if (!itemData) {
+    console.log('missing selected item id in itemsData:', selectedItem);
+    return 1;
+  }
+
+  const res = Math.min(
     selectedItem.qty,
     Math.floor(gameState.cash / selectedItem.value),
-    Math.floor(
-      gameState.capacity.max.volume /
-        ((itemsData[selectedItem.id]?.volume || 0) + gameState.capacity.used.volume),
-    ),
-    Math.floor(
-      gameState.capacity.max.weight /
-        ((itemsData[selectedItem.id]?.weight || 0) + gameState.capacity.used.weight),
-    ),
+    Math.floor((gameState.capacity.max.volume - gameState.capacity.used.volume) / itemData.volume),
+    Math.floor((gameState.capacity.max.weight - gameState.capacity.used.weight) / itemData.weight),
   );
+
+  return res;
+};
 
 export const getRnd1d6 = () => Math.floor(Math.random() * 6) + 1;
 
