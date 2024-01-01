@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useGameSliceSelector } from 'store/reduxHooks';
 import Modal from 'components/common/Modal';
@@ -15,18 +15,26 @@ type Props = {
 const QtyModal: React.FC<Props> = ({ action, selectedItem, handleConfirm, handleQtyClose }) => {
   const { gameState } = useGameSliceSelector((state) => state.game);
   const [qty, setQty] = useState<number>(0);
-  const [maxQty, setMaxQty] = useState<number | null>(null);
+  const maxQty = useMemo(
+    () =>
+      !!selectedItem.id
+        ? action === 'buy'
+          ? getMaxQty(gameState, selectedItem, itemsData)
+          : selectedItem.qty
+        : 0,
+    [action, gameState, selectedItem],
+  );
 
-  if (!!selectedItem.id && maxQty === null) {
-    setMaxQty(action === 'buy' ? getMaxQty(gameState, selectedItem, itemsData) : selectedItem.qty);
+  if (!selectedItem.id) {
+    console.log('selected item is missing an id wtf:', selectedItem);
+    return null;
   }
+
   const handleQtyChange = (e: React.ChangeEvent<HTMLInputElement>, max: number) => {
     const val = parseInt(e.target.value);
     setQty(Math.max(Math.min(val, max), 0));
   };
-  if (maxQty === null) {
-    return null;
-  }
+
   return (
     <Modal titleKey="market__buy__qty_modal__title">
       <div className="text-gray-800">
